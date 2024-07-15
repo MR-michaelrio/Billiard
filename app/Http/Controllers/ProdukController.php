@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Cart;
+use App\Models\Rental;
 class ProdukController extends Controller
 {
     /**
@@ -14,7 +15,8 @@ class ProdukController extends Controller
     {
         //
         $products = Produk::all();
-        return view('produk.index', compact('products'));
+        $rental = Rental::all();
+        return view('produk.index', compact('products','rental'));
     }
 
     public function stok()

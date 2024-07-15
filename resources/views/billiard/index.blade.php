@@ -25,7 +25,7 @@
         background-color: #ff6666;
     }
 
-    .countdown {
+    .countdown, .stopwatch {
         font-weight: bold;
         color: red;
         text-align: center;
@@ -42,10 +42,12 @@
         <div class="card">
             <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
                 <div class="card-body">
-                    <div class="meja {{ $mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green' }}" data-end-time="{{ $mi['waktu_akhir'] }}">
+                    <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
                         Meja {{ $mi['nomor_meja'] }}
                     </div>
-                    <div class="countdown">{{ $mi['waktu_akhir'] }}</div>
+                    <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                        {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                    </div>
                 </div>
             </a>
         </div>
@@ -79,14 +81,75 @@
         setInterval(updateCountdown, 1000);
     }
 
+    function startStopwatch(element, startTime) {
+        const stopwatchKey = `stopwatch_${element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja')}`;
+        const start = startTime || new Date().getTime();
+
+        if (!startTime) {
+            localStorage.setItem(stopwatchKey, start);
+        }
+
+        element.querySelector('.meja').classList.remove('meja-green');
+        element.querySelector('.meja').classList.add('meja-yellow');
+
+        function updateStopwatch() {
+            const now = new Date().getTime();
+            const elapsed = now - start;
+
+            const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+            element.querySelector('.stopwatch').innerHTML =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        updateStopwatch();
+        setInterval(updateStopwatch, 1000);
+    }
+
+    function resetStopwatch(noMeja) {
+        const stopwatchKey = `stopwatch_${noMeja}`;
+        localStorage.removeItem(stopwatchKey);
+
+        const element = document.querySelector(`.meja[data-nomor-meja="${noMeja}"]`);
+        if (element) {
+            const stopwatchElement = element.closest('.card-body').querySelector('.stopwatch');
+            if (stopwatchElement) {
+                stopwatchElement.innerHTML = '00:00:00';
+            }
+            element.classList.remove('meja-yellow', 'meja-red');
+            element.classList.add('meja-green');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-        const countdownElements = document.querySelectorAll('.countdown');
-        countdownElements.forEach(element => {
-            const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
-            if (endTimeString) {
-                startCountdown(element.closest('.card-body'), endTimeString);
+        const timerElements = document.querySelectorAll('.countdown, .stopwatch');
+        timerElements.forEach(element => {
+            const status = element.getAttribute('data-status');
+            const nomorMeja = element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja');
+
+            if (status === 'lanjut') {
+                const stopwatchKey = `stopwatch_${nomorMeja}`;
+                const startTime = localStorage.getItem(stopwatchKey);
+                startStopwatch(element.closest('.card-body'), startTime);
+            } else {
+                const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
+                if (endTimeString) {
+                    startCountdown(element.closest('.card-body'), endTimeString);
+                }
             }
         });
     });
+
+    function handleSuccessResponse(data) {
+        if (data.success) {
+            resetStopwatch(data.no_meja);
+            alert('Order submitted successfully');
+            window.location.href = '{{ route("bl.index") }}';
+        } else {
+            alert('There was an error submitting the order: ' + data.error);
+        }
+    }
 </script>
 @endsection

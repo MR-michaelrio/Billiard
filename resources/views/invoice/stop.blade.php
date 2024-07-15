@@ -42,8 +42,8 @@
                         <tbody>
                         @foreach($meja_rental as $r)
                             <tr>
-                                <td>{{$rental}}</td>
-                                <td>Meja Billiard {{$r->lama_waktu}}</td>
+                                <td>1</td>
+                                <td>Meja Billiard <span id="lama_waktu">{{$lama_waktu}}</span></td>
                                 <td>$64.50</td>
                             </tr>
                         @endforeach
@@ -90,23 +90,66 @@
             <!-- this row will not appear when printing -->
             <div class="row no-print">
                 <div class="col-12">
-                    <!-- <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i
-                            class="fas fa-print"></i> Print</a> -->
-                    <form action="{{route('bl.bayar')}}" method="post">
-                        @csrf
-                        @foreach($meja_rental as $r)
-                            <button type="submit" name='bayar' value='{{$r->no_meja}}' class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                                Payment
-                            </button>
-                        @endforeach
-                    </form>
-                    <!-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                        <i class="fas fa-download"></i> Generate PDF
-                    </button> -->
+                    @foreach($meja_rental as $r)
+                        <button type="button" id="submit-button" name='bayar' value='{{$r->no_meja}}' class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
+                            Payment
+                        </button>
+                    @endforeach
                 </div>
             </div>
         </div>
         <!-- /.invoice -->
     </div>
 </div>
+
+<script>
+document.getElementById('submit-button').addEventListener('click', function() {
+    const noMeja = this.value;
+    const lamaWaktu = document.getElementById('lama_waktu').textContent; // Ambil lama_waktu dari elemen dengan ID lama_waktu
+
+    fetch('{{ route("bl.bayar") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ no_meja: noMeja, lama_waktu: lamaWaktu })
+    })
+    .then(response => {
+        console.log('Response status:', response.status); // Log status response
+        if (!response.ok) {
+            return response.json().then(error => { throw new Error(error.error); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            resetStopwatch(data.no_meja);
+            alert('Order submitted successfully');
+            window.location.href = '{{ route("bl.index") }}';
+        } else {
+            alert('There was an error submitting the order: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error submitting the order. Please check the console for more details.');
+    });
+});
+
+function resetStopwatch(noMeja) {
+    const stopwatchKey = `stopwatch_${noMeja}`;
+    localStorage.removeItem(stopwatchKey);
+
+    const element = document.querySelector(`.meja[data-nomor-meja="${noMeja}"]`);
+    if (element) {
+        const stopwatchElement = element.closest('.card-body').querySelector('.stopwatch');
+        if (stopwatchElement) {
+            stopwatchElement.innerHTML = '00:00:00';
+        }
+        element.classList.remove('meja-yellow', 'meja-red');
+        element.classList.add('meja-green');
+    }
+}
+</script>
 @endsection

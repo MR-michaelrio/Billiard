@@ -9,7 +9,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="{{route('bl.storemember')}}" method="post">
+            <form action="{{route('bl.storemember2')}}" method="post">
                 @csrf
                 <input type="hidden" value="{{$no_meja}}" name="no_meja" class="form-control">
                 <div class="card-body">
@@ -21,10 +21,10 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="lama">Lama Main</label>
                         <input type="time" class="form-control" name='lama_waktu' id="lama" value='00:00'>
-                    </div>  
+                    </div>   -->
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
