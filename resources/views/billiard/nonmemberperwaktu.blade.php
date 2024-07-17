@@ -9,7 +9,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="{{route('bl.store')}}" method="post">
+            <form action="{{route('bl.storenonmember2')}}" method="post">
                 @csrf
                 <input type="hidden" value="{{$no_meja}}" name="no_meja" class="form-control">
                 <div class="card-body">

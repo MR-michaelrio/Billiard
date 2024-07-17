@@ -44,7 +44,7 @@
                         <div class="form-group">
                             <label for="id_table">Table ID</label>
                             <!-- <input type="text" id="id_table" class="form-control" value="0"> -->
-                            <select class="form-control select2" id='id_table' name='id_table' style="width: 100%;">
+                            <select class="form-control select2" id='id_table' name='id_table' onchange="myFunction()" style="width: 100%;">
                                 <option value='0'>0</option>
                                 @foreach($rental as $m)
                                     <option value='{{$m->id}}'>{{ $m->no_meja }}</option>
@@ -70,6 +70,7 @@
                             </div>
                             <div class="col-6 text-right">
                                 <button class="btn btn-primary" id="submit-button">Submit</button>
+                                <button class="btn btn-secondary" id="save-button" style="display: none;">Simpan</button>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -105,6 +106,16 @@
 </div>
 
 <script>
+    function myFunction() {
+        const saveButton = document.getElementById('save-button');
+
+        var x = document.getElementById("id_table").value;
+        if (x > 0) {
+            saveButton.style.display = 'inline-block';
+        } else {
+            saveButton.style.display = 'none';
+        }
+    }
     document.addEventListener('DOMContentLoaded', function() {
         const cartItems = [];
         const cartItemsContainer = document.getElementById('cart-items');
@@ -153,6 +164,28 @@
         document.getElementById('submit-button').addEventListener('click', function() {
             const idTable = document.getElementById('id_table').value;
             fetch('{{ route("orders.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id_table: idTable, items: cartItems })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Order submitted successfully');
+                    cartItems.length = 0;
+                    updateCart();
+                } else {
+                    alert('There was an error submitting the order');
+                }
+            });
+        });
+
+        document.getElementById('save-button').addEventListener('click', function() {
+            const idTable = document.getElementById('id_table').value;
+            fetch('{{ route("orders.store2") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

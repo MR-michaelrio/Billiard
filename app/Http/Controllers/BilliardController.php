@@ -59,15 +59,6 @@ class BilliardController extends Controller
         return view('billiard.nonmember', ['no_meja' => $no_meja]);
     }
 
-    public function member($no_meja)
-    {
-        //
-        $member = Member::all();
-        $meja_rental = Rental::where('no_meja', $no_meja)->get();
-
-        return view('billiard.member', compact('meja_rental', 'no_meja', 'member'));
-    }
-
     public function stop($no_meja)
     {
         $meja_rental = Rental::where('no_meja', $no_meja)->get();
@@ -130,43 +121,6 @@ class BilliardController extends Controller
         return response()->json(['success' => true, 'no_meja' => $no_meja]);
     }
     
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-        $id_non = rand(1,1000000000);
-
-        if (!preg_match('/^\d{2}:\d{2}$/', $request->lama_waktu)) {
-            return response()->json(['error' => 'Invalid time format'], 400);
-        }
-    
-        // Mengambil waktu saat ini di timezone Jakarta
-        $tanggalMain = Carbon::now('Asia/Jakarta');
-        $lamaWaktu = $request->lama_waktu;
-        list($hours, $minutes) = explode(':', $lamaWaktu);
-        $intervalString = 'PT' . $hours . 'H' . $minutes . 'M';
-
-        $interval = new DateInterval($intervalString);
-        $tanggalMain->add($interval);
-        $waktuAkhir = $tanggalMain->format('Y-m-d H:i:s');
-
-        $a = NonMember::create([
-            'id' => $id_non,
-            'nama' => $request->nama,
-            'no_telp' => $request->no_telp
-        ]);
-        $b = Rental::create([
-            'id_player' => $id_non,
-            'lama_waktu' => $request->lama_waktu,
-            'waktu_mulai' => now(),
-            'waktu_akhir' => $waktuAkhir,
-            'no_meja' => $request->no_meja
-        ]);
-        return redirect()->route('bl.index');
-    }
-
     public function storemember(Request $request)
     {
         //
@@ -199,7 +153,6 @@ class BilliardController extends Controller
         ]);
         return redirect()->route('bl.index');
     }
-
     public function storemember2(Request $request)
     {
         // Mengambil waktu saat ini di timezone Jakarta
@@ -212,6 +165,102 @@ class BilliardController extends Controller
             'status' => 'lanjut'
         ]);
         return redirect()->route('bl.index');
+    }
+    public function menumember($no_meja)
+    {
+        //
+        $member = Member::all();
+        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+
+        return view('billiard.menumember', compact('meja_rental', 'no_meja', 'member'));
+    }
+    public function memberlanjutan($no_meja)
+    {
+        //
+        $member = Member::all();
+        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+
+        return view('billiard.memberlanjutan', compact('meja_rental', 'no_meja', 'member'));
+    }
+    public function memberperwaktu($no_meja)
+    {
+        //
+        $member = Member::all();
+        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+
+        return view('billiard.memberperwaktu', compact('meja_rental', 'no_meja', 'member'));
+    }
+
+    public function storenonmember(Request $request)//lanjutan
+    {
+        //
+        $id_non = rand(1,1000000000);
+        $tanggalMain = Carbon::now('Asia/Jakarta');
+        $a = NonMember::create([
+            'id' => $id_non,
+            'nama' => $request->nama,
+            'no_telp' => $request->no_telp
+        ]);
+        $b = Rental::create([
+            'id_player' => $id_non,
+            'waktu_mulai' => $tanggalMain,
+            'no_meja' => $request->no_meja,
+            'status' => 'lanjut'
+        ]);
+        return redirect()->route('bl.index');
+    }
+    public function storenonmember2(Request $request)//perwaktu
+    {
+        $id_non = rand(1,1000000000);
+
+        if (!preg_match('/^\d{2}:\d{2}$/', $request->lama_waktu)) {
+            return response()->json(['error' => 'Invalid time format'], 400);
+        }
+    
+        // Mengambil waktu saat ini di timezone Jakarta
+        $tanggalMain = Carbon::now('Asia/Jakarta');
+        $lamaWaktu = $request->lama_waktu;
+        list($hours, $minutes) = explode(':', $lamaWaktu);
+        $intervalString = 'PT' . $hours . 'H' . $minutes . 'M';
+
+        $interval = new DateInterval($intervalString);
+        $tanggalMain->add($interval);
+        $waktuAkhir = $tanggalMain->format('Y-m-d H:i:s');
+
+        $a = NonMember::create([
+            'id' => $id_non,
+            'nama' => $request->nama,
+            'no_telp' => $request->no_telp
+        ]);
+        $b = Rental::create([
+            'id_player' => $id_non,
+            'lama_waktu' => $request->lama_waktu,
+            'waktu_mulai' => now(),
+            'waktu_akhir' => $waktuAkhir,
+            'no_meja' => $request->no_meja
+        ]);
+        return redirect()->route('bl.index');
+    }
+    public function menunonmember($no_meja)
+    {
+        //
+        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+
+        return view('billiard.menunonmember', compact('meja_rental', 'no_meja'));
+    }
+    public function nonmemberlanjutan($no_meja)
+    {
+        //
+        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+
+        return view('billiard.nonmemberlanjutan', compact('meja_rental', 'no_meja'));
+    }
+    public function nonmemberperwaktu($no_meja)
+    {
+        //
+        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+
+        return view('billiard.nonmemberperwaktu', compact('meja_rental', 'no_meja'));
     }
     /**
      * Display the specified resource.
