@@ -80,7 +80,10 @@
 $(document).ready(function() {
     $('.select2').select2();
 });
-
+$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+$('#reservationdate').datetimepicker({
+        format: 'L'
+    });
 </script>
 <script>
   $(function () {

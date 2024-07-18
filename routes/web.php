@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BilliardController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\MemberController;
 use App\Models\RentalInvoice;
 use App\Models\Member;
 use App\Models\NonMember;
@@ -46,3 +47,6 @@ Route::get('pr/stok', [ProdukController::class, 'stok'])->name('pr.stok');
 
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::post('/orders2', [OrderController::class, 'store2'])->name('orders.store2');
+
+//member
+Route::resource('member', MemberController::class);
