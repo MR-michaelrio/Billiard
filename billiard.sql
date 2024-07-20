@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 18, 2024 at 06:37 PM
+-- Generation Time: Jul 20, 2024 at 08:12 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.9
 
@@ -101,31 +101,7 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`id`, `id_player`, `id_rental`, `id_belanja`, `updated_at`, `created_at`) VALUES
-(62, 'M123', 'R7', NULL, '2024-07-11 10:53:00', '2024-07-11 10:53:00'),
-(63, 'M123', 'R259853392', NULL, '2024-07-15 19:35:18', '2024-07-15 19:35:18'),
-(64, 'M332', 'R643167579', NULL, '2024-07-15 19:37:51', '2024-07-15 19:37:51'),
-(65, 'M123', 'R620364216', NULL, '2024-07-15 19:38:13', '2024-07-15 19:38:13'),
-(66, 'M123', 'R491548331', NULL, '2024-07-15 19:58:37', '2024-07-15 19:58:37'),
-(67, 'M123', 'R415097461', NULL, '2024-07-15 20:08:22', '2024-07-15 20:08:22'),
-(68, 'M123', 'R39362236', NULL, '2024-07-15 20:11:14', '2024-07-15 20:11:14'),
-(69, '440174712', 'R371228758', NULL, '2024-07-15 20:14:29', '2024-07-15 20:14:29'),
-(70, 'M123', 'R499858784', NULL, '2024-07-15 20:14:39', '2024-07-15 20:14:39'),
-(71, '464409766', 'R848120767', NULL, '2024-07-15 20:14:47', '2024-07-15 20:14:47'),
-(72, 'M123', 'R392069752', NULL, '2024-07-15 20:20:13', '2024-07-15 20:20:13'),
-(73, 'M123', 'R284139959', NULL, '2024-07-15 20:27:52', '2024-07-15 20:27:52'),
-(74, 'M123', 'R548032569', NULL, '2024-07-15 20:32:14', '2024-07-15 20:32:14'),
-(75, 'M123', 'R823475333', NULL, '2024-07-15 20:36:57', '2024-07-15 20:36:57'),
-(76, 'M123', 'R326586257', NULL, '2024-07-15 20:39:00', '2024-07-15 20:39:00'),
-(77, 'M123', 'R245480137', NULL, '2024-07-15 20:43:16', '2024-07-15 20:43:16'),
-(78, 'M123', 'R490520468', NULL, '2024-07-15 20:44:00', '2024-07-15 20:44:00'),
-(79, '956329731', 'R514626964', NULL, '2024-07-15 20:44:28', '2024-07-15 20:44:28'),
-(80, 'M123', 'R553702769', NULL, '2024-07-15 20:44:50', '2024-07-15 20:44:50'),
-(81, 'M123', 'R953784239', NULL, '2024-07-15 20:45:04', '2024-07-15 20:45:04'),
-(82, 'M123', 'R862649873', NULL, '2024-07-16 16:54:58', '2024-07-16 16:54:58'),
-(83, 'M123', 'R137245166', NULL, '2024-07-16 16:55:17', '2024-07-16 16:55:17'),
-(84, '487758621', 'R10253254', NULL, '2024-07-16 17:11:11', '2024-07-16 17:11:11'),
-(85, '605906201', 'R458961022', NULL, '2024-07-16 17:12:15', '2024-07-16 17:12:15'),
-(86, 'M123', 'R459173412', NULL, '2024-07-16 17:44:20', '2024-07-16 17:44:20');
+(1, 'M99006467', 'R25243962', 90, '2024-07-20 20:06:20', '2024-07-20 20:06:20');
 
 -- --------------------------------------------------------
 
@@ -262,9 +238,12 @@ CREATE TABLE `non_member` (
 --
 
 INSERT INTO `non_member` (`id`, `nama`, `no_telp`, `updated_at`, `created_at`) VALUES
+(201387630, 'test', '082114578009', '2024-07-20 17:42:21', '2024-07-20 17:42:21'),
+(204653844, 'test', '082114578009', '2024-07-20 19:47:18', '2024-07-20 19:47:18'),
 (440174712, 'test', '082114578009', '2024-07-15 19:07:46', '2024-07-15 19:07:46'),
 (464409766, 'Rifky11', '082114578009', '2024-07-15 19:16:49', '2024-07-15 19:16:49'),
 (487758621, 'test', '082114578009', '2024-07-16 17:08:37', '2024-07-16 17:08:37'),
+(576732007, 'Rifky11', '082114578009', '2024-07-20 19:55:34', '2024-07-20 19:55:34'),
 (605906201, 'Rifky11', '082114578009', '2024-07-16 17:12:08', '2024-07-16 17:12:08'),
 (956329731, 'test', '081213460111', '2024-07-15 20:43:48', '2024-07-15 20:43:48');
 
@@ -287,8 +266,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `id_table`, `status`, `created_at`, `updated_at`) VALUES
-(10, '0', 'lunas', '2024-07-16 17:42:28', '2024-07-16 17:42:28'),
-(11, '79', 'belum', '2024-07-16 17:42:47', '2024-07-16 17:42:47');
+(3, '90', 'lunas', '2024-07-20 20:04:56', '2024-07-20 20:06:20'),
+(4, '90', 'lunas', '2024-07-20 20:04:58', '2024-07-20 20:06:20');
 
 -- --------------------------------------------------------
 
@@ -301,7 +280,7 @@ CREATE TABLE `order_items` (
   `order_id` bigint UNSIGNED NOT NULL,
   `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `quantity` int NOT NULL,
-  `price` decimal(8,2) NOT NULL,
+  `price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -311,8 +290,8 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_name`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
-(11, 10, 'aqua', 1, '10000.00', '2024-07-16 17:42:28', '2024-07-16 17:42:28'),
-(12, 11, 'Nasi Goreng', 1, '10000.00', '2024-07-16 17:42:47', '2024-07-16 17:42:47');
+(3, 3, 'aqua', 1, '10000', '2024-07-20 20:04:56', '2024-07-20 20:04:56'),
+(4, 4, 'Nasi Goreng', 1, '10000', '2024-07-20 20:04:58', '2024-07-20 20:04:58');
 
 -- --------------------------------------------------------
 
@@ -388,21 +367,10 @@ CREATE TABLE `rental_invoice` (
 --
 
 INSERT INTO `rental_invoice` (`id_rental`, `lama_waktu`, `waktu_mulai`, `waktu_akhir`, `no_meja`, `updated_at`, `created_at`) VALUES
-('R10253254', '00:02:30', '2024-07-17 00:08:37', NULL, 1, '2024-07-16 17:11:11', '2024-07-16 17:11:11'),
-('R137245166', '02:00:00', '2024-07-16 23:55:10', '2024-07-17 01:55:10', 1, '2024-07-16 16:55:17', '2024-07-16 16:55:17'),
-('R245480137', '01:30:34', '2024-07-16 03:39:07', NULL, 1, '2024-07-15 20:43:16', '2024-07-15 20:43:16'),
-('R284139959', NULL, '2024-07-16 03:20:19', NULL, 1, '2024-07-15 20:27:52', '2024-07-15 20:27:52'),
-('R326586257', '01:26:18', '2024-07-16 03:37:04', NULL, 1, '2024-07-15 20:39:00', '2024-07-15 20:39:00'),
-('R392069752', NULL, '2024-07-16 03:17:00', NULL, 1, '2024-07-15 20:20:13', '2024-07-15 20:20:13'),
-('R458961022', '00:05:00', '2024-07-17 00:12:08', '2024-07-17 00:17:08', 1, '2024-07-16 17:12:15', '2024-07-16 17:12:15'),
-('R459173412', '01:07:16', '2024-07-16 23:37:01', NULL, 2, '2024-07-16 17:44:20', '2024-07-16 17:44:20'),
-('R490520468', '00:00:30', '2024-07-16 03:43:23', NULL, 1, '2024-07-15 20:43:59', '2024-07-15 20:43:59'),
-('R514626964', '01:00:00', '2024-07-16 03:43:48', '2024-07-16 04:43:48', 3, '2024-07-15 20:44:28', '2024-07-15 20:44:28'),
-('R548032569', NULL, '2024-07-16 03:27:59', NULL, 1, '2024-07-15 20:32:14', '2024-07-15 20:32:14'),
-('R553702769', '00:01:12', '2024-07-16 03:43:35', NULL, 2, '2024-07-15 20:44:50', '2024-07-15 20:44:50'),
-('R823475333', '01:24:15', '2024-07-16 03:32:22', NULL, 1, '2024-07-15 20:36:57', '2024-07-15 20:36:57'),
-('R862649873', '00:00:02', '2024-07-16 23:54:52', NULL, 1, '2024-07-16 16:54:58', '2024-07-16 16:54:58'),
-('R953784239', '00:00:03', '2024-07-16 03:44:58', NULL, 2, '2024-07-15 20:45:04', '2024-07-15 20:45:04');
+('R147284204', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:02:40', '2024-07-20 20:02:40'),
+('R213783986', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:03:49', '2024-07-20 20:03:49'),
+('R25243962', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:06:20', '2024-07-20 20:06:20'),
+('R784367952', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:03:00', '2024-07-20 20:03:00');
 
 -- --------------------------------------------------------
 
@@ -424,8 +392,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('COfV74lUhaTW99xE4OHujdYTXb0afHsoBC76dAhF', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiclRRbEtSWUY1Qnp2Z3VYeExxWDVJcDJ5WkdtUkxlVk9WY0VEcVRNYyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ibCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1721324352),
-('WlMBuvkreHGSQxoVu5kWuE0MZ05qVNFvq75ch5pt', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMW9KWVFWbGhYTTAzNUFRTGNQRXNrRW9OUHh0U0ZnZlp2UjZ5eDJYYSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ibCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1721320356);
+('DzTzDXangHyoNJiGITMJrmN7FlU0i9lRPmj3Rsxb', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVVl2clFXMzI5cXRONUFackp0azk5ekdQemtGMFVGamRPcks3b0ZkUyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ibCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1721505983);
 
 -- --------------------------------------------------------
 
@@ -588,7 +555,7 @@ ALTER TABLE `harga_rental`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -618,19 +585,19 @@ ALTER TABLE `non_member`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `rental`
 --
 ALTER TABLE `rental`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `users`
