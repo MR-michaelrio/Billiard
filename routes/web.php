@@ -5,22 +5,28 @@ use App\Http\Controllers\BilliardController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\HargaController;
 use App\Models\RentalInvoice;
-use App\Models\Member;
-use App\Models\NonMember;
+use App\Models\Rental;
+use App\Models\Order;
 use Carbon\Carbon;
 
 Route::get('/', function () {
-    date_default_timezone_set('Asia/Jakarta');
-    $todayDate = Carbon::today()->toDateString();
-    $today_order = RentalInvoice::whereDate('waktu_mulai',$todayDate)->count();
-    $member = Member::all()->count();
-    $nonmember = NonMember::all()->count();
+    // date_default_timezone_set('Asia/Jakarta');
+    // $todayDate = Carbon::today()->toDateString();
+    // $today_order = RentalInvoice::whereDate('waktu_mulai',$todayDate)->count();
+    // $member = Member::all()->count();
+    // $nonmember = NonMember::all()->count();
 
-    return view('index',compact('today_order','member','nonmember'));
+    // return view('index',compact('today_order','member','nonmember'));
+    $orders = Rental::where('no_meja','1')->first();
+        // Buat order
+        return Order::where('id_table',$orders->id)->get();
 });
 
 Route::resource('bl', BilliardController::class);
+Route::get('bl/rekap', [BilliardController::class, 'rekap'])->name('bl.rekap');
+
 Route::get('bl/menu/{id}', [BilliardController::class, 'menu'])->name('bl.menu');
 Route::get('bl/nonmember/{id}', [BilliardController::class, 'nonmember'])->name('bl.nonmember');
 
@@ -50,3 +56,6 @@ Route::post('/orders2', [OrderController::class, 'store2'])->name('orders.store2
 
 //member
 Route::resource('member', MemberController::class);
+
+//harga
+Route::resource('harga', HargaController::class);

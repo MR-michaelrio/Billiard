@@ -9,6 +9,8 @@ use App\Models\Rental;
 use App\Models\Member;
 use App\Models\RentalInvoice;
 use App\Models\Invoice;
+use App\Models\HargaRental;
+use App\Models\Order;
 
 use DateTime;
 use DateInterval;
@@ -61,64 +63,120 @@ class BilliardController extends Controller
 
     public function stop($no_meja)
     {
-        $meja_rental = Rental::where('no_meja', $no_meja)->get();
+        $meja_rental = Rental::where('no_meja', $no_meja)->first();
+        $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
         $rental = Rental::where('no_meja', $no_meja)->count();
-        
-        // Ambil nilai lama_waktu dari salah satu rental jika ada
-        $lama_waktu = $meja_rental->first()->lama_waktu;
-        
-        if (!$lama_waktu) {
-            $elapsedSeconds = request()->query('elapsed');
-            
-            if ($elapsedSeconds !== null) {
-                // Konversi elapsedSeconds ke format yang lebih mudah dibaca
-                $hours = floor($elapsedSeconds / 3600);
-                $minutes = floor(($elapsedSeconds % 3600) / 60);
-                $seconds = $elapsedSeconds % 60;
 
-                $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        if ($meja_rental) {
+            $makanan = Order::where('id_table', $meja_rental->id)
+                            ->where('status','belum')
+                            ->with('items')->get();
+
+            $idplayer = substr($meja_rental->id_player, 0, 1);
+
+            if ($idplayer == 'M') {
+                $mejatotal = 0;
+                $lama_waktu = 0;
             } else {
-                $lama_waktu = '00:00:00'; // Atau nilai default lain jika tidak ada waktu yang dicatat
+                $hargarental = HargaRental::where('jenis', 'menit')->first();
+                $lama_waktu = $meja_rental->first()->lama_waktu;
+
+                if (!$lama_waktu) {
+                    $elapsedSeconds = request()->query('elapsed');
+
+                    if ($elapsedSeconds !== null) {
+                        $hours = floor($elapsedSeconds / 3600);
+                        $minutes = floor(($elapsedSeconds % 3600) / 60);
+                        $seconds = $elapsedSeconds % 60;
+
+                        $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                    } else {
+                        $lama_waktu = '00:00:00';
+                    }
+                }
+
+                list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+                $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+
+                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+                $mejatotal = $total_minutes * $harga_per_menit;
             }
+
+            $total_makanan = $makanan->flatMap(function($order) {
+                return $order->items;
+            })->sum(function($item) {
+                return (float) $item->price;
+            });
+        
+            // Total biaya keseluruhan
+            $total = $mejatotal + $total_makanan;
+            $total = round($total); 
+            return view('invoice.stop', compact('meja_rental','meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
+        } else {
+            return redirect()->back()->with('error', 'No rental found for the specified table.');
         }
-        // return $lama_waktu;
-        return view('invoice.stop', compact('meja_rental', 'no_meja', 'rental', 'lama_waktu'));
     }
+
 
     public function bayar(Request $request)
     {
-        $meja_rental = Rental::where('no_meja', $request->no_meja)->get();
-        
-        foreach ($meja_rental as $rental) {
-            $lama_waktu = $request->lama_waktu; // Ambil dari request
-            $waktu_mulai = $rental->waktu_mulai;
-            $waktu_akhir = $rental->waktu_akhir;
-            $no_meja = $rental->no_meja;
-            $id_player = $rental->id_player;
+        // Validasi request
+        $validated = $request->validate([
+            'no_meja' => 'required|string',
+            'lama_waktu' => 'required|string'
+        ]);
+
+        try {
+            // Ambil data meja rental berdasarkan no_meja
+            $meja_rental = Rental::where('no_meja', $validated['no_meja'])->firstOrFail();
+
+            // Cek dan siapkan variabel
+            $lama_waktu = $validated['lama_waktu'];
+            $waktu_mulai = $meja_rental->waktu_mulai;
+            $waktu_akhir = $meja_rental->waktu_akhir;
+            $no_meja = $meja_rental->no_meja;
+            $id_player = $meja_rental->id_player;
+
+            // Generasikan id_rental unik
+            do {
+                $id_rental = 'R' . rand(1,1000000000);
+            } while (RentalInvoice::where('id_rental', $id_rental)->exists());
+
+            // Simpan data RentalInvoice
+            RentalInvoice::create([
+                'id_rental' => $id_rental,
+                'lama_waktu' => $lama_waktu,
+                'waktu_mulai' => $waktu_mulai,
+                'waktu_akhir' => $waktu_akhir,
+                'no_meja' => $no_meja
+            ]);
+
+            // Update status order
+            $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
+            foreach ($orders as $order) {
+                $order->update(['status' => 'lunas']);
+            }
+
+            // Simpan data Invoice
+            Invoice::create([
+                'id_player' => $id_player,
+                'id_rental' => $id_rental,
+                'id_belanja' => $orders->first()->id_table
+            ]);
+            // Hapus data meja rental
+            $meja_rental->delete();
+
+            // Log untuk debugging
+            \Log::info('Removing stopwatch key from localStorage:', ['stopwatch_key' => 'stopwatch_' . $no_meja]);
+
+            // Kembalikan respons sukses
+            return response()->json(['success' => true, 'no_meja' => $no_meja]);
+
+        } catch (\Exception $e) {
+            // Tangkap dan log kesalahan
+            \Log::error('Error in bayar function:', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
         }
-        
-        do {
-            $id_rental = 'R' . rand(1,1000000000);
-        } while (RentalInvoice::where('id_rental', $id_rental)->exists());
-    
-        $a = RentalInvoice::create([
-            'id_rental' => $id_rental,
-            'lama_waktu' => $lama_waktu,
-            'waktu_mulai' => $waktu_mulai,
-            'waktu_akhir' => $waktu_akhir,
-            'no_meja' => $no_meja
-        ]);
-    
-        $b = Invoice::create([
-            'id_player' => $id_player,
-            'id_rental' => $id_rental
-        ]);
-    
-        $meja_rental->each->delete();
-        
-        \Log::info('Removing stopwatch key from localStorage:', ['stopwatch_key' => 'stopwatch_' . $no_meja]);
-    
-        return response()->json(['success' => true, 'no_meja' => $no_meja]);
     }
     
     public function storemember(Request $request)
@@ -265,9 +323,11 @@ class BilliardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function rekap()
     {
         //
+        $order = Invoice::all()->with('items')->get();
+        return view('billiard.rekap',compact('order'));
     }
 
     /**

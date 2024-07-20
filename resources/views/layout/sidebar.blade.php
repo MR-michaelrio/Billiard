@@ -60,6 +60,30 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('harga.index')}}" class="nav-link">
+                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <p>
+                    Harga
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('bl.rekap')}}" class="nav-link">
+                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <p>
+                    Rekap
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

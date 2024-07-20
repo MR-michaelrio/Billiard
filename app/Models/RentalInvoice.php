@@ -14,4 +14,8 @@ class RentalInvoice extends Model
         'waktu_akhir' => 'datetime',
         'waktu_mulai' => 'datetime',
     ];
+    public function invoice()
+    {
+        return $this->belongsTo(Order::class,'id_rental','id_rental');
+    }
 }

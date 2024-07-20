@@ -14,4 +14,5 @@ class Rental extends Model
         'waktu_akhir' => 'datetime',
         'waktu_mulai' => 'datetime',
     ];
+    
 }

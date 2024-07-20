@@ -4,26 +4,22 @@
     <div class="col-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Edit Barang</h3>
+                <h3 class="card-title">Edit Harga</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="{{route('produk.update',$produk->id_produk)}}" method="post">
+            <form action="{{route('harga.update',$harga->id)}}" method="post">
                 @method('PUT')
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="nama">Nama Produk</label>
-                        <input type="text" class="form-control" id="nama" value='{{$produk->nama_produk}}' name='nama_produk' placeholder="Nama">
-                    </div>
-                    <div class="form-group">
                         <label for="harga">Harga</label>
-                        <input type="text" class="form-control" id="harga" value='{{$produk->harga}}' name='harga' placeholder="10">
+                        <input type="text" class="form-control" id="harga" value='{{$harga->harga}}' name='harga'>
                     </div>
                     <div class="form-group">
-                        <label for="qty">QTY</label>
-                        <input type="number" class="form-control" name='qty' value='{{$produk->qty}}' id="qty" placeholder="1">
-                    </div>  
+                        <label for="jenis">Jenis</label>
+                        <input type="text" class="form-control" id="jenis" value='{{$harga->jenis}}' name='jenis'>
+                    </div>
                 </div>
                 <!-- /.card-body -->
 

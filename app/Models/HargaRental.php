@@ -10,4 +10,6 @@ class HargaRental extends Model
     use HasFactory;
     protected $table = 'harga_rental';
     protected $fillable = ['id', 'harga', 'jenis'];
+    public $timestamps = false;
+
 }
