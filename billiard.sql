@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 20, 2024 at 08:12 PM
+-- Generation Time: Jul 29, 2024 at 09:31 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.9
 
@@ -242,6 +242,7 @@ INSERT INTO `non_member` (`id`, `nama`, `no_telp`, `updated_at`, `created_at`) V
 (204653844, 'test', '082114578009', '2024-07-20 19:47:18', '2024-07-20 19:47:18'),
 (440174712, 'test', '082114578009', '2024-07-15 19:07:46', '2024-07-15 19:07:46'),
 (464409766, 'Rifky11', '082114578009', '2024-07-15 19:16:49', '2024-07-15 19:16:49'),
+(476392552, 'Rifky11', '082114578009', '2024-07-27 16:30:52', '2024-07-27 16:30:52'),
 (487758621, 'test', '082114578009', '2024-07-16 17:08:37', '2024-07-16 17:08:37'),
 (576732007, 'Rifky11', '082114578009', '2024-07-20 19:55:34', '2024-07-20 19:55:34'),
 (605906201, 'Rifky11', '082114578009', '2024-07-16 17:12:08', '2024-07-16 17:12:08'),
@@ -290,7 +291,7 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_name`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
-(3, 3, 'aqua', 1, '10000', '2024-07-20 20:04:56', '2024-07-20 20:04:56'),
+(3, 3, 'Aqua', 1, '10000', '2024-07-20 20:04:56', '2024-07-20 20:04:56'),
 (4, 4, 'Nasi Goreng', 1, '10000', '2024-07-20 20:04:58', '2024-07-20 20:04:58');
 
 -- --------------------------------------------------------
@@ -325,7 +326,7 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id_produk`, `nama_produk`, `harga`, `qty`, `updated_at`, `created_at`) VALUES
-('P1', 'aqua', '10000', 100, '2024-07-11 09:08:18', '0000-00-00 00:00:00'),
+('P1', 'Aqua', '10000', 100, '2024-07-27 18:49:10', '0000-00-00 00:00:00'),
 ('P2', 'Nasi Goreng', '10000', 100, '2024-07-11 10:11:14', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -345,6 +346,13 @@ CREATE TABLE `rental` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rental`
+--
+
+INSERT INTO `rental` (`id`, `id_player`, `lama_waktu`, `waktu_mulai`, `waktu_akhir`, `no_meja`, `status`, `updated_at`, `created_at`) VALUES
+(93, 'M99006467', '01:00:00', '2024-07-28 01:59:15', '2024-07-28 02:59:15', 1, NULL, '2024-07-27 18:59:15', '2024-07-27 18:59:15');
 
 -- --------------------------------------------------------
 
@@ -370,7 +378,19 @@ INSERT INTO `rental_invoice` (`id_rental`, `lama_waktu`, `waktu_mulai`, `waktu_a
 ('R147284204', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:02:40', '2024-07-20 20:02:40'),
 ('R213783986', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:03:49', '2024-07-20 20:03:49'),
 ('R25243962', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:06:20', '2024-07-20 20:06:20'),
-('R784367952', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:03:00', '2024-07-20 20:03:00');
+('R265905054', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 17:10:03', '2024-07-27 17:10:03'),
+('R431145154', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 17:05:37', '2024-07-27 17:05:37'),
+('R462604807', '01:00:00', '2024-07-27 23:30:52', '2024-07-28 00:30:52', 1, '2024-07-27 16:30:58', '2024-07-27 16:30:58'),
+('R508125876', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 16:34:40', '2024-07-27 16:34:40'),
+('R510144881', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 17:08:24', '2024-07-27 17:08:24'),
+('R546878141', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 17:05:49', '2024-07-27 17:05:49'),
+('R549074641', '01:00:00', '2024-07-27 23:30:52', '2024-07-28 00:30:52', 1, '2024-07-27 16:32:09', '2024-07-27 16:32:09'),
+('R561284858', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 17:05:01', '2024-07-27 17:05:01'),
+('R603154376', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 16:34:21', '2024-07-27 16:34:21'),
+('R637055516', '01:00:00', '2024-07-27 23:30:52', '2024-07-28 00:30:52', 1, '2024-07-27 17:10:10', '2024-07-27 17:10:10'),
+('R784367952', '00:00:00', '2024-07-21 03:02:24', '2024-07-21 04:02:24', 2, '2024-07-20 20:03:00', '2024-07-20 20:03:00'),
+('R828064657', '00:00:00', '2024-07-27 23:34:13', '2024-07-28 00:34:13', 2, '2024-07-27 16:58:15', '2024-07-27 16:58:15'),
+('R852754998', '01:00:00', '2024-07-27 23:30:52', '2024-07-28 00:30:52', 1, '2024-07-27 16:31:04', '2024-07-27 16:31:04');
 
 -- --------------------------------------------------------
 
@@ -392,7 +412,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('DzTzDXangHyoNJiGITMJrmN7FlU0i9lRPmj3Rsxb', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVVl2clFXMzI5cXRONUFackp0azk5ekdQemtGMFVGamRPcks3b0ZkUyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ibCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1721505983);
+('XvkvUHEkX9u4S8IrHsO4jaLYsBAP5RfOkplV5CCh', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYTJmNGJZYnc2WVZtbU5Pak5kSGZ4Njg2Ylk1TVMzeFc4SzIxOWRjcSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zdG9wLzE/ZWxhcHNlZD0xNzIyMTA2NzU3Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1722106758);
 
 -- --------------------------------------------------------
 
@@ -555,7 +575,7 @@ ALTER TABLE `harga_rental`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -597,7 +617,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `rental`
 --
 ALTER TABLE `rental`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `users`
