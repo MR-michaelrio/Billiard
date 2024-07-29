@@ -25,10 +25,14 @@ Route::get('/', function () {
 });
 
 Route::resource('bl', BilliardController::class);
-Route::get('bl/rekap', [BilliardController::class, 'rekap'])->name('bl.rekap');
+// Route::get('bl/rekap', [BilliardController::class, 'rekap'])->name('bl.rekap');
+// Route::get('bl/rekap2', [BilliardController::class, 'rekap2'])->name('bl.rekap2');
+Route::get('invoice/rekap', [BilliardController::class, 'rekapinvoice'])->name('bl.rekap');
+Route::get('invoice/showrekap/{id}', [BilliardController::class, 'showrekap'])->name('bl.showrekap');
 
 Route::get('bl/menu/{id}', [BilliardController::class, 'menu'])->name('bl.menu');
 Route::get('bl/nonmember/{id}', [BilliardController::class, 'nonmember'])->name('bl.nonmember');
+Route::get('/print', [BilliardController::class, 'print']);
 
 //meber
 Route::get('bl/menumember/{id}', [BilliardController::class, 'menumember'])->name('bl.menumember');

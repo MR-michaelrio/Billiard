@@ -11,13 +11,31 @@ use App\Models\RentalInvoice;
 use App\Models\Invoice;
 use App\Models\HargaRental;
 use App\Models\Order;
-
+use Illuminate\Support\Facades\DB;
 use DateTime;
 use DateInterval;
 use Carbon\Carbon;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 class BilliardController extends Controller
 {
+    public function print()
+    {
+        $text = 'Ini adalah contoh teks untuk direct printing';
+        $filename = 'print.txt';
+
+        file_put_contents($filename, $text);
+
+        $command = "lp -d 'EPSON_L120' $filename"; // Replace 'EPSON_L120' with your printer name
+        exec($command, $output, $return_var);
+
+        if ($return_var === 0) {
+            return "Print job sent successfully.";
+        } else {
+            return "Failed to print.";
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -66,7 +84,7 @@ class BilliardController extends Controller
         $meja_rental = Rental::where('no_meja', $no_meja)->first();
         $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
         $rental = Rental::where('no_meja', $no_meja)->count();
-
+        
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
                             ->where('status','belum')
@@ -117,7 +135,6 @@ class BilliardController extends Controller
         }
     }
 
-
     public function bayar(Request $request)
     {
         // Validasi request
@@ -151,17 +168,23 @@ class BilliardController extends Controller
                 'no_meja' => $no_meja
             ]);
 
-            // Update status order
-            $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
-            foreach ($orders as $order) {
-                $order->update(['status' => 'lunas']);
+            // Update status 
+            if(Order::where('id_table', $meja_rental->id)->exists()){
+                $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
+                foreach ($orders as $order) {
+                    $order->update(['status' => 'lunas']);
+                }
+                $orderss = $orders->first()->id_table;
+            }else{
+                $orderss = 0;
             }
+            
 
             // Simpan data Invoice
             Invoice::create([
                 'id_player' => $id_player,
                 'id_rental' => $id_rental,
-                'id_belanja' => $orders->first()->id_table
+                'id_belanja' => $orderss
             ]);
             // Hapus data meja rental
             $meja_rental->delete();
@@ -174,7 +197,7 @@ class BilliardController extends Controller
 
         } catch (\Exception $e) {
             // Tangkap dan log kesalahan
-            \Log::error('Error in bayar function:', ['error' => $e->getMessage()]);
+            \Log::error('Error in bayar function:', ['error' => $e->getMessage(),'id_meja'=>$meja_rental->id]);
             return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
         }
     }
@@ -320,19 +343,58 @@ class BilliardController extends Controller
 
         return view('billiard.nonmemberperwaktu', compact('meja_rental', 'no_meja'));
     }
-    /**
-     * Display the specified resource.
-     */
-    public function rekap()
+
+    public function rekapinvoice()
     {
-        //
-        $order = Invoice::all()->with('items')->get();
-        return view('billiard.rekap',compact('order'));
+        // with('order.items')->
+        $invoices = Invoice::with('rentalinvoice')->get();
+        // return $invoices;
+        return view('billiard.rekap',compact('invoices'));
     }
 
+    public function showrekap(string $id)
+    {
+        $query = "
+            SELECT 
+                i.id AS invoice_id, 
+                i.id_player, 
+                i.id_rental, 
+                i.id_belanja, 
+                o.id AS order_id, 
+                o.id_table, 
+                o.status AS order_status, 
+                oi.id AS item_id, 
+                oi.product_name, 
+                oi.quantity, 
+                oi.price,
+                ri.lama_waktu,
+                ri.waktu_mulai,
+                ri.waktu_akhir,
+                ri.no_meja
+            FROM 
+                invoice AS i
+            JOIN 
+                `orders` AS o ON i.id_belanja = o.id_table
+            LEFT JOIN 
+                order_items AS oi ON o.id = oi.order_id
+            JOIN
+                rental_invoice AS ri ON i.id_rental = ri.id_rental
+            WHERE
+                i.id = :id
+        ";
+
+        $invoices = DB::select($query, ['id' => $id]);
+    
+        return view('billiard.showrekap',compact('invoices'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
+    public function show(string $id)
+    {
+        //
+    }
+
     public function edit(string $id)
     {
         //

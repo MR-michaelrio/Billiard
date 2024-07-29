@@ -19,15 +19,13 @@
                 <div class="row invoice-info">
                     <div class="col-sm-4 invoice-col">
                         <b>Order ID:</b> {{$r->id}}<br>
-                        <b>Table :</b> {{$r->no_meja}}<br>
+                        <b>Table:</b> {{$r->no_meja}}<br>
                         <b>Payment Due:</b> {{ now()->format('d-m-Y') }}<br>
                         <b>Account:</b> {{$r->id_player}}
                     </div>
                     <!-- /.col -->
                 </div>
             @endforeach
-
-            <!-- /.row -->
 
             <!-- Table row -->
             <div class="row">
@@ -71,24 +69,10 @@
             <!-- /.row -->
 
             <div class="row">
-                <!-- accepted payments column -->
-                <!-- /.col -->
                 <div class="col-6">
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
-                                <!-- <tr>
-                                    <th style="width:50%">Subtotal:</th>
-                                    <td>$250.30</td>
-                                </tr> -->
-                                <!-- <tr>
-                                    <th>Tax (9.3%)</th>
-                                    <td>$10.34</td>
-                                </tr> -->
-                                <!-- <tr>
-                                    <th>Shipping:</th>
-                                    <td>$5.80</td>
-                                </tr> -->
                                 <tr>
                                     <th>Total:</th>
                                     <td>{{$total}}</td>
@@ -109,6 +93,9 @@
                             Submit Payment
                         </button>
                     @endforeach
+                    <button type="button" class="btn btn-primary float-right" id="print-button" style="margin-right: 10px;">
+                        Print
+                    </button>
                 </div>
             </div>
         </div>
@@ -168,5 +155,9 @@ function resetStopwatch(noMeja) {
         element.classList.add('meja-green');
     }
 }
+
+document.getElementById('print-button').addEventListener('click', function() {
+    window.print();
+});
 </script>
 @endsection

@@ -12,10 +12,10 @@ class Invoice extends Model
     protected $fillable = ['id', 'id_player', 'id_rental', 'id_belanja'];
     public function order()
     {
-        return $this->belongsTo(Order::class,'id_rental','id_rental');
+        return $this->belongsTo(Order::class,'id_belanja','id_table');
     }
     public function rentalinvoice()
     {
-        return $this->belongsTo(Order::class,'id_belanja','id_belanja');
+        return $this->belongsTo(RentalInvoice::class,'id_rental','id_rental');
     }
 }

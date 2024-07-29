@@ -12,10 +12,11 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class,'order_id','id');
+        return $this->hasMany(OrderItem::class, 'order_id', 'id');
     }
+
     public function invoice()
     {
-        return $this->belongsTo(Order::class,'id_table','id_table');
+        return $this->belongsTo(Invoice::class, 'id_belanja', 'id_table');
     }
 }

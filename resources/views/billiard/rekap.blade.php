@@ -6,33 +6,25 @@
             <div class="card-header">
                 <h3 class="card-title">Members</h3>
             </div>               
-            <a href="{{route('member.create')}}" class="btn btn-primary">Tambah Member</a>
             <!-- /.card-header -->
             <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Id Member</th>
-                            <th>Nama</th>
-                            <th>Mulai Member</th>
-                            <th>Akhir Member</th>
+                            <th>Lama Waktu</th>
+                            <th>No Meja</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($order as $p)
+                    @foreach($invoices as $p)
                         <tr>
-                            <td>{{$p->id_member}}</td>
-                            <td>{{$p->nama}}</td>
-                            <td>{{$p->mulai_member}}</td>
-                            <td>{{$p->akhir_member}}</td>
+                            <td>{{$p->id_player}}</td>
+                            <td>{{$p->rentalinvoice->lama_waktu}}</td>
+                            <td>{{$p->rentalinvoice->no_meja}}</td>
                             <td>
-                                <form action="{{ route('member.destroy', $p->id_member) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href="{{route('member.edit',$p->id_member)}}" class="btn btn-warning">Edit</a> | 
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+                                <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
                             </td>
                         </tr>
                     @endforeach
@@ -40,9 +32,8 @@
                     <tfoot>
                         <tr>
                             <th>Id Member</th>
-                            <th>Nama</th>
-                            <th>Mulai Member</th>
-                            <th>Akhir Member</th>
+                            <th>Lama Waktu</th>
+                            <th>No Meja</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>
