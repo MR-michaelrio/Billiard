@@ -272,7 +272,7 @@ class BilliardController extends Controller
 
         } catch (\Exception $e) {
             // Tangkap dan log kesalahan
-            \Log::error('Error in bayar function:', ['error' => $e->getMessage(), 'id_meja' => $meja_rental->id]);
+            \Log::error('Error in bayar function:', ['error' => $e->getMessage(), 'id_rental' => $id_rental]);
             return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
         }
     }

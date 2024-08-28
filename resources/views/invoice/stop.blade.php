@@ -89,8 +89,8 @@
             <div class="row no-print">
                 <div class="col-12">
                 @foreach($meja_rental2 as $r)
-                <button type="button" class="submit-button btn btn-success float-right" data-rental="{{ $r->id_rental }}">
-                    Submit Payment
+                <button type="button" class="submit-button btn btn-success float-right" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
+                    Submit Payment {{ $r->no_meja }}
                 </button>
                 @endforeach
                 </div>
@@ -104,9 +104,10 @@
 document.querySelectorAll('.submit-button').forEach(button => {
     button.addEventListener('click', function() {
         const idRental = this.getAttribute('data-rental');
+        const nomeja = this.getAttribute('data-meja');
         const lamaWaktu = document.getElementById('lama_waktu').textContent;
 
-        console.log('Sending request with idRental:', idRental, 'lamaWaktu:', lamaWaktu);
+        console.log('Sending request with idRental:', nomeja, 'lamaWaktu:', lamaWaktu);
 
         fetch('{{ route("bl.bayar") }}', {
             method: 'POST',
@@ -114,7 +115,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ no_meja: idRental, lama_waktu: lamaWaktu }) // Adjust this part based on how `idRental` relates to your logic
+            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu }) // Adjust this part based on how `idRental` relates to your logic
         })
         .then(response => {
             console.log('Response status:', response.status);
