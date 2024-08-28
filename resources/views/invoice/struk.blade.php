@@ -157,8 +157,12 @@
 
         // Redirect to index after printing
         window.addEventListener('afterprint', function() {
-            window.location.href = '{{ route("bl.index") }}';
+            const redirectUrl = '{{ route("bl.index") }}';
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            }
         });
+
     </script>
 </body>
 </html>

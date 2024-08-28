@@ -48,8 +48,10 @@ class BilliardController extends Controller
         //     return response()->json(['success' => false, 'error' => 'Failed to print receipt: ' . $e->getMessage()]);
         // }
     }
+
     public function print($no_meja)
     {
+        
         $meja_rental = Rental::where('no_meja', $no_meja)->first();
         $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
         $rental = Rental::where('no_meja', $no_meja)->count();
@@ -212,68 +214,69 @@ class BilliardController extends Controller
     }
 
     public function bayar(Request $request)
-{
-    // Validasi request
-    $validated = $request->validate([
-        'no_meja' => 'required|string',
-        'lama_waktu' => 'required|string'
-    ]);
-
-    try {
-        // Ambil data meja rental berdasarkan no_meja
-        $meja_rental = Rental::where('no_meja', $validated['no_meja'])->firstOrFail();
-
-        // Cek dan siapkan variabel
-        $lama_waktu = $validated['lama_waktu'];
-        $waktu_mulai = $meja_rental->waktu_mulai;
-        $waktu_akhir = $meja_rental->waktu_akhir;
-        $no_meja = $meja_rental->no_meja;
-        $id_player = $meja_rental->id_player;
-
-        // Generasikan id_rental unik
-        do {
-            $id_rental = 'R' . rand(1, 1000000000);
-        } while (RentalInvoice::where('id_rental', $id_rental)->exists());
-
-        // Simpan data RentalInvoice
-        RentalInvoice::create([
-            'id_rental' => $id_rental,
-            'lama_waktu' => $lama_waktu,
-            'waktu_mulai' => $waktu_mulai,
-            'waktu_akhir' => $waktu_akhir,
-            'no_meja' => $no_meja
+    {
+        // Validasi request
+        $validated = $request->validate([
+            'no_meja' => 'required|string',
+            'lama_waktu' => 'required|string'
         ]);
 
-        // Update status 
-        if (Order::where('id_table', $meja_rental->id)->exists()) {
-            $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
-            foreach ($orders as $order) {
-                $order->update(['status' => 'lunas']);
+        try {
+            // Ambil data meja rental berdasarkan no_meja
+            $meja_rental = Rental::where('no_meja', $validated['no_meja'])->firstOrFail();
+
+            // Cek dan siapkan variabel
+            $lama_waktu = $validated['lama_waktu'];
+            $waktu_mulai = $meja_rental->waktu_mulai;
+            $waktu_akhir = $meja_rental->waktu_akhir;
+            $no_meja = $meja_rental->no_meja;
+            $id_player = $meja_rental->id_player;
+
+            // Generasikan id_rental unik
+            do {
+                $id_rental = 'R' . rand(1, 1000000000);
+            } while (RentalInvoice::where('id_rental', $id_rental)->exists());
+
+            // Simpan data RentalInvoice
+            RentalInvoice::create([
+                'id_rental' => $id_rental,
+                'lama_waktu' => $lama_waktu,
+                'waktu_mulai' => $waktu_mulai,
+                'waktu_akhir' => $waktu_akhir,
+                'no_meja' => $no_meja
+            ]);
+
+            // Update status 
+            if (Order::where('id_table', $meja_rental->id)->exists()) {
+                $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
+                foreach ($orders as $order) {
+                    $order->update(['status' => 'lunas']);
+                }
+                $orderss = $orders->first()->id_table;
+            } else {
+                $orderss = 0;
             }
-            $orderss = $orders->first()->id_table;
-        } else {
-            $orderss = 0;
+
+            // Simpan data Invoice
+            Invoice::create([
+                'id_player' => $id_player,
+                'id_rental' => $id_rental,
+                'id_belanja' => $orderss
+            ]);
+
+            // Hapus data meja rental
+            // $meja_rental->delete();
+
+            // Kembalikan respons sukses dengan no_meja
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'no_meja' => $no_meja]);
+            }
+        } catch (\Exception $e) {
+            // Tangkap dan log kesalahan
+            \Log::error('Error in bayar function:', ['error' => $e->getMessage(), 'id_meja' => $meja_rental->id]);
+            return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
         }
-
-        // Simpan data Invoice
-        Invoice::create([
-            'id_player' => $id_player,
-            'id_rental' => $id_rental,
-            'id_belanja' => $orderss
-        ]);
-
-        // Hapus data meja rental
-        $meja_rental->delete();
-
-        // Kembalikan respons sukses dengan no_meja
-        return response()->json(['success' => true, 'no_meja' => $no_meja]);
-
-    } catch (\Exception $e) {
-        // Tangkap dan log kesalahan
-        \Log::error('Error in bayar function:', ['error' => $e->getMessage(), 'id_meja' => $meja_rental->id]);
-        return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
     }
-}
 
     
     public function storemember(Request $request)
