@@ -49,12 +49,12 @@ class BilliardController extends Controller
         // }
     }
 
-    public function print($no_meja)
+    public function print($id_rental)
     {
         
-        $meja_rental = RentalInvoice::where('no_meja', $no_meja)->first();
-        $meja_rental2 = RentalInvoice::where('no_meja', $no_meja)->get();
-        $rental = RentalInvoice::where('no_meja', $no_meja)->count();
+        $meja_rental = RentalInvoice::where('id_rental', $id_rental)->first();
+        $meja_rental2 = RentalInvoice::where('id_rental', $id_rental)->get();
+        $rental = RentalInvoice::where('id_rental', $id_rental)->count();
         
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
@@ -268,7 +268,7 @@ class BilliardController extends Controller
             $meja_rental->delete();
 
             // Kembalikan respons sukses dengan no_meja
-            return response()->json(['success' => true, 'no_meja' => $no_meja]);
+            return response()->json(['success' => true, 'id_rental' => $id_rental]);
 
         } catch (\Exception $e) {
             // Tangkap dan log kesalahan

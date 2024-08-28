@@ -129,7 +129,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 resetStopwatch(data.no_meja);
                 alert('Order submitted successfully');
                 // Redirect to print the receipt
-                const printUrl = `{{ route('print.receipt', ['no_meja' => ':no_meja']) }}`.replace(':no_meja', data.no_meja);
+                const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
                 window.location.href = printUrl;        
             } else {
                 alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
