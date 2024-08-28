@@ -30,7 +30,7 @@ Route::get('/test', function () {
     return view('billiard.test');
 });
 
-Route::get('/print-receipt/{no_meja}', [BilliardController::class, 'print'])->name('print.receipt');
+Route::get('/print-receipt/{id_rental}', [BilliardController::class, 'print'])->name('print.receipt');
 
 Route::resource('bl', BilliardController::class);
 // Route::get('bl/rekap', [BilliardController::class, 'rekap'])->name('bl.rekap');
