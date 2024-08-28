@@ -89,11 +89,10 @@
             <div class="row no-print">
                 <div class="col-12">
                 @foreach($meja_rental2 as $r)
-                    <button type="button" class="submit-button btn btn-success float-right" data-meja="{{$r->id_rental}}">
-                        Submit Payment
-                    </button>
+                <button type="button" class="submit-button btn btn-success float-right" data-rental="{{ $r->id_rental }}">
+                    Submit Payment
+                </button>
                 @endforeach
-
                 </div>
             </div>
         </div>
@@ -104,10 +103,10 @@
 <script>
 document.querySelectorAll('.submit-button').forEach(button => {
     button.addEventListener('click', function() {
-        const noMeja = this.getAttribute('data-meja');
+        const idRental = this.getAttribute('data-rental');
         const lamaWaktu = document.getElementById('lama_waktu').textContent;
 
-        console.log('Sending request with noMeja:', noMeja, 'lamaWaktu:', lamaWaktu);
+        console.log('Sending request with idRental:', idRental, 'lamaWaktu:', lamaWaktu);
 
         fetch('{{ route("bl.bayar") }}', {
             method: 'POST',
@@ -115,7 +114,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ no_meja: noMeja, lama_waktu: lamaWaktu })
+            body: JSON.stringify({ no_meja: idRental, lama_waktu: lamaWaktu }) // Adjust this part based on how `idRental` relates to your logic
         })
         .then(response => {
             console.log('Response status:', response.status);
@@ -126,9 +125,9 @@ document.querySelectorAll('.submit-button').forEach(button => {
         })
         .then(data => {
             if (data.success) {
-                resetStopwatch(data.no_meja);
+                resetStopwatch(data.id_rental);
                 alert('Order submitted successfully');
-                // Redirect to print the receipt
+                // Redirect to print the receipt using id_rental
                 const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
                 window.location.href = printUrl;        
             } else {
@@ -141,6 +140,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
         });
     });
 });
+
 
 
 
