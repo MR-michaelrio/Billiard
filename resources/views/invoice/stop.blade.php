@@ -88,11 +88,12 @@
             <!-- this row will not appear when printing -->
             <div class="row no-print">
                 <div class="col-12">
-                    @foreach($meja_rental2 as $r)
-                        <button type="button" id="submit-button" name='bayar' value='{{$r->no_meja}}' class="btn btn-success float-right">
-                            Submit Payment
-                        </button>
-                    @endforeach
+                @foreach($meja_rental2 as $r)
+                    <button type="button" class="submit-button btn btn-success float-right" data-meja="{{$r->no_meja}}">
+                        Submit Payment
+                    </button>
+                @endforeach
+
                 </div>
             </div>
         </div>
@@ -101,43 +102,46 @@
 </div>
 
 <script>
-document.getElementById('submit-button').addEventListener('click', function() {
-    const noMeja = this.value;
-    const lamaWaktu = document.getElementById('lama_waktu').textContent;
+document.querySelectorAll('.submit-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const noMeja = this.getAttribute('data-meja');
+        const lamaWaktu = document.getElementById('lama_waktu').textContent;
 
-    console.log('Sending request with noMeja:', noMeja, 'lamaWaktu:', lamaWaktu);
+        console.log('Sending request with noMeja:', noMeja, 'lamaWaktu:', lamaWaktu);
 
-    fetch('{{ route("bl.bayar") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ no_meja: noMeja, lama_waktu: lamaWaktu })
-    })
-    .then(response => {
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-            return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            resetStopwatch(data.no_meja);
-            alert('Order submitted successfully');
-            // Redirect to print the receipt
-            const printUrl = `{{ route('print.receipt', ['no_meja' => ':no_meja']) }}`.replace(':no_meja', data.no_meja);
-            window.location.href = printUrl;        
-        } else {
-            alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error submitting the order. Please check the console for more details.');
+        fetch('{{ route("bl.bayar") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ no_meja: noMeja, lama_waktu: lamaWaktu })
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                resetStopwatch(data.no_meja);
+                alert('Order submitted successfully');
+                // Redirect to print the receipt
+                const printUrl = `{{ route('print.receipt', ['no_meja' => ':no_meja']) }}`.replace(':no_meja', data.no_meja);
+                window.location.href = printUrl;        
+            } else {
+                alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting the order. Please check the console for more details.');
+        });
     });
 });
+
 
 
 
