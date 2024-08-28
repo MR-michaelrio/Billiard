@@ -52,13 +52,13 @@ class BilliardController extends Controller
     public function print($no_meja)
     {
         
-        $meja_rental = Rental::where('no_meja', $no_meja)->first();
-        $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
-        $rental = Rental::where('no_meja', $no_meja)->count();
+        $meja_rental = RentalInvoice::where('no_meja', $no_meja)->first();
+        $meja_rental2 = RentalInvoice::where('no_meja', $no_meja)->get();
+        $rental = RentalInvoice::where('no_meja', $no_meja)->count();
         
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
-                            ->where('status','belum')
+                            ->where('status','sudah')
                             ->with('items')->get();
 
             $idplayer = substr($meja_rental->id_player, 0, 1);
@@ -265,7 +265,7 @@ class BilliardController extends Controller
             ]);
 
             // Hapus data meja rental
-            // $meja_rental->delete();
+            $meja_rental->delete();
 
             // Kembalikan respons sukses dengan no_meja
             return response()->json(['success' => true, 'no_meja' => $no_meja]);
