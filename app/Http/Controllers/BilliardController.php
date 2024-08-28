@@ -268,9 +268,8 @@ class BilliardController extends Controller
             // $meja_rental->delete();
 
             // Kembalikan respons sukses dengan no_meja
-            if ($request->ajax()) {
-                return response()->json(['success' => true, 'no_meja' => $no_meja]);
-            }
+            return response()->json(['success' => true, 'no_meja' => $no_meja]);
+
         } catch (\Exception $e) {
             // Tangkap dan log kesalahan
             \Log::error('Error in bayar function:', ['error' => $e->getMessage(), 'id_meja' => $meja_rental->id]);
