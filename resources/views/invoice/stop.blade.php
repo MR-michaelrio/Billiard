@@ -89,7 +89,7 @@
             <div class="row no-print">
                 <div class="col-12">
                 @foreach($meja_rental2 as $r)
-                    <button type="button" class="submit-button btn btn-success float-right" data-meja="{{$r->no_meja}}">
+                    <button type="button" class="submit-button btn btn-success float-right" data-meja="{{$r->id_rental}}">
                         Submit Payment
                     </button>
                 @endforeach
