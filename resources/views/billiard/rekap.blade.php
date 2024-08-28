@@ -14,6 +14,7 @@
                             <th>Id Member</th>
                             <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Tanggal</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -23,6 +24,7 @@
                             <td>{{$p->id_player}}</td>
                             <td>{{$p->rentalinvoice->lama_waktu}}</td>
                             <td>{{$p->rentalinvoice->no_meja}}</td>
+                            <td>{{$p->created_at}}</td>
                             <td>
                                 <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
                             </td>
@@ -34,6 +36,7 @@
                             <th>Id Member</th>
                             <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Tanggal</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>

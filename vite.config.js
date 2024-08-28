@@ -8,4 +8,11 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: '0.0.0.0', // Allows access from any IP
+        hmr: {
+            host: 'https://nice-cub-normal.ngrok-free.app/', // Replace with your actual Ngrok subdomain
+            protocol: 'wss', // Use secure WebSocket (WSS)
+        },
+    }
 });

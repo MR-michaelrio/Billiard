@@ -9,20 +9,28 @@ use App\Http\Controllers\HargaController;
 use App\Models\RentalInvoice;
 use App\Models\Rental;
 use App\Models\Order;
+use App\Models\Member;
+use App\Models\NonMember;
 use Carbon\Carbon;
 
 Route::get('/', function () {
-    // date_default_timezone_set('Asia/Jakarta');
-    // $todayDate = Carbon::today()->toDateString();
-    // $today_order = RentalInvoice::whereDate('waktu_mulai',$todayDate)->count();
-    // $member = Member::all()->count();
-    // $nonmember = NonMember::all()->count();
+    date_default_timezone_set('Asia/Jakarta');
+    $todayDate = Carbon::today()->toDateString();
+    $today_order = RentalInvoice::whereDate('waktu_mulai',$todayDate)->count();
+    $member = Member::all()->count();
+    $nonmember = NonMember::all()->count();
 
-    // return view('index',compact('today_order','member','nonmember'));
-    $orders = Rental::where('no_meja','1')->first();
+    return view('index',compact('today_order','member','nonmember'));
+    // $orders = Rental::where('no_meja','1')->first();
         // Buat order
-        return Order::where('id_table',$orders->id)->get();
+        // return Order::where('id_table',$orders->id)->get();
 });
+
+Route::get('/test', function () {
+    return view('billiard.test');
+});
+
+Route::get('/print-receipt/{no_meja}', [BilliardController::class, 'print'])->name('print.receipt');
 
 Route::resource('bl', BilliardController::class);
 // Route::get('bl/rekap', [BilliardController::class, 'rekap'])->name('bl.rekap');

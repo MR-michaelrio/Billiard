@@ -93,9 +93,6 @@
                             Submit Payment
                         </button>
                     @endforeach
-                    <button type="button" class="btn btn-primary float-right" id="print-button" style="margin-right: 10px;">
-                        Print
-                    </button>
                 </div>
             </div>
         </div>
@@ -129,7 +126,9 @@ document.getElementById('submit-button').addEventListener('click', function() {
         if (data.success) {
             resetStopwatch(data.no_meja);
             alert('Order submitted successfully');
-            window.location.href = '{{ route("bl.index") }}';
+            // Redirect to print the receipt
+            const printUrl = `{{ route('print.receipt', ['no_meja' => ':no_meja']) }}`.replace(':no_meja', data.no_meja);
+            window.location.href = printUrl;        
         } else {
             alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
         }
@@ -139,6 +138,7 @@ document.getElementById('submit-button').addEventListener('click', function() {
         alert('There was an error submitting the order. Please check the console for more details.');
     });
 });
+
 
 
 function resetStopwatch(noMeja) {
@@ -155,9 +155,5 @@ function resetStopwatch(noMeja) {
         element.classList.add('meja-green');
     }
 }
-
-document.getElementById('print-button').addEventListener('click', function() {
-    window.print();
-});
 </script>
 @endsection

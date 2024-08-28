@@ -3,7 +3,7 @@
 <style>
     .meja {
         color: black;
-        width: auto;
+        width: 100%;
         height: 100px;
         display: flex;
         align-items: center;
@@ -35,24 +35,113 @@
     .card {
         margin-bottom: 20px;
     }
+
+    .divider {
+        height: 20px;
+        background-color: black;
+        margin: 20px 0;
+    }
+
+    .kasir {
+        writing-mode: vertical-rl;
+        text-align: center;
+        background-color: #5f5f5f;
+        color: white;
+        padding: 20px;
+        font-size: 24px;
+        padding:100px 10px;
+        /* display: flex; */
+        /* align-items: center; */
+        justify-content: center;
+        /* position: absolute; */
+        /* top: 50%; */
+    }
 </style>
-<div class="row">
-    @foreach($meja_rental as $mi)
-    <div class="col-12 col-md-4 col-lg-3">
-        <div class="card">
-            <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
-                <div class="card-body">
-                    <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
-                        Meja {{ $mi['nomor_meja'] }}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-auto" style="display: flex; align-items: center;">
+            <div class="kasir">
+                KASIR
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <!-- First row of tables -->
+                <!-- <div class="col-2"></div> -->
+                @for ($i = 0; $i < 3; $i++)
+                    <div class="col-2 col-lg-3">
+                        @foreach($meja_rental as $index => $mi)
+                            @if($index == $i)
+                                <div class="card">
+                                    <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
+                                        <div class="card-body">
+                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                                Meja {{ $mi['nomor_meja'] }}
+                                            </div>
+                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
-                    <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
-                        {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                @endfor
+            </div>
+
+            <div class="row">
+                <!-- <div class="col-2"></div> -->
+                @for ($i = 3; $i < 7; $i++)
+                    <div class="col-2 col-lg-3">
+                        @foreach($meja_rental as $index => $mi)
+                            @if($index == $i)
+                                <div class="card">
+                                    <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
+                                        <div class="card-body">
+                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                                Meja {{ $mi['nomor_meja'] }}
+                                            </div>
+                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
-                </div>
-            </a>
+                @endfor
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+                <!-- <div class="col-2"></div> -->
+                @for ($i = 7; $i < 15; $i++)
+                    <div class="col-2 col-lg-3">
+                        @foreach($meja_rental as $index => $mi)
+                            @if($index == $i)
+                                <div class="card">
+                                    <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
+                                        <div class="card-body">
+                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                                Meja {{ $mi['nomor_meja'] }}
+                                            </div>
+                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                @endfor
+            </div>
         </div>
     </div>
-    @endforeach
 </div>
 
 <script>

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 use App\Models\Meja;
 use App\Models\NonMember;
 use App\Models\Rental;
@@ -11,31 +12,106 @@ use App\Models\RentalInvoice;
 use App\Models\Invoice;
 use App\Models\HargaRental;
 use App\Models\Order;
-use Illuminate\Support\Facades\DB;
+
 use DateTime;
 use DateInterval;
 use Carbon\Carbon;
-use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 
 class BilliardController extends Controller
 {
-    public function print()
+    public function print2()
     {
-        $text = 'Ini adalah contoh teks untuk direct printing';
-        $filename = 'print.txt';
+        return view('invoice.struk');
 
-        file_put_contents($filename, $text);
+        // Fetching the receipt text from the request
+        // $receiptText = "Hello World";
 
-        $command = "lp -d 'EPSON_L120' $filename"; // Replace 'EPSON_L120' with your printer name
-        exec($command, $output, $return_var);
+        // if (empty($receiptText)) {
+        //     return response()->json(['success' => false, 'error' => 'Receipt text cannot be empty.']);
+        // }
 
-        if ($return_var === 0) {
-            return "Print job sent successfully.";
+        // try {
+        //     $printerName = "POS-58";
+        //     $connector = new WindowsPrintConnector($printerName);
+        //     $printer = new Printer($connector);
+        //     $printer->text($receiptText);
+        //     $printer->cut();
+        //     $printer->close();
+
+        //     return response()->json(['success' => true, 'message' => 'Receipt printed successfully!']);
+        // } catch (\Exception $e) {
+        //     // Log the full error message
+        //     \Log::error('Failed to print receipt: ', ['exception' => $e->getMessage()]);
+        //     return response()->json(['success' => false, 'error' => 'Failed to print receipt: ' . $e->getMessage()]);
+        // }
+    }
+    public function print($no_meja)
+    {
+        $meja_rental = Rental::where('no_meja', $no_meja)->first();
+        $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
+        $rental = Rental::where('no_meja', $no_meja)->count();
+        
+        if ($meja_rental) {
+            $makanan = Order::where('id_table', $meja_rental->id)
+                            ->where('status','belum')
+                            ->with('items')->get();
+
+            $idplayer = substr($meja_rental->id_player, 0, 1);
+
+            if ($idplayer == 'M') {
+                $mejatotal = 0;
+                $lama_waktu = 0;
+            } else {
+                $hargarental = HargaRental::where('jenis', 'menit')->first();
+                $lama_waktu = $meja_rental->first()->lama_waktu;
+
+                if (!$lama_waktu) {
+                    $elapsedSeconds = request()->query('elapsed');
+
+                    if ($elapsedSeconds !== null) {
+                        $hours = floor($elapsedSeconds / 3600);
+                        $minutes = floor(($elapsedSeconds % 3600) / 60);
+                        $seconds = $elapsedSeconds % 60;
+
+                        $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                    } else {
+                        $lama_waktu = '00:00:00';
+                    }
+                }
+
+                list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+                $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+
+                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+                $mejatotal = $total_minutes * $harga_per_menit;
+            }
+
+            $total_makanan = $makanan->flatMap(function($order) {
+                return $order->items;
+            })->sum(function($item) {
+                return (float) $item->price;
+            });
+        
+            // Total biaya keseluruhan
+            // $total = $mejatotal + $total_makanan;
+            // $total = round($total); 
+            $total = $makanan->flatMap(function($order) {
+                return $order->items;
+            })->sum(function($item) {
+                return $item->price * $item->quantity;
+            });
+            
+            $total += $mejatotal; // If `mejatotal` is to be included in the total
+            
+            return view('invoice.struk', compact('meja_rental','meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
         } else {
-            return "Failed to print.";
+            return redirect()->back()->with('error', 'No rental found for the specified table.');
         }
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -136,71 +212,69 @@ class BilliardController extends Controller
     }
 
     public function bayar(Request $request)
-    {
-        // Validasi request
-        $validated = $request->validate([
-            'no_meja' => 'required|string',
-            'lama_waktu' => 'required|string'
+{
+    // Validasi request
+    $validated = $request->validate([
+        'no_meja' => 'required|string',
+        'lama_waktu' => 'required|string'
+    ]);
+
+    try {
+        // Ambil data meja rental berdasarkan no_meja
+        $meja_rental = Rental::where('no_meja', $validated['no_meja'])->firstOrFail();
+
+        // Cek dan siapkan variabel
+        $lama_waktu = $validated['lama_waktu'];
+        $waktu_mulai = $meja_rental->waktu_mulai;
+        $waktu_akhir = $meja_rental->waktu_akhir;
+        $no_meja = $meja_rental->no_meja;
+        $id_player = $meja_rental->id_player;
+
+        // Generasikan id_rental unik
+        do {
+            $id_rental = 'R' . rand(1, 1000000000);
+        } while (RentalInvoice::where('id_rental', $id_rental)->exists());
+
+        // Simpan data RentalInvoice
+        RentalInvoice::create([
+            'id_rental' => $id_rental,
+            'lama_waktu' => $lama_waktu,
+            'waktu_mulai' => $waktu_mulai,
+            'waktu_akhir' => $waktu_akhir,
+            'no_meja' => $no_meja
         ]);
 
-        try {
-            // Ambil data meja rental berdasarkan no_meja
-            $meja_rental = Rental::where('no_meja', $validated['no_meja'])->firstOrFail();
-
-            // Cek dan siapkan variabel
-            $lama_waktu = $validated['lama_waktu'];
-            $waktu_mulai = $meja_rental->waktu_mulai;
-            $waktu_akhir = $meja_rental->waktu_akhir;
-            $no_meja = $meja_rental->no_meja;
-            $id_player = $meja_rental->id_player;
-
-            // Generasikan id_rental unik
-            do {
-                $id_rental = 'R' . rand(1,1000000000);
-            } while (RentalInvoice::where('id_rental', $id_rental)->exists());
-
-            // Simpan data RentalInvoice
-            RentalInvoice::create([
-                'id_rental' => $id_rental,
-                'lama_waktu' => $lama_waktu,
-                'waktu_mulai' => $waktu_mulai,
-                'waktu_akhir' => $waktu_akhir,
-                'no_meja' => $no_meja
-            ]);
-
-            // Update status 
-            if(Order::where('id_table', $meja_rental->id)->exists()){
-                $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
-                foreach ($orders as $order) {
-                    $order->update(['status' => 'lunas']);
-                }
-                $orderss = $orders->first()->id_table;
-            }else{
-                $orderss = 0;
+        // Update status 
+        if (Order::where('id_table', $meja_rental->id)->exists()) {
+            $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
+            foreach ($orders as $order) {
+                $order->update(['status' => 'lunas']);
             }
-            
-
-            // Simpan data Invoice
-            Invoice::create([
-                'id_player' => $id_player,
-                'id_rental' => $id_rental,
-                'id_belanja' => $orderss
-            ]);
-            // Hapus data meja rental
-            $meja_rental->delete();
-
-            // Log untuk debugging
-            \Log::info('Removing stopwatch key from localStorage:', ['stopwatch_key' => 'stopwatch_' . $no_meja]);
-
-            // Kembalikan respons sukses
-            return response()->json(['success' => true, 'no_meja' => $no_meja]);
-
-        } catch (\Exception $e) {
-            // Tangkap dan log kesalahan
-            \Log::error('Error in bayar function:', ['error' => $e->getMessage(),'id_meja'=>$meja_rental->id]);
-            return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
+            $orderss = $orders->first()->id_table;
+        } else {
+            $orderss = 0;
         }
+
+        // Simpan data Invoice
+        Invoice::create([
+            'id_player' => $id_player,
+            'id_rental' => $id_rental,
+            'id_belanja' => $orderss
+        ]);
+
+        // Hapus data meja rental
+        $meja_rental->delete();
+
+        // Kembalikan respons sukses dengan no_meja
+        return response()->json(['success' => true, 'no_meja' => $no_meja]);
+
+    } catch (\Exception $e) {
+        // Tangkap dan log kesalahan
+        \Log::error('Error in bayar function:', ['error' => $e->getMessage(), 'id_meja' => $meja_rental->id]);
+        return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
     }
+}
+
     
     public function storemember(Request $request)
     {
@@ -373,7 +447,7 @@ class BilliardController extends Controller
                 ri.no_meja
             FROM 
                 invoice AS i
-            JOIN 
+            LEFT JOIN 
                 `orders` AS o ON i.id_belanja = o.id_table
             LEFT JOIN 
                 order_items AS oi ON o.id = oi.order_id
@@ -384,7 +458,7 @@ class BilliardController extends Controller
         ";
 
         $invoices = DB::select($query, ['id' => $id]);
-    
+
         return view('billiard.showrekap',compact('invoices'));
     }
     /**

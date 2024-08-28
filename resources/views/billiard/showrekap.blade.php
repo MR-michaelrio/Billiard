@@ -34,10 +34,16 @@
                     </thead>
                     <tbody>
                     @foreach($invoices as $p)
-                        <tr>
-                            <td>{{$p->product_name}}</td>
-                            <td>{{$p->quantity}}</td>
-                        </tr>
+                        @if($p->id_table == 0)
+                            <tr>
+                                <td colspan=2 class="text-center">Tidak Ada Pembelian</td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td>{{$p->product_name}}</td>
+                                <td>{{$p->quantity}}</td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                     <tfoot>
