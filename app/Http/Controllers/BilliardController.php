@@ -187,7 +187,7 @@ class BilliardController extends Controller
                         $seconds = $elapsedSeconds % 60;
             
                         $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-                        return $lama_waktu;
+                        return "lama waktu:"+$lama_waktu;
                     }
                 }
             
