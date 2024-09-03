@@ -67,5 +67,9 @@ class HargaController extends Controller
     public function destroy(string $id)
     {
         //
+        $produk = HargaRental::where('id', $id)->get();
+
+        $produk->each->delete();
+        return redirect()->route('harga.index');
     }
 }

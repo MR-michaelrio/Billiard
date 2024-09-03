@@ -68,5 +68,9 @@ class PaketController extends Controller
     public function destroy(string $id)
     {
         //
+        $produk = Paket::where('id_paket', $id)->get();
+
+        $produk->each->delete();
+        return redirect()->route('paket.index');
     }
 }
