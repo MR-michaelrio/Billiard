@@ -30,13 +30,14 @@ class BilliardController extends Controller
 {
     // Fetch the main RentalInvoice record by ID
     $meja_rental = RentalInvoice::where('id_rental', $id_rental)->first();
+    $invoice = Invoice::where('id_rental', $id_rental)->first();
     $meja_rental2 = RentalInvoice::where('id_rental', $id_rental)->get();
     $rental = RentalInvoice::where('id_rental', $id_rental)->count();
     $no_meja = $meja_rental->no_meja;
 
     if ($meja_rental) {
         // Make sure to use the correct id reference for Orders
-        $makanan = Order::where('id_table', $meja_rental->no_meja) // Use `no_meja` or the correct reference
+        $makanan = Order::where('id_table', $invoice->id_belanja) // Use `no_meja` or the correct reference
                         ->where('status', 'lunas')
                         ->with('items') // Eager load items
                         ->get();
