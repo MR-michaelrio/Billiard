@@ -33,7 +33,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Qty</th>
+                                <th>No</th>
                                 <th>Product</th>
                                 <th>QTY</th>
                                 <th>Subtotal</th>

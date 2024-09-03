@@ -160,9 +160,9 @@ class BilliardController extends Controller
 
     public function stop($no_meja)
     {
-        $meja_rental = Rental::where('no_meja', "2")->first();
-        $meja_rental2 = Rental::where('no_meja', "2")->get();
-        $rental = Rental::where('no_meja', "2")->count();
+        $meja_rental = Rental::where('no_meja', $no_meja)->first();
+        $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
+        $rental = Rental::where('no_meja', $no_meja)->count();
         // return $meja_rental2;
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
@@ -196,14 +196,13 @@ class BilliardController extends Controller
                 // Convert 'lama_waktu' to seconds for comparison
                 $lama_waktu_seconds = strtotime($lama_waktu) - strtotime('TODAY');
                 $threshold_seconds = strtotime('02:00:00') - strtotime('TODAY');
-                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-                $mejatotal = $total_minutes * $harga_per_menit;
-                // if ($lama_waktu_seconds >= $threshold_seconds) {
-                //     $mejatotal = 110000;
-                // } else {
-                //     $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-                //     $mejatotal = $total_minutes * $harga_per_menit;
-                // }
+            
+                if ($lama_waktu_seconds >= $threshold_seconds) {
+                    $mejatotal = 110000;
+                } else {
+                    $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+                    $mejatotal = $total_minutes * $harga_per_menit;
+                }
             }
             
 
@@ -216,6 +215,7 @@ class BilliardController extends Controller
             // Total biaya keseluruhan
             $total = $mejatotal + $total_makanan;
             $total = round($total); 
+            return $lama_waktu;
             return view('invoice.stop', compact('meja_rental','meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
         } else {
             return redirect()->back()->with('error', 'No rental found for the specified table.');
