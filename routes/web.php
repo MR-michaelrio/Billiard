@@ -7,13 +7,23 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\PaketController;
+use App\Http\Controllers\AuthController;
+
 use App\Models\RentalInvoice;
 use App\Models\Rental;
 use App\Models\Order;
 use App\Models\Member;
 use App\Models\NonMember;
+
 use Carbon\Carbon;
 
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
+});
+Route::group(['middleware' => 'auth'], function () {
 Route::get('/', function () {
     date_default_timezone_set('Asia/Jakarta');
     $todayDate = Carbon::today()->toDateString();
@@ -22,20 +32,11 @@ Route::get('/', function () {
     $nonmember = NonMember::all()->count();
 
     return view('index',compact('today_order','member','nonmember'));
-    // $orders = Rental::where('no_meja','1')->first();
-        // Buat order
-        // return Order::where('id_table',$orders->id)->get();
-});
-
-Route::get('/test', function () {
-    return view('billiard.test');
-});
+})->name("index");
 
 Route::get('/print-receipt/{id_rental}', [BilliardController::class, 'print'])->name('print.receipt');
 
 Route::resource('bl', BilliardController::class);
-// Route::get('bl/rekap', [BilliardController::class, 'rekap'])->name('bl.rekap');
-// Route::get('bl/rekap2', [BilliardController::class, 'rekap2'])->name('bl.rekap2');
 Route::get('invoice/rekap', [BilliardController::class, 'rekapinvoice'])->name('bl.rekap');
 Route::get('invoice/showrekap/{id}', [BilliardController::class, 'showrekap'])->name('bl.showrekap');
 
@@ -75,3 +76,4 @@ Route::resource('harga', HargaController::class);
 
 //paket
 Route::resource('paket', PaketController::class);
+});
