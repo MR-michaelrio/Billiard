@@ -12,6 +12,7 @@ use App\Models\RentalInvoice;
 use App\Models\Invoice;
 use App\Models\HargaRental;
 use App\Models\Order;
+use App\Models\Paket;
 
 use DateTime;
 use DateInterval;
@@ -193,9 +194,14 @@ class BilliardController extends Controller
 
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+                if($lama_waktu >= "02:00:00"){
+                    $mejatotal = "110000";
+                }else{
+                    $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+                    $mejatotal = $total_minutes * $harga_per_menit;
+                }
+                
 
-                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-                $mejatotal = $total_minutes * $harga_per_menit;
             }
 
             $total_makanan = $makanan->flatMap(function($order) {
