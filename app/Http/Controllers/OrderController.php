@@ -20,6 +20,8 @@ class OrderController extends Controller
             'items.*.price' => 'required|numeric|min:0',
         ]);
         // Buat order
+        \Log::error('order:', [$request->id_table]);
+
         $order = Order::create([
             'id_table' => $request->id_table,
             'status' => 'lunas'

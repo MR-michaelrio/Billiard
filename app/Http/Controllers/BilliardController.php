@@ -25,32 +25,6 @@ use Mike42\Escpos\Printer;
 
 class BilliardController extends Controller
 {
-    public function print2()
-    {
-        return view('invoice.struk');
-
-        // Fetching the receipt text from the request
-        // $receiptText = "Hello World";
-
-        // if (empty($receiptText)) {
-        //     return response()->json(['success' => false, 'error' => 'Receipt text cannot be empty.']);
-        // }
-
-        // try {
-        //     $printerName = "POS-58";
-        //     $connector = new WindowsPrintConnector($printerName);
-        //     $printer = new Printer($connector);
-        //     $printer->text($receiptText);
-        //     $printer->cut();
-        //     $printer->close();
-
-        //     return response()->json(['success' => true, 'message' => 'Receipt printed successfully!']);
-        // } catch (\Exception $e) {
-        //     // Log the full error message
-        //     \Log::error('Failed to print receipt: ', ['exception' => $e->getMessage()]);
-        //     return response()->json(['success' => false, 'error' => 'Failed to print receipt: ' . $e->getMessage()]);
-        // }
-    }
 
     public function print($id_rental)
 {
