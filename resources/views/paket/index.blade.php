@@ -5,7 +5,8 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Harga Paket</h3>
-            </div>               
+            </div>    
+            <a href="{{route('paket.create')}}" class="btn btn-primary">Tambah Paket</a>           
             <!-- /.card-header -->
             <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">

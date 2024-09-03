@@ -23,6 +23,7 @@ class PaketController extends Controller
     public function create()
     {
         //
+        return view("paket.create");
     }
 
     /**
@@ -31,6 +32,9 @@ class PaketController extends Controller
     public function store(Request $request)
     {
         //
+        Paket::create($request->all());
+        return redirect()->route('paket.index');
+
     }
 
     /**
