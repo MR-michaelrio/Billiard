@@ -197,7 +197,7 @@ class BilliardController extends Controller
                 $lama_waktu_seconds = strtotime($lama_waktu) - strtotime('TODAY');
                 $threshold_seconds = strtotime('02:00:00') - strtotime('TODAY');
             
-                if ($lama_waktu >= '02:00:00') {
+                if ($lama_waktu >= '02:30:00') {
                     $mejatotal = 110000;
                 } else {
                     $harga_per_menit = $hargarental ? $hargarental->harga : 0;
