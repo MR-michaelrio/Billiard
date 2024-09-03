@@ -160,9 +160,9 @@ class BilliardController extends Controller
 
     public function stop($no_meja)
     {
-        $meja_rental = Rental::where('no_meja', $no_meja)->first();
-        $meja_rental2 = Rental::where('no_meja', $no_meja)->get();
-        $rental = Rental::where('no_meja', $no_meja)->count();
+        $meja_rental = Rental::where('no_meja', `2`)->first();
+        $meja_rental2 = Rental::where('no_meja', `2`)->get();
+        $rental = Rental::where('no_meja', `2`)->count();
         // return $meja_rental2;
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
