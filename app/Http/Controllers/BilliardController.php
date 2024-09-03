@@ -192,17 +192,18 @@ class BilliardController extends Controller
             
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
-            
-                // Convert 'lama_waktu' to seconds for comparison
-                $lama_waktu_seconds = strtotime($lama_waktu) - strtotime('TODAY');
-                $threshold_seconds = strtotime('02:00:00') - strtotime('TODAY');
-            
-                if ($lama_waktu >= '02:30:00') {
-                    $mejatotal = 110000;
-                } else {
-                    $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-                    $mejatotal = $total_minutes * $harga_per_menit;
+
+                $paket = Paket::all();
+                foreach($paket as $p){
+                    if ($lama_waktu >= $p->jam) {
+                        $mejatotal = $p->harga;
+                        break;
+                    } else {
+                        $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+                        $mejatotal = $total_minutes * $harga_per_menit;
+                    }
                 }
+                
             }
             
 
