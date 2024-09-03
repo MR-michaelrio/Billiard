@@ -163,7 +163,7 @@ class BilliardController extends Controller
         $meja_rental = Rental::where('no_meja', $no_meja)->first();
         $meja_rental2 = Rental::where('no_meja', $no_meja)->first();
         $rental = Rental::where('no_meja', $no_meja)->count();
-        return $meja_rental2;
+        // return $meja_rental2;
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
                             ->where('status','belum')
@@ -173,36 +173,38 @@ class BilliardController extends Controller
 
             if ($idplayer == 'M') {
                 $mejatotal = 0;
-                $lama_waktu = 0;
+                $lama_waktu = '00:00:00';
             } else {
                 $hargarental = HargaRental::where('jenis', 'menit')->first();
-                $lama_waktu = $meja_rental->first()->lama_waktu;
-
-                if (!$lama_waktu) {
+                $lama_waktu = $meja_rental->first()->lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
+            
+                if (!$lama_waktu || $lama_waktu == '00:00:00') {
                     $elapsedSeconds = request()->query('elapsed');
-
+            
                     if ($elapsedSeconds !== null) {
                         $hours = floor($elapsedSeconds / 3600);
                         $minutes = floor(($elapsedSeconds % 3600) / 60);
                         $seconds = $elapsedSeconds % 60;
-
+            
                         $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-                    } else {
-                        $lama_waktu = '00:00:00';
                     }
                 }
-
+            
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
-                if($lama_waktu >= "02:00:00"){
-                    $mejatotal = "110000";
-                }else{
+            
+                // Convert 'lama_waktu' to seconds for comparison
+                $lama_waktu_seconds = strtotime($lama_waktu) - strtotime('TODAY');
+                $threshold_seconds = strtotime('02:00:00') - strtotime('TODAY');
+            
+                if ($lama_waktu_seconds >= $threshold_seconds) {
+                    $mejatotal = 110000;
+                } else {
                     $harga_per_menit = $hargarental ? $hargarental->harga : 0;
                     $mejatotal = $total_minutes * $harga_per_menit;
                 }
-                
-
             }
+            
 
             $total_makanan = $makanan->flatMap(function($order) {
                 return $order->items;
