@@ -63,6 +63,18 @@
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{route('paket.index')}}" class="nav-link">
+                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <p>
+                    Paket
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
                 <a href="{{route('harga.index')}}" class="nav-link">
                   <i class="nav-icon fas fa-dollar-sign"></i>
                   <p>
