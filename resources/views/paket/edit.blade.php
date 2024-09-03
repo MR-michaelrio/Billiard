@@ -13,8 +13,8 @@
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="jenis">Jenis</label>
-                        <input type="text" class="form-control" id="jenis" value='{{$paket->jenis}}' name='jenis'>
+                        <label for="jam">Jam</label>
+                        <input type="text" class="form-control" id="jam" value='{{$paket->jam}}' name='jam'>
                     </div>
                     <div class="form-group">
                         <label for="harga">Harga</label>
