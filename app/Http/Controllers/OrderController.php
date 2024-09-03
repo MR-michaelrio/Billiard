@@ -49,7 +49,8 @@ class OrderController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|numeric|min:0',
         ]);
-
+// Buat order
+Log::info('Order created', ['order_id' => $request->id_table]);
         // Buat order
         $order = Order::create([
             'id_table' => $request->id_table,
