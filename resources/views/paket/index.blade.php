@@ -22,10 +22,10 @@
                             <td>{{$p->jam}}</td>
                             <td>{{$p->harga}}</td>
                             <td>
-                                <form action="{{ route('harga.destroy', $p->id_paket) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('paket.destroy', $p->id_paket) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <a href="{{route('harga.edit',$p->id_paket)}}" class="btn btn-warning">Edit</a> | 
+                                    <a href="{{route('paket.edit',$p->id_paket)}}" class="btn btn-warning">Edit</a> | 
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </td>
