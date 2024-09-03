@@ -156,12 +156,12 @@
         });
 
         // Redirect to index after printing
-        // window.addEventListener('afterprint', function() {
-        //     const redirectUrl = '{{ route("bl.index") }}';
-        //     if (redirectUrl) {
-        //         window.location.href = redirectUrl;
-        //     }
-        // });
+        window.addEventListener('afterprint', function() {
+            const redirectUrl = '{{ route("bl.index") }}';
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            }
+        });
 
     </script>
 </body>
