@@ -47,7 +47,7 @@
                             <select class="form-control select2" id='id_table' name='id_table' onchange="myFunction()" style="width: 100%;">
                                 <option value='0'>0</option>
                                 @foreach($rental as $m)
-                                    <option value='{{$m->id}}'>{{ $m->no_meja }}</option>
+                                    <option value='{{$m->id}}'>{{ $m->no_meja }} | {{ $m->id }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -106,6 +106,8 @@
 </div>
 
 <script>
+    const idTable = document.getElementById('id_table').value;
+    console.log(idTable);
     function myFunction() {
         const saveButton = document.getElementById('save-button');
 
