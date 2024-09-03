@@ -15,15 +15,17 @@
                 <!-- /.col -->
             </div>
             <!-- info row -->
-            <div class="row invoice-info">
-                <div class="col-sm-4 invoice-col">
-                    <b>Order ID:</b> {{$meja_rental2->id}}<br>
-                    <b>Table:</b> {{$meja_rental2->no_meja}}<br>
-                    <b>Payment Due:</b> {{ now()->format('d-m-Y') }}<br>
-                    <b>Account:</b> {{$meja_rental2->id_player}}
+            @foreach($meja_rental2 as $r)
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        <b>Order ID:</b> {{$r->id}}<br>
+                        <b>Table:</b> {{$r->no_meja}}<br>
+                        <b>Payment Due:</b> {{ now()->format('d-m-Y') }}<br>
+                        <b>Account:</b> {{$r->id_player}}
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.col -->
-            </div>
+            @endforeach
 
             <!-- Table row -->
             <div class="row">
