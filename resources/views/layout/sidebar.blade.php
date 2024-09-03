@@ -48,7 +48,7 @@
               </li>
             </ul>
           </li>
-          @if(Auth::role = "admin")
+          @if(Auth::check() && Auth::user()->role == "admin")
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
