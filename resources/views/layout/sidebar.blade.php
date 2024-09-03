@@ -48,6 +48,7 @@
               </li>
             </ul>
           </li>
+          @if(Auth::role = "admin")
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -96,6 +97,7 @@
               </li>
             </ul>
           </li>
+          @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
