@@ -6,6 +6,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\HargaController;
+use App\Http\Controllers\PaketController;
 use App\Models\RentalInvoice;
 use App\Models\Rental;
 use App\Models\Order;
@@ -71,3 +72,6 @@ Route::resource('member', MemberController::class);
 
 //harga
 Route::resource('harga', HargaController::class);
+
+//paket
+Route::resource('paket', PaketController::class);
