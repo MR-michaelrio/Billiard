@@ -176,7 +176,7 @@ class BilliardController extends Controller
                 $lama_waktu = '00:00:00';
             } else {
                 $hargarental = HargaRental::where('jenis', 'menit')->first();
-                $lama_waktu = $meja_rental->first()->lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
+                $lama_waktu = $meja_rental->lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
             
                 if (!$lama_waktu || $lama_waktu == '00:00:00') {
                     $elapsedSeconds = request()->query('elapsed');
@@ -187,7 +187,6 @@ class BilliardController extends Controller
                         $seconds = $elapsedSeconds % 60;
             
                         $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-                        return "lama waktu:"+$lama_waktu;
                     }
                 }
             
