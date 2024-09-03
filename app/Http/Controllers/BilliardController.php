@@ -12,7 +12,9 @@ use App\Models\RentalInvoice;
 use App\Models\Invoice;
 use App\Models\HargaRental;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Paket;
+use App\Models\Produk;
 
 use DateTime;
 use DateInterval;
@@ -116,9 +118,6 @@ class BilliardController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $meja = Meja::all();
@@ -136,9 +135,6 @@ class BilliardController extends Controller
         return view('billiard.index', compact('meja_rental'));
     }
     
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
@@ -261,7 +257,17 @@ class BilliardController extends Controller
             if (Order::where('id_table', $meja_rental->id)->exists()) {
                 $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
                 foreach ($orders as $order) {
+                    // Update order status
                     $order->update(['status' => 'lunas']);
+    
+                    // Loop through each item in the order to adjust product stock
+                    foreach ($order->items as $item) {
+                        $produk = Produk::find($item->produk_id); // Assuming there's a 'produk_id' in OrderItem
+                        if ($produk) {
+                            $produk->stok -= $item->qty; // Decrease stock by the quantity ordered
+                            $produk->save();
+                        }
+                    }
                 }
                 $orderss = $orders->first()->id_table;
             } else {
@@ -274,6 +280,7 @@ class BilliardController extends Controller
                 'id_rental' => $id_rental,
                 'id_belanja' => $orderss
             ]);
+            
 
             // Hapus data meja rental
             $meja_rental->delete();
