@@ -62,19 +62,19 @@ class BilliardController extends Controller
 
         if ($meja_rental) {
             $makanan = Order::where('id_table', $meja_rental->id)
-                            ->where('status', 'belum')
+                            ->where('status','sudah')
                             ->with('items')->get();
 
             $idplayer = substr($meja_rental->id_player, 0, 1);
 
             if ($idplayer == 'M') {
                 $mejatotal = 0;
-                $lama_waktu = '00:00:00';
+                $lama_waktu = 0;
             } else {
                 $hargarental = HargaRental::where('jenis', 'menit')->first();
-                $lama_waktu = $meja_rental->lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
+                $lama_waktu = $meja_rental->first()->lama_waktu;
 
-                if (!$lama_waktu || $lama_waktu == '00:00:00') {
+                if (!$lama_waktu) {
                     $elapsedSeconds = request()->query('elapsed');
 
                     if ($elapsedSeconds !== null) {
@@ -83,6 +83,8 @@ class BilliardController extends Controller
                         $seconds = $elapsedSeconds % 60;
 
                         $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                    } else {
+                        $lama_waktu = '00:00:00';
                     }
                 }
 
@@ -103,16 +105,15 @@ class BilliardController extends Controller
                 }
             }
 
-            $total_makanan = $makanan->flatMap(function ($order) {
+            $total = $makanan->flatMap(function($order) {
                 return $order->items;
-            })->sum(function ($item) {
-                return (float) $item->price;
+            })->sum(function($item) {
+                return $item->price * $item->quantity;
             });
-
-            // Total biaya keseluruhan
-            $total = $mejatotal + $total_makanan;
-            $total = round($total);
-            return view('invoice.struk', compact('meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
+            
+            $total += $mejatotal; // If `mejatotal` is to be included in the total
+            
+            return view('invoice.struk', compact('meja_rental','meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
         } else {
             return redirect()->back()->with('error', 'No rental found for the specified table.');
         }
