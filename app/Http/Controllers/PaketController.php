@@ -47,6 +47,8 @@ class PaketController extends Controller
     public function edit(string $id)
     {
         //
+        $paket = Paket::find($id);
+        return view('paket.edit', compact('paket'));
     }
 
     /**
@@ -55,6 +57,9 @@ class PaketController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $paket = Paket::find($id);
+        $paket->update($request->all());
+        return redirect()->route('paket.index');
     }
 
     /**
