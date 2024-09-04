@@ -58,7 +58,7 @@ class OrderController extends Controller
             }
         }
 
-        return response()->json(['success' => true, "order_id"=>$order_id]);
+        return response()->json(['success' => true]);
     }
 
 
@@ -90,7 +90,7 @@ class OrderController extends Controller
             ]);
         }
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, "order_id"=>$order_id]);
     }
 
     public function struk($order_id){
