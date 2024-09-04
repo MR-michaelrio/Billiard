@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Meja;
 use App\Models\NonMember;
@@ -249,6 +250,7 @@ class BilliardController extends Controller
                         $produk = Produk::find($item->id_produk); // Assuming there's a 'produk_id' in OrderItem
                         if ($produk) {
                             $produk->qty -= $item->qty; // Decrease stock by the quantity ordered
+                            Log::info('QTY', ['produk' => $$produk->qty]);
                             $produk->save();
                         }
                     }
