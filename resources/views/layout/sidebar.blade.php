@@ -25,25 +25,27 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-shopping-cart"></i>
-              <p>
-                Produk
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview" style="display: none;">
+
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('produk.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Shopping</p>
+                  <i class="nav-icon fas fa-shopping-cart"></i>
+                  <p>
+                    Shopping
+                  </p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('pr.stok')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Produk Stok</p>
+                  <i class="nav-icon fas fa-shopping-cart"></i>
+                  <p>
+                    Produk Stok
+                  </p>
                 </a>
               </li>
             </ul>
