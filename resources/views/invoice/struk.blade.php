@@ -158,35 +158,10 @@
             window.print();
         });
 
-        // Redirect to index after printing
-        // window.addEventListener('afterprint', function() {
-        //     // const redirectUrl = '{{ route("bl.index") }}';
-        //     // if (redirectUrl) {
-        //     //     window.location.href = redirectUrl;
-        //     // }
-        //     const idtable = document.getElementById('idtable').textContent;
-        //     fetch('{{ route("print.status") }}', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //         },
-        //         body: JSON.stringify({ id_table: idtable })
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         if (data.success) {
-        //             const redirectUrl = '{{ route("bl.index") }}';
-        //             if (redirectUrl) {
-        //                 window.location.href = redirectUrl;
-        //             }
-        //         } else {
-        //             alert('There was an error submitting the order');
-        //         }
-        //     });
-        // });
         window.addEventListener('afterprint', function() {
             const idtable = document.querySelector('[data-idtable]').getAttribute('data-idtable');
+            console.log('ID Table:', idtable); // For debugging
+
             fetch('{{ route("print.status") }}', {
                 method: 'POST',
                 headers: {
@@ -197,14 +172,18 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Response data:', data); // For debugging
                 if (data.success) {
+                    // Perform redirection if success
                     const redirectUrl = '{{ route("bl.index") }}';
-                    if (redirectUrl) {
-                        window.location.href = redirectUrl;
-                    }
+                    window.location.href = redirectUrl;
                 } else {
-                    alert('There was an error submitting the order');
+                    alert('There was an error updating the status');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error during the status update. Please check the console for more details.');
             });
         });
 

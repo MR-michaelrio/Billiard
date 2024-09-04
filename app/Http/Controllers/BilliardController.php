@@ -102,7 +102,7 @@ class BilliardController extends Controller
 
     public function status(Request $request){
         $validated = $request->validate([
-            'id_table' => 'required|string'
+            'id_table' => 'required'
         ]);
         $orders = Order::where('id_table', $validated->id_table)->where('status', 'belum')->get();
         $order->update(['status' => 'lunas']);
