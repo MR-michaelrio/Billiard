@@ -194,6 +194,28 @@
         });
     });
 
+    document.getElementById('save-button').addEventListener('click', function() {
+            const idTable = document.getElementById('id_table').value;
+            fetch('{{ route("orders.store2") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id_table: idTable, items: cartItems })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Order submitted successfully');
+                    cartItems.length = 0;
+                    updateCart();
+                } else {
+                    alert('There was an error submitting the order');
+                }
+            });
+        });
+
     cartItemsContainer.addEventListener('click', function(event) {
         if (event.target.classList.contains('remove-from-cart')) {
             const index = parseInt(event.target.getAttribute('data-index'));
