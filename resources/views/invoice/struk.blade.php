@@ -159,12 +159,34 @@
         });
 
         // Redirect to index after printing
+        // window.addEventListener('afterprint', function() {
+        //     // const redirectUrl = '{{ route("bl.index") }}';
+        //     // if (redirectUrl) {
+        //     //     window.location.href = redirectUrl;
+        //     // }
+        //     const idtable = document.getElementById('idtable').textContent;
+        //     fetch('{{ route("print.status") }}', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //         body: JSON.stringify({ id_table: idtable })
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data.success) {
+        //             const redirectUrl = '{{ route("bl.index") }}';
+        //             if (redirectUrl) {
+        //                 window.location.href = redirectUrl;
+        //             }
+        //         } else {
+        //             alert('There was an error submitting the order');
+        //         }
+        //     });
+        // });
         window.addEventListener('afterprint', function() {
-            // const redirectUrl = '{{ route("bl.index") }}';
-            // if (redirectUrl) {
-            //     window.location.href = redirectUrl;
-            // }
-            const idtable = document.getElementById('idtable').textContent;
+            const idtable = document.querySelector('[data-idtable]').getAttribute('data-idtable');
             fetch('{{ route("print.status") }}', {
                 method: 'POST',
                 headers: {
