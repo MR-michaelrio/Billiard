@@ -95,6 +95,8 @@ class OrderController extends Controller
 
     public function struk($order_id){
         // return $order_id;
+        $orderid = OrderItem::where('order_id', $order_id)->first();
+
         $order = OrderItem::where('order_id', $order_id)->get();
         // return $order;
         $makanan = Order::where('id', $order_id) // Use `no_meja` or the correct reference
@@ -111,6 +113,6 @@ class OrderController extends Controller
         // Total biaya keseluruhan
         $total = $total_makanan;
         $total = round($total);
-        return view("invoice.struk-order", compact("order","makanan","total"));
+        return view("invoice.struk-order", compact("order","orderid","makanan","total"));
     }
 }
