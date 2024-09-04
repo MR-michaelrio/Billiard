@@ -42,7 +42,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('pr.stok')}}" class="nav-link">
-                  <i class="nav-icon fas fa-shopping-cart"></i>
+                  <i class="nav-icon fas fa-list"></i>
                   <p>
                     Produk Stok
                   </p>
