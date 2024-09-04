@@ -178,13 +178,14 @@ class BilliardController extends Controller
                 $mejatotal = $total_minutes * $harga_per_menit;
 
                 // Iterate through the packages to find the best pricing
-                $paket = Paket::all();
+                $paket = Paket::orderBy('jam', 'asc')->get();
+                $best_price = $mejatotal; // Default to calculated per-minute price
                 foreach ($paket as $p) {
                     if ($lama_waktu >= $p->jam) {
-                        // Set mejatotal to the package price if the package applies
-                        $mejatotal = $p->harga;
+                        $best_price = $p->harga;
                     }
                 }
+                $mejatotal = $best_price;
             }
 
             // Total biaya keseluruhan
