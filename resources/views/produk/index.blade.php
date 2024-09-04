@@ -182,7 +182,7 @@
                 updateCart();
 
                 // Redirect to print the receipt using id_rental
-                const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
+                const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id']) }}`.replace(':order_id', data.order_id);
                 window.location.href = printUrl;
             } else {
                 alert('There was an error submitting the order');

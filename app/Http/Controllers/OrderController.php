@@ -58,7 +58,7 @@ class OrderController extends Controller
             }
         }
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, "order_id"=>$order_id]);
     }
 
 
@@ -91,5 +91,14 @@ class OrderController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    public function struk($order_id){
+        $order = OrderItem::where('order_id', $order_id)->first();
+        $makanan = Order::where('id', $order_id) // Use `no_meja` or the correct reference
+                            ->where('status', 'lunas')
+                            ->with('items') // Eager load items
+                            ->get();
+        return view("invoice.struk-order", compact("order","makanan"));
     }
 }
