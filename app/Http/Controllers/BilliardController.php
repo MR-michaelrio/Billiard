@@ -70,17 +70,20 @@ class BilliardController extends Controller
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
 
-                // Calculate the rental total based on pricing packages
+                // Initialize default per-minute pricing
                 $harga_per_menit = $hargarental ? $hargarental->harga : 0;
                 $mejatotal = $total_minutes * $harga_per_menit;
 
-                // Check and apply any relevant package pricing
-                $paket = Paket::all();
+                // Iterate through the packages to find the best pricing
+                $paket = Paket::orderBy('jam', 'asc')->get();
+                $best_price = null; // Default to calculated per-minute price
                 foreach ($paket as $p) {
-                    if ($lama_waktu >= $p->jam) {
-                        $mejatotal = $p->harga;
+                    if ($lama_waktu <= $p->jam) {
+                        $best_price = $p->harga;
+                        break;
                     }
                 }
+                $mejatotal = $best_price !== null ? $best_price : $mejatotal;
             }
 
             // Calculate the total for all food items
@@ -101,30 +104,30 @@ class BilliardController extends Controller
     }
 
     public function status(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'id_table' => 'required|string'
-        ]);
+    {
+        try {
+            $validated = $request->validate([
+                'id_table' => 'required|string'
+            ]);
 
-        $orders = Order::where('id_table', $validated['id_table'])->where('status', 'belum')->get();
-        
-        // Ensure there are orders to update
-        if ($orders->isEmpty()) {
-            return response()->json(['success' => false, 'message' => 'No orders found for this table'], 404);
+            $orders = Order::where('id_table', $validated['id_table'])->where('status', 'belum')->get();
+            
+            // Ensure there are orders to update
+            if ($orders->isEmpty()) {
+                return response()->json(['success' => false, 'message' => 'No orders found for this table'], 404);
+            }
+
+            foreach ($orders as $order) {
+                $order->update(['status' => 'lunas']);
+            }
+
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error in status method:', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false, 'error' => 'Internal server error'], 500);
         }
-
-        foreach ($orders as $order) {
-            $order->update(['status' => 'lunas']);
-        }
-
-        return response()->json(['success' => true]);
-
-    } catch (\Exception $e) {
-        \Log::error('Error in status method:', ['error' => $e->getMessage()]);
-        return response()->json(['success' => false, 'error' => 'Internal server error'], 500);
     }
-}
 
 
 
