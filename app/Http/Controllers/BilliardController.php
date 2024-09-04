@@ -255,7 +255,7 @@ class BilliardController extends Controller
                 $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
                 foreach ($orders as $order) {
                     // Update order status
-                    $order->update(['status' => 'lunas']);
+                    // $order->update(['status' => 'lunas']);
     
                     // Loop through each item in the order to adjust product stock
                     foreach ($order->items as $item) {
