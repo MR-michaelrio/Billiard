@@ -100,8 +100,11 @@ class BilliardController extends Controller
         }
     }
 
-    public function status($id_table){
-        $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
+    public function status(Request $request){
+        $validated = $request->validate([
+            'id_table' => 'required|string'
+        ]);
+        $orders = Order::where('id_table', $validated->id_table)->where('status', 'belum')->get();
         $order->update(['status' => 'lunas']);
         // return redirect()->route("bl.index");
         return response()->json(['success' => true]);
