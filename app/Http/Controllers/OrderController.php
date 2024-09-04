@@ -95,7 +95,7 @@ class OrderController extends Controller
 
     public function struk($order_id){
         // return $order_id;
-        $order = OrderItem::where('order_id', $order_id)->first();
+        $order = OrderItem::where('order_id', $order_id)->get();
         return $order;
         $makanan = Order::where('id', $order_id) // Use `no_meja` or the correct reference
                             ->where('status', 'lunas')

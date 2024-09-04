@@ -102,7 +102,7 @@
         <!-- Info Section -->
         @foreach($order as $r)
             <div class="details">
-                <span><b>Order ID:</b> {{$r->id}}</span>
+                <span><b>Order ID:</b> {{$r->order_id}}</span>
                 <span><b>Payment Due:</b> {{ now()->format('d-m-Y') }}</span>
             </div>
         @endforeach
