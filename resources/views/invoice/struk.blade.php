@@ -135,6 +135,7 @@
                         </tr>
                     @endforeach
                 @endforeach
+                <input type="text" name="" data-idtable="{{ $invoice->id_belanja }}">
         </table>
 
         <!-- Totals Section -->
@@ -157,10 +158,30 @@
 
         // Redirect to index after printing
         window.addEventListener('afterprint', function() {
-            const redirectUrl = '{{ route("bl.index") }}';
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
-            }
+            // const redirectUrl = '{{ route("bl.index") }}';
+            // if (redirectUrl) {
+            //     window.location.href = redirectUrl;
+            // }
+            const idtable = this.getAttribute('data-idtable');
+            fetch('{{ route("print.status") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id_table: idtable })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const redirectUrl = '{{ route("bl.index") }}';
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                    }
+                } else {
+                    alert('There was an error submitting the order');
+                }
+            });
         });
 
     </script>

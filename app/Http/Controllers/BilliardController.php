@@ -94,10 +94,17 @@ class BilliardController extends Controller
             $total = $mejatotal + $total_makanan;
             $total = round($total);
 
-            return view('invoice.struk', compact('meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
+            return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
         } else {
             return redirect()->back()->with('error', 'No rental found for the specified table.');
         }
+    }
+
+    public function status($id_table){
+        $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
+        $order->update(['status' => 'lunas']);
+        // return redirect()->route("bl.index");
+        return response()->json(['success' => true]);
     }
 
 
