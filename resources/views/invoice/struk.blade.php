@@ -135,6 +135,7 @@
                         </tr>
                     @endforeach
                 @endforeach
+                {{$invoice}}
                 <input type="text" name="" data-idtable="{{ $invoice->id_belanja }}">
         </table>
 
