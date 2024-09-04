@@ -101,7 +101,7 @@
         </div>
         <!-- Info Section -->
             <div class="details">
-                <span><b>Order ID:</b> {{$orderid}}</span>
+                <span><b>Order ID:</b> {{$orderid->order_id}}</span>
                 <span><b>Payment Due:</b> {{ now()->format('d-m-Y') }}</span>
             </div>
 
