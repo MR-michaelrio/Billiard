@@ -101,6 +101,16 @@ class OrderController extends Controller
                             ->where('status', 'lunas')
                             ->with('items') // Eager load items
                             ->get();
-        return view("invoice.struk-order", compact("order","makanan"));
+        // Calculate the total for all food items
+        $total_makanan = $makanan->flatMap(function($order) {
+            return $order->items;
+        })->sum(function($item) {
+            return $item->price * $item->quantity;
+        });
+
+        // Total biaya keseluruhan
+        $total = $total_makanan;
+        $total = round($total);
+        return view("invoice.struk-order", compact("order","makanan","total"));
     }
 }
