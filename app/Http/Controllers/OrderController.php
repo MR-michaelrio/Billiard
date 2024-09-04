@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Produk;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
@@ -20,6 +21,7 @@ class OrderController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|numeric|min:0',
         ]);
+
         // Buat order
         Log::info('Order created', ['order_id' => $request->id_table]);
 
@@ -27,18 +29,38 @@ class OrderController extends Controller
             'id_table' => $request->id_table,
             'status' => 'lunas'
         ]);
-        // Tambahkan items ke order
+
+        // Tambahkan items ke order dan kurangi stok produk
         foreach ($request->items as $item) {
+            // Buat order item
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_name' => $item['name'],
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
             ]);
+
+            // Kurangi stok produk berdasarkan nama produk
+            $produk = Produk::where('nama_produk', $item['name'])->first();
+            if ($produk) {
+                // Log jumlah stok sebelum dikurangi
+                Log::info('Initial product quantity', ['product' => $produk->nama_produk, 'qty' => $produk->qty]);
+
+                // Kurangi stok
+                $produk->qty -= $item['quantity'];
+                $produk->save();
+
+                // Log jumlah stok setelah dikurangi
+                Log::info('Updated product quantity', ['product' => $produk->nama_produk, 'qty' => $produk->qty]);
+            } else {
+                // Log jika produk tidak ditemukan
+                Log::error('Product not found', ['product' => $item['name']]);
+            }
         }
 
         return response()->json(['success' => true]);
     }
+
 
     public function store2(Request $request)
     {
