@@ -100,12 +100,10 @@
             <div>Date: {{ now()->format('d-m-Y') }}</div>
         </div>
         <!-- Info Section -->
-        @foreach($orderid as $r)
             <div class="details">
-                <span><b>Order ID:</b> {{$r->order_id}}</span>
+                <span><b>Order ID:</b> {{$order_id}}</span>
                 <span><b>Payment Due:</b> {{ now()->format('d-m-Y') }}</span>
             </div>
-        @endforeach
 
         <!-- Items Section -->
         <table>
