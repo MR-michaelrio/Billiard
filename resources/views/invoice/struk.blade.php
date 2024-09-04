@@ -136,6 +136,7 @@
                     @endforeach
                 @endforeach
                 {{$invoice}}
+                <span id="idtable">{{$invoice->id_belanja}}</span>
                 <input type="text" name="" data-idtable="{{ $invoice->id_belanja }}">
         </table>
 
@@ -163,7 +164,7 @@
             // if (redirectUrl) {
             //     window.location.href = redirectUrl;
             // }
-            const idtable = this.getAttribute('data-idtable');
+            const idtable = document.getElementById('idtable').textContent;
             fetch('{{ route("print.status") }}', {
                 method: 'POST',
                 headers: {
