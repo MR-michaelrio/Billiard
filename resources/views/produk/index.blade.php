@@ -69,7 +69,7 @@
                                 <button class="btn btn-danger" id="cancel-button">Cancel</button>
                             </div>
                             <div class="col-6 text-right">
-                                <button class="btn btn-primary" id="submit-button">Submit</button>
+                                <button class="btn btn-primary" id="submit-button">Bayar Langsung</button>
                                 <button class="btn btn-secondary" id="save-button" style="display: none;">Simpan</button>
                             </div>
                         </div>
@@ -119,114 +119,102 @@
         }
     }
     document.addEventListener('DOMContentLoaded', function() {
-        const cartItems = [];
-        const cartItemsContainer = document.getElementById('cart-items');
-        const totalPriceElement = document.getElementById('total-price');
+    const cartItems = [];
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalPriceElement = document.getElementById('total-price');
 
-        function updateCart() {
-            cartItemsContainer.innerHTML = '';
-            let totalPrice = 0;
-            cartItems.forEach((item, index) => {
-                totalPrice += item.price * item.quantity;
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td>
-                        <input type="number" class="form-control quantity-input" value="${item.quantity}" data-name="${item.name}">
-                    </td>
-                    <td>${item.price}</td>
-                    <td>
-                        <button class="btn btn-danger remove-from-cart" data-index="${index}">Remove</button>
-                    </td>
-                `;
-                cartItemsContainer.appendChild(row);
-            });
-            totalPriceElement.textContent = totalPrice;
-        }
-
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const name = this.getAttribute('data-name');
-                const price = parseFloat(this.getAttribute('data-price'));
-                const existingItem = cartItems.find(item => item.name === name);
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    cartItems.push({ name, price, quantity: 1 });
-                }
-                updateCart();
-            });
+    function updateCart() {
+        cartItemsContainer.innerHTML = '';
+        let totalPrice = 0;
+        cartItems.forEach((item, index) => {
+            totalPrice += item.price * item.quantity;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>
+                    <input type="number" class="form-control quantity-input" value="${item.quantity}" data-name="${item.name}">
+                </td>
+                <td>${item.price}</td>
+                <td>
+                    <button class="btn btn-danger remove-from-cart" data-index="${index}">Remove</button>
+                </td>
+            `;
+            cartItemsContainer.appendChild(row);
         });
+        totalPriceElement.textContent = totalPrice;
+    }
 
-        document.getElementById('cancel-button').addEventListener('click', function() {
-            cartItems.length = 0;
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const name = this.getAttribute('data-name');
+            const price = parseFloat(this.getAttribute('data-price'));
+            const existingItem = cartItems.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cartItems.push({ name, price, quantity: 1 });
+            }
             updateCart();
         });
+    });
 
-        document.getElementById('submit-button').addEventListener('click', function() {
-            const idTable = document.getElementById('id_table').value;
-            fetch('{{ route("orders.store") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ id_table: idTable, items: cartItems })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Order submitted successfully');
-                    cartItems.length = 0;
-                    updateCart();
-                } else {
-                    alert('There was an error submitting the order');
-                }
-            });
-        });
+    document.getElementById('cancel-button').addEventListener('click', function() {
+        cartItems.length = 0;
+        updateCart();
+    });
 
-        document.getElementById('save-button').addEventListener('click', function() {
-            const idTable = document.getElementById('id_table').value;
-            fetch('{{ route("orders.store2") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ id_table: idTable, items: cartItems })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Order submitted successfully');
-                    cartItems.length = 0;
-                    updateCart();
-                } else {
-                    alert('There was an error submitting the order');
-                }
-            });
-        });
-
-        cartItemsContainer.addEventListener('click', function(event) {
-            if (event.target.classList.contains('remove-from-cart')) {
-                const index = parseInt(event.target.getAttribute('data-index'));
-                cartItems.splice(index, 1);
+    // Event listener for the submit-button to handle order submission and redirect
+    document.getElementById('submit-button').addEventListener('click', function() {
+        const idTable = document.getElementById('id_table').value;
+        fetch('{{ route("orders.store") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ id_table: idTable, items: cartItems })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Order submitted successfully');
+                cartItems.length = 0;
                 updateCart();
-            }
-        });
 
-        cartItemsContainer.addEventListener('change', function(event) {
-            if (event.target.classList.contains('quantity-input')) {
-                const name = event.target.getAttribute('data-name');
-                const quantity = parseInt(event.target.value);
-                const item = cartItems.find(item => item.name === name);
-                if (item) {
-                    item.quantity = quantity;
-                }
-                updateCart();
+                // Redirect to print the receipt using id_rental
+                const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
+                window.location.href = printUrl;
+            } else {
+                alert('There was an error submitting the order');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting the order. Please check the console for more details.');
         });
     });
+
+    cartItemsContainer.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-from-cart')) {
+            const index = parseInt(event.target.getAttribute('data-index'));
+            cartItems.splice(index, 1);
+            updateCart();
+        }
+    });
+
+    cartItemsContainer.addEventListener('change', function(event) {
+        if (event.target.classList.contains('quantity-input')) {
+            const name = event.target.getAttribute('data-name');
+            const quantity = parseInt(event.target.value);
+            const item = cartItems.find(item => item.name === name);
+            if (item) {
+                item.quantity = quantity;
+            }
+            updateCart();
+        }
+    });
+});
+
 </script>
 
 @endsection
