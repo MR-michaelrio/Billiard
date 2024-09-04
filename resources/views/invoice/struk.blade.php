@@ -154,9 +154,9 @@
 
     <script>
         // Automatically trigger printing when the page loads
-        // window.addEventListener('load', function() {
-        //     window.print();
-        // });
+        window.addEventListener('load', function() {
+            window.print();
+        });
 
         // Redirect to index after printing
         window.addEventListener('afterprint', function() {
