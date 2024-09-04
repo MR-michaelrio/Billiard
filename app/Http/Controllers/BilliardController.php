@@ -181,8 +181,9 @@ class BilliardController extends Controller
                 $paket = Paket::orderBy('jam', 'asc')->get();
                 $best_price = null; // Default to calculated per-minute price
                 foreach ($paket as $p) {
-                    if ($lama_waktu >= $p->jam) {
+                    if ($lama_waktu <= $p->jam) {
                         $best_price = $p->harga;
+                        break;
                     }
                 }
                 $mejatotal = $best_price !== null ? $best_price : $mejatotal;
