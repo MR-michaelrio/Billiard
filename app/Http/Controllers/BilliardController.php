@@ -248,7 +248,7 @@ class BilliardController extends Controller
                     foreach ($order->items as $item) {
                         $produk = Produk::find($item->produk_id); // Assuming there's a 'produk_id' in OrderItem
                         if ($produk) {
-                            $produk->stok -= $item->qty; // Decrease stock by the quantity ordered
+                            $produk->qty -= $item->qty; // Decrease stock by the quantity ordered
                             $produk->save();
                         }
                     }
