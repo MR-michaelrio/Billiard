@@ -14,7 +14,7 @@ class ProdukController extends Controller
     public function index()
     {
         //
-        $products = Produk::all();
+        $products = Produk::where('qty', '>', 0)->get();
         $rental = Rental::all();
         return view('produk.index', compact('products','rental'));
     }
