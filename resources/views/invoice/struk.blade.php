@@ -173,7 +173,7 @@
                 console.log('Response data:', data); // For debugging
                 if (data.success) {
                     // Perform redirection if success
-                    const redirectUrl = '{{ route("bl.index") }}';
+                    const redirectUrl = '/';
                     window.location.href = redirectUrl;
                 } else {
                     alert('There was an error updating the status');
