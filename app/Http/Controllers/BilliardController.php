@@ -255,6 +255,7 @@ class BilliardController extends Controller
         try {
             // Ambil data meja rental berdasarkan no_meja
             $meja_rental = Rental::where('no_meja', $validated['no_meja'])->firstOrFail();
+            \Log::info('Processing payment for table', ['no_meja' => $validated['no_meja'], 'lama_waktu' => $validated['lama_waktu']]);
 
             // Cek dan siapkan variabel
             $lama_waktu = $validated['lama_waktu'];
