@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Meja;
 use App\Models\NonMember;
@@ -320,7 +321,8 @@ class BilliardController extends Controller
             Invoice::create([
                 'id_player' => $id_player,
                 'id_rental' => $id_rental,
-                'id_belanja' => $orderss
+                'id_belanja' => $orderss,
+                'user_id' => Auth::id()
             ]);
             
 
