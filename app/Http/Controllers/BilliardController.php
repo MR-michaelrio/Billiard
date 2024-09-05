@@ -120,7 +120,7 @@ class BilliardController extends Controller
             
             // Ensure there are orders to update
             if ($orders->isEmpty()) {
-                return response()->json(['success' => false, 'message' => 'No orders found for this table'], 404);
+                return response()->json(['success' => true]);
             }
 
             foreach ($orders as $order) {
