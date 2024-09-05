@@ -279,7 +279,7 @@ class BilliardController extends Controller
             ]);
 
             // Update status 
-            if (Order::where('id_table', $meja_rental->id)->exists()) {
+            if (Order::where('id_table', $meja_rental->id)->where('status', 'belum')->exists()) {
                 $orders = Order::where('id_table', $meja_rental->id)->where('status', 'belum')->get();
                 foreach ($orders as $order) {
                     // Update order status
