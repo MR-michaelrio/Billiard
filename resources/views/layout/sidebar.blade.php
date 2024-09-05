@@ -107,9 +107,8 @@
               @csrf
               @method('DELETE')
                 <a href="{{route('bl.rekap')}}" class="nav-link">
-                  <i class="nav-icon fas fa-dollar-sign"></i>
                   <p>
-                    Log-Out <button class="btn btn-danger" type="submit">Logout</button>
+                    <button class="btn btn-danger" type="submit">Logout</button>
                   </p>
                 </a>
                 </form>
