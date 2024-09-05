@@ -69,7 +69,7 @@
             <div class="row">
                 <!-- First row of tables -->
                 <!-- <div class="col-2"></div> -->
-                @for ($i = 0; $i < 4; $i++)
+                @for ($i = 0; $i < 3; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
                             @if($index == $i)
