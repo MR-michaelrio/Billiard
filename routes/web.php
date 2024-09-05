@@ -69,7 +69,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/strukorder/{order_id}', [OrderController::class, 'struk'])->name('print.strukorder');
     Route::post('/print-receipt-status', [BilliardController::class, 'status'])->name('print.status');
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
+//harga
+Route::resource('harga', HargaController::class);
 
+//paket
+Route::resource('paket', PaketController::class);
     
 });
 
@@ -79,9 +83,5 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //member
     Route::resource('member', MemberController::class);
 
-    //harga
-    Route::resource('harga', HargaController::class);
-
-    //paket
-    Route::resource('paket', PaketController::class);
+    
 });
