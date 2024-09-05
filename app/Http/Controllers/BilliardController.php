@@ -72,22 +72,24 @@ class BilliardController extends Controller
 
                 // Initialize default per-minute pricing
                 $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-                $mejatotal = $total_minutes * $harga_per_menit;
+                $mejatotal = $total_minutes * $harga_per_menit; // Default to per-minute calculation
 
                 // Iterate through the packages to find the best pricing
                 $paket = Paket::orderBy('jam', 'asc')->get();
-                $best_price = $mejatotal; // Default to calculated per-minute price
+                $best_price = null; // Default to null
+
                 foreach ($paket as $p) {
-                    // If the rental time exceeds or is equal to the package time, set the best price
-                    if ($total_minutes >= (substr($p->jam, 0, 2) * 60 + substr($p->jam, 3, 2))) {
-                        $best_price = $p->harga;
-                    } else {
-                        // If the current package time exceeds the input time, break the loop as further packages are irrelevant
-                        break;
+                    // Convert package time ($p->jam) to minutes
+                    $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
+                    
+                    // Check if the input time (total_minutes) exceeds or is equal to the package time
+                    if ($total_minutes >= $package_minutes) {
+                        $best_price = $p->harga; // Update the best price to this package's price
                     }
                 }
-                
-                $mejatotal = $best_price;
+
+                // If we found a package price, use it, otherwise stick with the per-minute price
+                $mejatotal = $best_price !== null ? $best_price : $mejatotal;
             }
 
             // Calculate the total for all food items
