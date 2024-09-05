@@ -155,10 +155,10 @@
         window.addEventListener('load', function() {
             window.print();
         });
-
+        const idtable = document.querySelector('[data-idtable]').getAttribute('data-idtable');
+        console.log('ID Table:', idtable); // For debugging
         window.addEventListener('afterprint', function() {
-            const idtable = document.querySelector('[data-idtable]').getAttribute('data-idtable');
-            console.log('ID Table:', idtable); // For debugging
+            
 
             fetch('{{ route("print.status") }}', {
                 method: 'POST',
