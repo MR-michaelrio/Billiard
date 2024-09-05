@@ -135,7 +135,7 @@
                         </tr>
                     @endforeach
                 @endforeach
-                <span id="idtable" style="display:none">{{$invoice->id_belanja}}</span>
+                <span id="idtable">{{$invoice->id_belanja}}</span>
         </table>
 
         <!-- Totals Section -->
