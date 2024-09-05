@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Produk;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -58,6 +60,11 @@ class OrderController extends Controller
             }
         }
 
+        Invoice::create([
+            'id_belanja' => $request->id_table,
+            'user_id' => Auth::user()->id
+        ]);
+
         return response()->json(['success' => true, "order_id"=>$order->id]);
     }
 
@@ -89,6 +96,11 @@ class OrderController extends Controller
                 'price' => $item['price'],
             ]);
         }
+
+        Invoice::create([
+            'id_belanja' => $request->id_table,
+            'user_id' => Auth::user()->id
+        ]);
 
         return response()->json(['success' => true]);
     }
