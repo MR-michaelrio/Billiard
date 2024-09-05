@@ -100,6 +100,22 @@
             </ul>
           </li>
           @endif
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+              <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
+              @csrf
+              @method('DELETE')
+                <a href="{{route('bl.rekap')}}" class="nav-link">
+                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <p>
+                    Log-Out <button class="btn btn-danger" type="submit">Logout</button>
+                  </p>
+                </a>
+                </form>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
