@@ -17,18 +17,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($paket as $p)
+                    @foreach($orders as $p)
                         <tr>
-                            <td>{{$p->jam}}</td>
-                            <td>{{$p->harga}}</td>
-                            <td>
-                                <form action="{{ route('paket.destroy', $p->id_paket) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href="{{route('paket.edit',$p->id_paket)}}" class="btn btn-warning">Edit</a> | 
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
+                            <td>{{$p->items->product_name}}</td>
+                            
                         </tr>
                     @endforeach
                     </tbody>

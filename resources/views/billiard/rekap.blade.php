@@ -20,17 +20,17 @@
                     </thead>
                     <tbody>
                     @foreach($invoices as $p)
-    <tr>
-        <td>{{ $p->id_player }}</td>
-        <!-- Use optional() on the whole rentalinvoice relationship -->
-        <td>{{ optional($p->rentalinvoice)->no_meja ?? 'N/A' }}</td>
-        <td>{{ optional($p->rentalinvoice)->lama_waktu ?? 'N/A' }}</td>
-        <td>{{ $p->created_at }}</td>
-        <td>
-            <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
-        </td>
-    </tr>
-@endforeach
+                        <tr>
+                            <td>{{ $p->id_player }}</td>
+                            <!-- Use optional() on the whole rentalinvoice relationship -->
+                            <td>{{ optional($p->rentalinvoice)->no_meja ?? 'N/A' }}</td>
+                            <td>{{ optional($p->rentalinvoice)->lama_waktu ?? 'N/A' }}</td>
+                            <td>{{ $p->created_at }}</td>
+                            <td>
+                                <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
+                            </td>
+                        </tr>
+                    @endforeach
 
                     </tbody>
                     <tfoot>

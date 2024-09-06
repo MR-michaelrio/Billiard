@@ -139,8 +139,8 @@ class OrderController extends Controller
         $orders = Order::where("status", "lunas")
                        ->whereIn("id", $orderIds)
                        ->get();
-        return $orders;
-        // return view('rekap', compact('orders'));
+        // return $orders;
+        return view('invoice.rekap-order', compact('orders'));
     }
     
 }
