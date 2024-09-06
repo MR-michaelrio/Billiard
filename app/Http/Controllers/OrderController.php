@@ -161,9 +161,9 @@ class OrderController extends Controller
     }
 
     public function detailorder($id){
-        $orderItems = OrderItem::where($id,"order_id")->get();
-        return $orderItems;
-        // return view("invoice.detail-order", compact("orderItems"));
+        $orderItems = OrderItem::where("order_id", $id)->get();
+        // return $orderItems;
+        return view("invoice.detail-order", compact("orderItems"));
     }
     
 }
