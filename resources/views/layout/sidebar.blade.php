@@ -63,6 +63,7 @@
             </ul>
           </li>
           @if(Auth::check() && Auth::user()->role == "admin")
+
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -79,7 +80,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('paket.index')}}" class="nav-link">
-                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <i class="nav-icon fas fa-box"></i>
                   <p>
                     Paket
                   </p>
@@ -105,7 +106,7 @@
                 <a href="{{route('bl.rekap')}}" class="nav-link">
                   <i class="nav-icon fas fa-dollar-sign"></i>
                   <p>
-                    Rekap
+                    Rekap Seluruh
                   </p>
                 </a>
               </li>
