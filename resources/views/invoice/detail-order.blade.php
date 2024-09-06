@@ -33,7 +33,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <button>sdasad</button>
+                <a href="" class="btn btn-primary">Print</a>
             </div>
             <!-- /.card-body -->
         </div>
