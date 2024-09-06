@@ -139,11 +139,11 @@ class OrderController extends Controller
         $orders = Order::where("status", "lunas")
                        ->whereIn("id", $orderIds)
                        ->get();
-                    foreach ($orders as $order) {
-                        foreach ($order->items as $item) {
-                            echo $item->product_name . "<br>"; // You can return or print the product names
-                        }
-                    }        
+                    // foreach ($orders as $order) {
+                    //     foreach ($order->items as $item) {
+                    //         echo $item->product_name . "<br>"; // You can return or print the product names
+                    //     }
+                    // }        
         return view('invoice.rekap-order', compact('orders'));
     }
     
