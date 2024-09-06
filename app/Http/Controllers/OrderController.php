@@ -97,10 +97,7 @@ class OrderController extends Controller
             ]);
         }
 
-        Invoice::create([
-            'id_belanja' => $request->id_table,
-            'user_id' => Auth::user()->id
-        ]);
+        
 
         return response()->json(['success' => true]);
     }
