@@ -127,4 +127,20 @@ class OrderController extends Controller
         $total = round($total);
         return view("invoice.struk-order", compact("order","orderid","makanan","total"));
     }
+
+    public function rekap(){
+        // Retrieve all order items
+        $orderItems = OrderItem::all();
+    
+        // Extract the order IDs from the order items
+        $orderIds = $orderItems->pluck('order_id')->toArray();
+    
+        // Retrieve orders where status is 'lunas' and the order_id matches those in order items
+        $orders = Order::where("status", "lunas")
+                       ->whereIn("id", $orderIds)
+                       ->get();
+        return $orders;
+        // return view('rekap', compact('orders'));
+    }
+    
 }

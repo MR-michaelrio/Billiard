@@ -68,7 +68,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders2', [OrderController::class, 'store2'])->name('orders.store2');
     Route::get('/strukorder/{order_id}', [OrderController::class, 'struk'])->name('print.strukorder');
     Route::post('/print-receipt-status', [BilliardController::class, 'status'])->name('print.status');
+
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/rekap-order', [OrderController::class, 'rekap'])->name('rekap.order');
+
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

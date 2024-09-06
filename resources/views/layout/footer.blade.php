@@ -102,5 +102,36 @@ $('#reservationdate').datetimepicker({
     });
   });
 </script>
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const loadingSpinner = document.getElementById('loading');
+
+      // Show loading spinner on page load
+      window.addEventListener('beforeunload', function () {
+          loadingSpinner.style.display = 'flex';
+      });
+
+      // Show loading spinner on form submission
+      document.querySelectorAll('form').forEach(form => {
+          form.addEventListener('submit', function () {
+              loadingSpinner.style.display = 'flex';
+          });
+      });
+
+      // Hide loading spinner after page has loaded completely
+      window.addEventListener('load', function () {
+          loadingSpinner.style.display = 'none';
+      });
+  });
+
+  // For handling AJAX requests using jQuery
+  $(document).ajaxStart(function() {
+      $('#loading').show();
+  }).ajaxStop(function() {
+      $('#loading').hide();
+  });
+</script> -->
+
+
 </body>
 </html>
