@@ -18,12 +18,12 @@
                     </thead>
                     <tbody>
                     @foreach($summarizedOrders as $order)
-            <tr>
-                <td>{{ $order['order_id'] }}</td>
-                <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
-                <td>{{ $order['status'] }}</td>
-            </tr>
-        @endforeach
+                        <tr>
+                            <td>{{ $order['id'] }}</td>
+                            <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
+                            <td>{{ $order['status'] }}</td>
+                        </tr>
+                    @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
