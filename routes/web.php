@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/rekap-order', [OrderController::class, 'rekap'])->name('rekap.order');
+    Route::get('/detail-order/{id}', [OrderController::class, 'detailorder'])->name('rekap.detailorder');
 
 });
 

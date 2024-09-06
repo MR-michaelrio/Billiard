@@ -11,17 +11,17 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Total Harga</th>
-                            <th>Status</th>
+                            <th>Nama Produk</th>
+                            <th>Harga</th>
+                            <th>QTY</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($summarizedOrders as $order)
+                    @foreach($orderItems as $order)
                         <tr>
-                            <td>{{ $order['order_id'] }}</td>
-                            <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
-                            <td>{{ $order['status'] }}</td>
+                            <td>{{ $order->product_name }}</td>
+                            <td>{{ $order->price }}</td>
+                            <td>{{ $order->quantity }}</td>
                         </tr>
                     @endforeach
                     </tbody>

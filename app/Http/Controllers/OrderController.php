@@ -138,26 +138,32 @@ class OrderController extends Controller
         ->with('items') // Eager load the items relationship
         ->get();
 
-                       $summarizedOrders = [];
+        $summarizedOrders = [];
 
                        // Loop through each order and sum the prices of items with the same order_id
-                       foreach ($orders as $order) {
-                           foreach ($order->items as $item) {
+        foreach ($orders as $order) {
+            foreach ($order->items as $item) {
                                // Check if the order_id is already in the summarizedOrders array
-                               if (isset($summarizedOrders[$order->id])) {
+                if (isset($summarizedOrders[$order->id])) {
                                    // If it exists, add the current item's price to the existing total
-                                   $summarizedOrders[$order->id]['total_price'] += $item->price * $item->quantity;
-                               } else {
+                    $summarizedOrders[$order->id]['total_price'] += $item->price * $item->quantity;
+                } else {
                                    // If not, initialize the entry for this order_id
-                                   $summarizedOrders[$order->id] = [
-                                       'order_id' => $item->order_id,
-                                       'total_price' => $item->price * $item->quantity,
-                                       'status' => $order->status,
-                                   ];
-                               }
-                           }
-                       }  
-                       return view('invoice.rekap-order', compact('summarizedOrders'));
-                    }
+                    $summarizedOrders[$order->id] = [
+                        'order_id' => $item->order_id,
+                        'total_price' => $item->price * $item->quantity,
+                        'status' => $order->status,
+                    ];
+                }
+            }
+        }  
+            return view('invoice.rekap-order', compact('summarizedOrders'));
+    }
+
+    public function detailorder($id){
+        $orderItems = OrderItem::where($id,"order_id");
+
+        return view("invoice.detail-order", compact("orderItems"));
+    }
     
 }
