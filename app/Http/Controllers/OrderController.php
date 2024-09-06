@@ -150,7 +150,7 @@ class OrderController extends Controller
                                } else {
                                    // If not, initialize the entry for this order_id
                                    $summarizedOrders[$order->id] = [
-                                       'product_name' => $item->product_name,
+                                       'order_id' => $item->order_id,
                                        'total_price' => $item->price * $item->quantity,
                                        'status' => $order->status,
                                    ];
