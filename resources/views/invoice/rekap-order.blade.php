@@ -17,11 +17,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($orders as $p)
-                        <tr>
-                            <td>{{$p->items->product_name}}</td>
-                            
-                        </tr>
+                    @foreach($orders as $order)
+                        @foreach($order->items as $item)
+                            <tr>
+                                <td>{{ $item->product_name }}</td>
+                                <td>{{ number_format($item->price, 0, ',', '.') }}</td>
+                                <td>{{ $order->status }}</td>
+                            </tr>
+                        @endforeach
                     @endforeach
                     </tbody>
                     <tfoot>
