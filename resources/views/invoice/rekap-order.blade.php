@@ -11,25 +11,23 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Jenis</th>
+                            <th>Product Name</th>
                             <th>Harga</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($orders as $order)
-                        @foreach($order->items as $item)
-                            <tr>
-                                <td>{{ $item->product_name }}</td>
-                                <td>{{ number_format($item->price, 0, ',', '.') }}</td>
-                                <td>{{ $order->status }}</td>
-                            </tr>
-                        @endforeach
-                    @endforeach
+                    @foreach($summarizedOrders as $order)
+            <tr>
+                <td>{{ $order['product_name'] }}</td>
+                <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
+                <td>{{ $order['status'] }}</td>
+            </tr>
+        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Jenis</th>
+                            <th>Product Name</th>
                             <th>Harga</th>
                             <th>Status</th>
                         </tr>

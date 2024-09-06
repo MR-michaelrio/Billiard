@@ -134,14 +134,30 @@ class OrderController extends Controller
     
         // Retrieve orders where status is 'lunas' and the order_id matches those in order items
         $orders = Order::where("status", "lunas")
-                       ->whereIn("id", $orderIds)
-                       ->get();
-                    // foreach ($orders as $order) {
-                    //     foreach ($order->items as $item) {
-                    //         echo $item->product_name . "<br>"; // You can return or print the product names
-                    //     }
-                    // }        
-        return view('invoice.rekap-order', compact('orders'));
-    }
+        ->whereIn("id", $orderIds)
+        ->with('items') // Eager load the items relationship
+        ->get();
+
+                       $summarizedOrders = [];
+
+                       // Loop through each order and sum the prices of items with the same order_id
+                       foreach ($orders as $order) {
+                           foreach ($order->items as $item) {
+                               // Check if the order_id is already in the summarizedOrders array
+                               if (isset($summarizedOrders[$order->id])) {
+                                   // If it exists, add the current item's price to the existing total
+                                   $summarizedOrders[$order->id]['total_price'] += $item->price * $item->quantity;
+                               } else {
+                                   // If not, initialize the entry for this order_id
+                                   $summarizedOrders[$order->id] = [
+                                       'product_name' => $item->product_name,
+                                       'total_price' => $item->price * $item->quantity,
+                                       'status' => $order->status,
+                                   ];
+                               }
+                           }
+                       }  
+                       return view('invoice.rekap-order', compact('summarizedOrders'));
+                    }
     
 }
