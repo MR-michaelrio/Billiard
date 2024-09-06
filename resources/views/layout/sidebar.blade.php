@@ -53,7 +53,7 @@
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('rekap-order')}}" class="nav-link">
+                <a href="{{route('rekaporder')}}" class="nav-link">
                   <i class="nav-icon fas fa-file"></i>
                   <p>
                     Rekap Produk
