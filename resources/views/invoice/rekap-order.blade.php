@@ -19,7 +19,7 @@
                     <tbody>
                     @foreach($orders as $p)
                         <tr>
-                            <td>{{$p->items()->product_name}}</td>
+                            <td>{{$p->items->product_name}}</td>
                             
                         </tr>
                     @endforeach
