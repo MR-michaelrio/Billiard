@@ -22,7 +22,6 @@
                     @foreach($invoices as $p)
                         <tr>
                             <td>{{$p->id_player}}</td>
-                            <td>{{$p->rentalinvoice->no_meja}}</td>
                             <td>{{$p->created_at}}</td>
                             <td>
                                 <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
