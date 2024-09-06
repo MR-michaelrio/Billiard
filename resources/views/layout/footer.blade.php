@@ -1,7 +1,4 @@
 <!-- /.content-wrapper -->
-<div id="loading" style="display: none;">
-    <div class="spinner"></div>
-</div>
 <footer class="main-footer">
     <strong>Copyright &copy; 2024 billiard.</strong>
     All rights reserved.
@@ -24,32 +21,7 @@
 <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
-  $.widget.bridge('uibutton', $.ui.button);
-  // Show loading screen on form submission or page navigation
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form'); // Add your form selector
-
-    if (form) {
-        form.addEventListener('submit', function () {
-            document.getElementById('loading').style.display = 'flex';
-        });
-    }
-
-    // Optionally, handle links that trigger page navigation
-    const links = document.querySelectorAll('a');
-    links.forEach(link => {
-        link.addEventListener('click', function () {
-            document.getElementById('loading').style.display = 'flex';
-        });
-    });
-});
-// Show loading when AJAX starts and hide when AJAX completes
-$(document).ajaxStart(function() {
-    $('#loading').show();
-}).ajaxStop(function() {
-    $('#loading').hide();
-});
-
+  $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
