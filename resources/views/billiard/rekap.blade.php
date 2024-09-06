@@ -22,7 +22,6 @@
                     @foreach($invoices as $p)
                         <tr>
                             <td>{{$p->id_player}}</td>
-                            <td>{{$p->rentalinvoice->lama_waktu}}</td>
                             <td>{{$p->rentalinvoice->no_meja}}</td>
                             <td>{{$p->created_at}}</td>
                             <td>
