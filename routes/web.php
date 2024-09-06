@@ -69,8 +69,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/strukorder/{order_id}', [OrderController::class, 'struk'])->name('print.strukorder');
     Route::post('/print-receipt-status', [BilliardController::class, 'status'])->name('print.status');
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
