@@ -33,7 +33,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <a href="{{ route('print.strukorder', ['id' => $id) }}" class="btn btn-primary">Print</a>
+                <a href="{{ route('print.strukorder', ['id' => $id]) }}" class="btn btn-primary">Print</a>
             </div>
             <!-- /.card-body -->
         </div>
