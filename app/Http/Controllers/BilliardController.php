@@ -493,7 +493,7 @@ class BilliardController extends Controller
     public function showrekap(string $id)
     {
         $query = "
-            SELECT 
+            SELECT
                 i.id AS invoice_id, 
                 i.id_player, 
                 i.id_rental, 

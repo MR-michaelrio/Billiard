@@ -16,7 +16,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <li>Id Member: {{$id_player}}</li>
+                    <li>Id Member: {{ optional($id_player)->no_meja ?? 'N/A' }}</li>
                     <li>Lama Waktu: {{$lama_waktu}}</li>
                     <li>Waktu Mulai: {{$waktu_mulai}}</li>
                     <li>Waktu Akhir: {{$waktu_akhir}}</li>
