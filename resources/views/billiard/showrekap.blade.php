@@ -20,7 +20,7 @@
                     <li>Lama Waktu: {{$lama_waktu ?? 'N/A' }}</li>
                     <li>Waktu Mulai: {{$waktu_mulai ?? 'N/A' }}</li>
                     <li>Waktu Akhir: {{$waktu_akhir ?? 'N/A' }}</li>
-                    <li>No Meja: {{$no_meja}}</li>
+                    <li>No Meja: {{ $no_meja ?? 'N/A' }}</li>
                 </h3>
             </div>               
             <!-- /.card-header -->
