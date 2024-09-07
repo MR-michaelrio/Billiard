@@ -12,8 +12,8 @@
                     <thead>
                         <tr>
                             <th>Id Member</th>
-                            <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Lama Waktu</th>
                             <th>Tanggal</th>
                             <th>Status</th>
                         </tr>
@@ -36,8 +36,8 @@
                     <tfoot>
                         <tr>
                             <th>Id Member</th>
-                            <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Lama Waktu</th>
                             <th>Tanggal</th>
                             <th>Status</th>
                         </tr>
