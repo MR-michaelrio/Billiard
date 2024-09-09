@@ -1,9 +1,9 @@
 @include('layout.header')
 @include('layout.sidebar')
 <!-- Loading Spinner -->
-<!-- <div id="loading" style="display: none;">
+<div id="loading" style="display: none;">
     <div class="spinner"></div>
-</div> -->
+</div>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->

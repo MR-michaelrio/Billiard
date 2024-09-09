@@ -102,7 +102,7 @@ $('#reservationdate').datetimepicker({
     });
   });
 </script>
-<!-- <script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
       const loadingSpinner = document.getElementById('loading');
 
@@ -130,7 +130,7 @@ $('#reservationdate').datetimepicker({
   }).ajaxStop(function() {
       $('#loading').hide();
   });
-</script> -->
+</script>
 
 
 </body>
