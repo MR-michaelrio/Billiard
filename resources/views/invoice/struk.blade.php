@@ -179,17 +179,6 @@
                     alert('There was an error updating the status');
                 }
             })
-            .then(data => {
-                if (data.success) {
-                    resetStopwatch(data.id_rental);
-                    alert('Order submitted successfully',data.id_rental);
-                    // Redirect to print the receipt using id_rental
-                    const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
-                    window.location.href = printUrl;        
-                } else {
-                    alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
-                }
-            })
             .catch(error => {
                 console.error('Error:', error);
                 alert('There was an error during the status update. Please check the console for more details.');

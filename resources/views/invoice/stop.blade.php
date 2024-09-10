@@ -117,16 +117,10 @@ document.querySelectorAll('.submit-button').forEach(button => {
             },
             body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu }) // Adjust this part based on how `idRental` relates to your logic
         })
-        .then(response => {
-            console.log('Response status:', response.status);
-            if (!response.ok) {
-                return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
-            }
-            return response.json();
-        })
         .then(data => {
             if (data.success) {
                 resetStopwatch(data.id_rental);
+                console.log("reset stop watch: ",data.id_rental)
                 alert('Order submitted successfully');
                 // Redirect to print the receipt using id_rental
                 const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
@@ -134,6 +128,13 @@ document.querySelectorAll('.submit-button').forEach(button => {
             } else {
                 alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
             }
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
+            }
+            return response.json();
         })
         .catch(error => {
             console.error('Error:', error);
