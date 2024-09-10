@@ -126,8 +126,9 @@ document.querySelectorAll('.submit-button').forEach(button => {
         })
         .then(data => {
             if (data.success) {
-                resetStopwatch(data.id_rental);
-                console.log("reset stop watch: ",data.id_rental)
+                console.log("reset stop watch: ",data.id_table)
+
+                resetStopwatch(data.id_table);
                 alert('Order submitted successfully');
                 // Redirect to print the receipt using id_rental
                 const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
