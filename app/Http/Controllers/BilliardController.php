@@ -487,7 +487,7 @@ class BilliardController extends Controller
         // with('order.items')->
         $invoices = Invoice::with('rentalinvoice')->get();
         // return $invoices;
-        return view('billiard.rekap',compact('invoices'));
+        return view('invoice.rekap',compact('invoices'));
     }
 
     public function showrekap(string $id)
@@ -523,7 +523,7 @@ class BilliardController extends Controller
 
         $invoices = DB::select($query, ['id' => $id]);
 
-        return view('billiard.showrekap',compact('invoices'));
+        return view('invoice.showrekap',compact('invoices'));
     }
     /**
      * Show the form for editing the specified resource.
