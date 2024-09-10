@@ -179,12 +179,37 @@
                     alert('There was an error updating the status');
                 }
             })
+            .then(data => {
+                if (data.success) {
+                    resetStopwatch(data.id_rental);
+                    alert('Order submitted successfully',data.id_rental);
+                    // Redirect to print the receipt using id_rental
+                    const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
+                    window.location.href = printUrl;        
+                } else {
+                    alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
+                }
+            })
             .catch(error => {
                 console.error('Error:', error);
                 alert('There was an error during the status update. Please check the console for more details.');
             });
         });
 
+        function resetStopwatch(noMeja) {
+            const stopwatchKey = `stopwatch_${noMeja}`;
+            localStorage.removeItem(stopwatchKey);
+
+            const element = document.querySelector(`.meja[data-nomor-meja="${noMeja}"]`);
+            if (element) {
+                const stopwatchElement = element.closest('.card-body').querySelector('.stopwatch');
+                if (stopwatchElement) {
+                    stopwatchElement.innerHTML = '00:00:00';
+                }
+                element.classList.remove('meja-yellow', 'meja-red');
+                element.classList.add('meja-green');
+            }
+        }
     </script>
 </body>
 </html>
