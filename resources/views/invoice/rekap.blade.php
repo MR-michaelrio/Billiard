@@ -26,7 +26,7 @@
                             <td>{{ $p->id_belanja }}</td>
                             <!-- Use optional() on the whole rentalinvoice relationship -->
                             <td>{{ optional($p->rentalinvoice)->no_meja ?? 'N/A' }}</td>
-                            <td>{{ optional($p->rentalinvoice)->lama_waktu ?? 'N/A' }}</td>
+                            <td>{{ optional($p->rentalinvoice)->lama_waktu ? \Carbon\Carbon::parse($p->rentalinvoice->lama_waktu)->addHours(7)->format('H:i:s') : 'N/A' }}</td>
                             <td>{{ $p->created_at }}</td>
                             <td>
                                 <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
