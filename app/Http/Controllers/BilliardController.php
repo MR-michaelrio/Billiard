@@ -330,7 +330,7 @@ class BilliardController extends Controller
             $meja_rental->delete();
 
             // Kembalikan respons sukses dengan no_meja
-            return response()->json(['success' => true, 'id_rental' => $id_rental]);
+            return response()->json(['success' => true, 'id_rental' => $id_rental, "id_table" => $validated['no_meja']]);
 
         } catch (\Exception $e) {
             // Tangkap dan log kesalahan

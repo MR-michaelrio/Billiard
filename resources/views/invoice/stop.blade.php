@@ -117,6 +117,13 @@ document.querySelectorAll('.submit-button').forEach(button => {
             },
             body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu }) // Adjust this part based on how `idRental` relates to your logic
         })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 resetStopwatch(data.id_rental);
@@ -129,22 +136,12 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
             }
         })
-        .then(response => {
-            console.log('Response status:', response.status);
-            if (!response.ok) {
-                return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
-            }
-            return response.json();
-        })
         .catch(error => {
             console.error('Error:', error);
             alert('There was an error submitting the order. Please check the console for more details.');
         });
     });
 });
-
-
-
 
 
 function resetStopwatch(noMeja) {

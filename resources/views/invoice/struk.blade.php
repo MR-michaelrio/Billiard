@@ -185,20 +185,6 @@
             });
         });
 
-        function resetStopwatch(noMeja) {
-            const stopwatchKey = `stopwatch_${noMeja}`;
-            localStorage.removeItem(stopwatchKey);
-
-            const element = document.querySelector(`.meja[data-nomor-meja="${noMeja}"]`);
-            if (element) {
-                const stopwatchElement = element.closest('.card-body').querySelector('.stopwatch');
-                if (stopwatchElement) {
-                    stopwatchElement.innerHTML = '00:00:00';
-                }
-                element.classList.remove('meja-yellow', 'meja-red');
-                element.classList.add('meja-green');
-            }
-        }
     </script>
 </body>
 </html>
