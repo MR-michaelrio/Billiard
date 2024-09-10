@@ -24,7 +24,7 @@
                         <tr>
                             <td>{{ $p->id_player }}</td>
                             <td>{{ $p->id_belanja }}</td>
-                            <!-- Use optional() on the whole rentalinvoice relatiossdasnship -->
+                            <!-- Use optional() on the whole rentalinvoice relatiossdasasdasdnship -->
                             <td>{{ optional($p->rentalinvoice)->no_meja ?? 'N/A' }}</td>
                             <td>{{ optional($p->rentalinvoice)->lama_waktu ?? 'N/A' }}</td>
                             <td>{{ $p->created_at }}</td>
