@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
 
         return view('index',compact('today_order','member','nonmember'));
     })->name("index");
+    Route::get('/search-products', [ProdukController::class, 'search'])->name('search-products');
 
     Route::get('/print-receipt/{id_rental}', [BilliardController::class, 'print'])->name('print.receipt');
 
