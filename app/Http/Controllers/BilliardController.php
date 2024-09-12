@@ -250,7 +250,8 @@ class BilliardController extends Controller
         // Validasi request
         $validated = $request->validate([
             'no_meja' => 'required|string',
-            'lama_waktu' => 'required|string'
+            'lama_waktu' => 'required|string',
+            'metode' => 'string'
         ]);
 
         try {
@@ -276,7 +277,8 @@ class BilliardController extends Controller
                 'lama_waktu' => $lama_waktu,
                 'waktu_mulai' => $waktu_mulai,
                 'waktu_akhir' => $waktu_akhir,
-                'no_meja' => $no_meja
+                'no_meja' => $no_meja,
+                'metode' => $validated['metode']
             ]);
 
             // Update status 

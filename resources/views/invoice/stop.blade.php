@@ -89,8 +89,11 @@
             <div class="row no-print">
                 <div class="col-12">
                 @foreach($meja_rental2 as $r)
-                <button type="button" class="submit-button btn btn-success float-right" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
-                    Submit Payment {{ $r->no_meja }}
+                <button type="button" class="submit-button btn btn-success float-right" data-metode="Cash" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
+                    Cash Payment {{ $r->no_meja }}
+                </button>
+                <button type="button" class="submit-button btn btn-success float-right" data-metode="Transfer" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
+                    Transfer Payment {{ $r->no_meja }}
                 </button>
                 @endforeach
                 </div>
@@ -105,6 +108,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
     button.addEventListener('click', function() {
         const idRental = this.getAttribute('data-rental');
         const nomeja = this.getAttribute('data-meja');
+        const metode = this.getAttribute('data-metode');
         const lamaWaktu = document.getElementById('lama_waktu').textContent;
 
         console.log('Sending request with idRental:', nomeja, 'lamaWaktu:', lamaWaktu);
@@ -115,7 +119,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu }) // Adjust this part based on how `idRental` relates to your logic
+            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu, metode:metode }) // Adjust this part based on how `idRental` relates to your logic
         })
         .then(response => {
             console.log('Response status:', response.status);
