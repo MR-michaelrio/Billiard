@@ -21,7 +21,7 @@
                         <tr>
                             <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
-                            <td>{{ $order['no_meja'] }}</td>
+                            <td>{{ $rekap['no_meja'] }}</td>
                         </tr>
                     @endforeach
                     </tbody>
