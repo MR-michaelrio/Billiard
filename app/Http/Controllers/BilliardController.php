@@ -592,7 +592,8 @@ class BilliardController extends Controller
     
         // End time: 3:00 AM today
         $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
-    
+        $paket = Paket::orderBy('jam', 'asc')->get();
+
         // Query RentalInvoice between 11:00 AM yesterday and 3:00 AM today using waktu_mulai
         $rentalinvoice = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])
                                       ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
@@ -644,7 +645,7 @@ class BilliardController extends Controller
         $mejatotal = $best_price !== null ? $best_price : $mejatotal;
     
         // Return the view with the rental invoice and total price
-        return view('invoice.rekap-table', compact('rentalinvoice', 'mejatotal'));
+        return view('invoice.rekap-table', compact('rentalinvoice', 'mejatotal',"paket"));
     }
     
     
