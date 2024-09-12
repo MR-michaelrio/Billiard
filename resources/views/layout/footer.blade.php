@@ -101,7 +101,7 @@ $('#reservationdate').datetimepicker({
       "responsive": true,
     });
     $("#example3").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": true
+      "responsive": true, "lengthChange": true, "autoWidth": true
     });
   });
 </script>
