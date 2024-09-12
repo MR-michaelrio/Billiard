@@ -89,9 +89,9 @@
             <div class="row no-print">
                 <div class="col-12">
                 @foreach($meja_rental2 as $r)
-                <button type="button" class="submit-button btn btn-success float-right" data-metode="Cash" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
+                <button type="button" style="margin-right:10px" class="submit-button btn btn-success float-right" data-metode="Cash" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
                     Cash Payment {{ $r->no_meja }}
-                </button>&nbsp;|&nbsp;
+                </button>
                 <button type="button" class="submit-button btn btn-success float-right" data-metode="Transfer" data-rental="{{ $r->id_rental }}" data-meja="{{ $r->no_meja }}">
                     Transfer Payment {{ $r->no_meja }}
                 </button>
