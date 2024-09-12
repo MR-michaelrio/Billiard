@@ -50,6 +50,17 @@
                             }
                             // Use package price if found, else the per-minute price
                             $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+
+                            $total_makanan = $makanan->flatMap(function($order) {
+                                return $order->items;
+                            })->sum(function($item) {
+                                return $item->price * $item->quantity;
+                            });
+
+                            // Total biaya keseluruhan
+                            $total = $mejatotal + $total_makanan;
+                            $total = round($total);
+
                         @endphp
 
                         <tr>

@@ -605,9 +605,14 @@ class BilliardController extends Controller
     
         // Fetch the available packages for pricing
         $paket = Paket::orderBy('jam', 'asc')->get();
-    
+        $invoice = Invoice::where("id_rental", $rentalinvoice->id_rental);
+
+        $makanan = Order::where('id_table', $invoice->id_belanja)
+            ->where('status', 'lunas')
+            ->with('items')->get();
+
         // Return the view with both 'rentalinvoice' and 'paket' data
-        return view('invoice.rekap-table', compact('rentalinvoice', 'paket'));
+        return view('invoice.rekap-table', compact('rentalinvoice', 'paket','makanan'));
     }
     
     
