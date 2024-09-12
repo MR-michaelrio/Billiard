@@ -89,14 +89,14 @@
                 <div class="card">
                     <div class="card-body">
                         <table  id="example1" class="table">
-                            <thead>
+                            <tbody>
                                 @foreach($products as $product)
                                     <tr>
                                         <th>{{ $product['nama_produk'] }}</th>
                                         <th><button class="btn btn-success add-to-cart" data-name="{{ $product['nama_produk'] }}" data-price="{{ $product['harga'] }}">Add</button></th>
                                     </tr>
                                 @endforeach
-                            </thead>
+                            </tbody>
                         </table>
                     </div>
                 </div>
