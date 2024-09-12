@@ -68,8 +68,8 @@
                             <td>{{ $rekap->id_rental }}</td>
                             <td>{{ $lama_waktu }}</td>
                             <td>{{ $rekap->no_meja }}</td>
-                            <td>{{ $rekap->harga_table }}</td>
-                            <td>{{ $rekap->harga_makanan }}</td>
+                            <td>{{ $mejatotal }}</td>
+                            <td>{{ $total_makanan }}</td>
                             <td>{{ number_format($mejatotal, 2) }}</td> <!-- Format the total to 2 decimal places -->
                         </tr>
                     @empty
