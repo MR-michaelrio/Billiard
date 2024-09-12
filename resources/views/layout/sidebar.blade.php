@@ -62,6 +62,18 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('rekap.table')}}" class="nav-link">
+                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <p>
+                    Rekap Table
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
           @if(Auth::check() && Auth::user()->role == "admin")
 
           <li class="nav-item menu-open">

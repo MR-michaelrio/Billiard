@@ -64,6 +64,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('produk', ProdukController::class);
     Route::get('pr/stok', [ProdukController::class, 'stok'])->name('pr.stok');
 
+    Route::get('rekap-table', [BilliardController::class, 'rekaptable'])->name('rekap.table');
+
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders2', [OrderController::class, 'store2'])->name('orders.store2');
     Route::get('/strukorder/{order_id}', [OrderController::class, 'struk'])->name('print.strukorder');

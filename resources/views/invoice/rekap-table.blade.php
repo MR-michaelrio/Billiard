@@ -12,27 +12,24 @@
                     <thead>
                         <tr>
                             <th>Rental ID</th>
-                            <th>Total Harga</th>
-                            <th>Metode</th>
-                            <th>Detail</th>
+                            <th>Lama Waktu</th>
+                            <th>No Meja</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($summarizedOrders as $order)
+                    @foreach($rentalinvoice as $rekap)
                         <tr>
-                            <td>{{ $order['order_id'] }}</td>
-                            <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
-                            <td>{{ $order['status'] }}</td>
-                            <td><a href="{{route('rekap.detailorder',$order['order_id'])}}" class="btn btn-warning">Detail</a></td>
+                            <td>{{ $rekap['id_rental'] }}</td>
+                            <td>{{ $rekap['lama_waktu'] }}</td>
+                            <td>{{ $order['no_meja'] }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Total Harga</th>
-                            <th>Status</th>
-                            <th>Detail</th>
+                            <th>Rental ID</th>
+                            <th>Lama Waktu</th>
+                            <th>No Meja</th>
                         </tr>
                     </tfoot>
                 </table>
