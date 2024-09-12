@@ -100,6 +100,9 @@ $('#reservationdate').datetimepicker({
       "autoWidth": false,
       "responsive": true,
     });
+    $("#example3").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false
+    });
   });
 </script>
 <script>
