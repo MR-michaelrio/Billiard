@@ -84,33 +84,25 @@
         </div>
     </div>
     <div class="col-lg-6">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <input type="text" id="search" class="form-control" placeholder="Search products...">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="product-list">
-                            @foreach($products as $product)
-                                <tr>
-                                    <td>{{ $product['nama_produk'] }}</td>
-                                    <td><button class="btn btn-success add-to-cart" data-name="{{ $product['nama_produk'] }}" data-price="{{ $product['harga'] }}">Add</button></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                @foreach($products as $product)
+                                    <tr>
+                                        <th>{{ $product['nama_produk'] }}</th>
+                                        <th><button class="btn btn-success add-to-cart" data-name="{{ $product['nama_produk'] }}" data-price="{{ $product['harga'] }}">Add</button></th>
+                                    </tr>
+                                @endforeach
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 <script>
