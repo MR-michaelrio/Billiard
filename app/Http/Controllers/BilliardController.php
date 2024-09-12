@@ -592,61 +592,24 @@ class BilliardController extends Controller
     
         // End time: 3:00 AM today
         $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
-        $paket = Paket::orderBy('jam', 'asc')->get();
-
+    
         // Query RentalInvoice between 11:00 AM yesterday and 3:00 AM today using waktu_mulai
         $rentalinvoice = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])
                                       ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
-                                      ->first(); // Only get the first record
+                                      ->get();
     
-        // Get harga_rental data
-        $hargarental = HargaRental::where('jenis', 'menit')->first();
-    
-        // Safely access 'lama_waktu' with a default of '00:00:00'
-        $lama_waktu = $rentalinvoice ? $rentalinvoice->lama_waktu : '00:00:00';
-    
-        // If lama_waktu is not set or is '00:00:00', calculate it from elapsed seconds
-        if (!$lama_waktu || $lama_waktu == '00:00:00') {
-            $elapsedSeconds = request()->query('elapsed'); // Get elapsed time from query string
-    
-            if ($elapsedSeconds !== null) {
-                $hours = floor($elapsedSeconds / 3600);
-                $minutes = floor(($elapsedSeconds % 3600) / 60);
-                $seconds = $elapsedSeconds % 60;
-    
-                // Format the elapsed time into hours, minutes, seconds
-                $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-            }
+        // Check if we found any records before proceeding
+        if ($rentalinvoice->isEmpty()) {
+            return view('invoice.rekap-table')->withErrors('No rental records found for the given time range.');
         }
     
-        // Parse the 'lama_waktu' into hours, minutes, and seconds
-        list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
-        $total_minutes = $hours * 60 + $minutes + $seconds / 60;
-    
-        // Initialize default per-minute pricing
-        $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-    
-        // Calculate total price based on per-minute rate
-        $mejatotal = $total_minutes * $harga_per_menit;
-    
-        // Iterate through the packages to find the best pricing
+        // Fetch the available packages for pricing
         $paket = Paket::orderBy('jam', 'asc')->get();
-        $best_price = null; // Default to calculated per-minute price
     
-        foreach ($paket as $p) {
-            // If the 'lama_waktu' exactly matches the package duration, use package price
-            if ($lama_waktu == $p->jam) {
-                $best_price = $p->harga;
-                break;
-            }
-        }
-    
-        // Use the best package price if found, otherwise use the calculated per-minute price
-        $mejatotal = $best_price !== null ? $best_price : $mejatotal;
-    
-        // Return the view with the rental invoice and total price
-        return view('invoice.rekap-table', compact('rentalinvoice', 'mejatotal',"paket"));
+        // Return the view with both 'rentalinvoice' and 'paket' data
+        return view('invoice.rekap-table', compact('rentalinvoice', 'paket'));
     }
+    
     
     
 
