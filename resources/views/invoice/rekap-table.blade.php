@@ -51,10 +51,10 @@
         // Use the package price if available, otherwise the calculated per-minute price
         $mejatotal = $best_price !== null ? $best_price : $mejatotal;
 
-        // Ensure mejatotal is not null
-        $mejatotal = $mejatotal ?? 0;
+        // If no valid table price is found, it should remain as 0 rupiah
+        // No fallback is applied here, so if there's no valid price, mejatotal remains 0.
 
-        // Calculate the total food price, ensure it's zero if no food is ordered
+        // Calculate the total food price
         $orderMakanan = $makanan[$rekap->id_rental] ?? collect(); // Safely access makanan
         $total_makanan = $orderMakanan->flatMap(function($order) {
             return $order->items;
@@ -62,14 +62,14 @@
             return $item->price * $item->quantity;
         });
 
-        // Ensure total_makanan is zero if no food was ordered
-        $total_makanan = $total_makanan ?? 0;
+        // Ensure total_makanan is 0 if no food is purchased
+        if ($total_makanan == 0 || $orderMakanan->isEmpty()) {
+            $total_makanan = 0;
+        }
 
-        // Calculate the total (table price + food price)
+        // Calculate total (table price + food price)
         $total = $mejatotal + $total_makanan;
-
-        // Round and format the total value
-        $total = round($total, 2);
+        $total = round($total, 2); // Round total to 2 decimal places
 
     @endphp
 
