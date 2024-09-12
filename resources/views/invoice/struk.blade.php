@@ -91,7 +91,7 @@
         td {
             text-align: right;
         }
-        #data-id{
+        #data-idtable{
             visibility: hidden;
         }
     </style>
