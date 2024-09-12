@@ -105,7 +105,7 @@
                 <span><b>Order ID:</b> {{$meja_rental->id_rental}}</span>
                 <span><b>Table:</b> {{$meja_rental->no_meja}}</span>
                 <span><b>Payment Due:</b> {{ $tanggalmain }}</span>
-                <span><b>Account:</b> {{$meja_rental->invoice->id_player}}</span>
+                <span><b>Account:</b> {{$meja_rental->invoices->id_player}}</span>
             </div>
         <!-- @endforeach -->
 
