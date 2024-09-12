@@ -89,6 +89,12 @@
                 <div class="card">
                     <div class="card-body">
                         <table  id="example1" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 @foreach($products as $product)
                                     <tr>
@@ -97,6 +103,12 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
                 </div>
