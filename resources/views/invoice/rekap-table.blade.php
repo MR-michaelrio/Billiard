@@ -53,7 +53,7 @@
 
         // If there is no valid price, ensure the table price is not zeroed out or inflated
         if ($mejatotal == 0) {
-            $mejatotal = 60000; // Set to default 60,000 if there's no table price
+            $mejatotal = 0; // Set to default 60,000 if there's no table price
         }
 
         // Calculate the total food price
