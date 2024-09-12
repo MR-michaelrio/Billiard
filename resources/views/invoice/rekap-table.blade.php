@@ -51,10 +51,8 @@
         // Use the package price if available, otherwise the calculated per-minute price
         $mejatotal = $best_price !== null ? $best_price : $mejatotal;
 
-        // If there is no valid price, ensure the table price is not zeroed out or inflated
-        if ($mejatotal == 0) {
-            $mejatotal = 0; // Set to default 60,000 if there's no table price
-        }
+        // If no valid table price was found, leave mejatotal as 0 rupiah
+        // No fallback is applied here, mejatotal remains 0 if no valid pricing is found
 
         // Calculate the total food price
         $orderMakanan = $makanan[$rekap->id_rental] ?? collect(); // Safely access makanan
