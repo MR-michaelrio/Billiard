@@ -547,10 +547,10 @@ class BilliardController extends Controller
                                     ->get();
 
         $hargarental = HargaRental::where('jenis', 'menit') -> first();
-        $lama_waktu = $rentalinvoice -> lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
+        $lama_waktu = $rentalinvoice->lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
 
         if (!$lama_waktu || $lama_waktu == '00:00:00') {
-            $elapsedSeconds = request() -> query('elapsed');
+            $elapsedSeconds = request()->query('elapsed');
 
             if ($elapsedSeconds !== null) {
                 $hours = floor($elapsedSeconds / 3600);
@@ -565,15 +565,15 @@ class BilliardController extends Controller
         $total_minutes = $hours * 60 + $minutes + $seconds / 60;
 
         // Initialize default per-minute pricing
-        $harga_per_menit = $hargarental ? $hargarental -> harga : 0;
+        $harga_per_menit = $hargarental ? $hargarental->harga : 0;
         $mejatotal = $total_minutes * $harga_per_menit;
 
         // Iterate through the packages to find the best pricing
         $paket = Paket::orderBy('jam', 'asc') -> get();
         $best_price = null; // Default to calculated per-minute price
         foreach($paket as $p) {
-            if ($lama_waktu == $p -> jam) {
-                $best_price = $p -> harga;
+            if ($lama_waktu == $p->jam) {
+                $best_price = $p->harga;
                 break;
             }
         }
