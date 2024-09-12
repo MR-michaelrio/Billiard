@@ -541,8 +541,7 @@ class BilliardController extends Controller
     
         // Query RentalInvoice between 11:00 AM yesterday and 3:00 AM today
         $rentalinvoice = RentalInvoice::where(function ($query) use ($startTime, $endTime) {
-            $query->whereBetween('waktu_akhir', [$startTime, $endTime])
-                  ->orWhereNull('waktu_akhir'); // Include those without waktu_akhir
+            $query->whereBetween('waktu_mulai', [$startTime, $endTime]);
         })->get();
     
         return view('invoice.rekap-table', compact('rentalinvoice'));
