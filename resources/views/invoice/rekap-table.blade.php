@@ -51,6 +51,11 @@
         // Use the package price if available, otherwise the calculated per-minute price
         $mejatotal = $best_price !== null ? $best_price : $mejatotal;
 
+        // If there is no valid price, ensure the table price is not zeroed out or inflated
+        if ($mejatotal == 0) {
+            $mejatotal = 60000; // Set to default 60,000 if there's no table price
+        }
+
         // Calculate the total food price
         $orderMakanan = $makanan[$rekap->id_rental] ?? collect(); // Safely access makanan
         $total_makanan = $orderMakanan->flatMap(function($order) {
