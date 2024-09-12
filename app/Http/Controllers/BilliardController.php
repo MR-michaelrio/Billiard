@@ -546,6 +546,7 @@ class BilliardController extends Controller
                                     ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
                                     ->get();
 
+        return $rentalinvoice;
         $hargarental = HargaRental::where('jenis', 'menit') -> first();
         $lama_waktu = $rentalinvoice->lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
 
