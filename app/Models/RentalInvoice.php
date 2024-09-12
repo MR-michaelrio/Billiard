@@ -18,4 +18,9 @@ class RentalInvoice extends Model
     {
         return $this->belongsTo(Order::class,'id_rental','id_rental');
     }
+
+    public function invoices()
+    {
+        return $this->belongsTo(Invoice::class,'id_rental','id_rental');
+    }
 }
