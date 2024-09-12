@@ -158,7 +158,8 @@
         window.addEventListener('load', function() {
             window.print();
         });
-
+        const idtable = document.getElementById('data-idtable').textContent;
+            console.log('ID Table:', idtable); // For debugging
         // window.addEventListener('afterprint', function() {
         //     const idtable = document.getElementById('data-idtable').textContent;
         //     console.log('ID Table:', idtable); // For debugging
