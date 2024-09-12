@@ -104,8 +104,8 @@
             <div class="details">
                 <span><b>Order ID:</b> {{$meja_rental->id_rental}}</span>
                 <span><b>Table:</b> {{$meja_rental->no_meja}}</span>
-                <span><b>Payment Due:</b> {{ now()->format('d-m-Y') }}</span>
-                <span><b>Account:</b> {{$meja_rental->id_player}}</span>
+                <span><b>Payment Due:</b> {{ $tanggalmain }}</span>
+                <span><b>Account:</b> {{$meja_rental->invoice->id_player}}</span>
             </div>
         <!-- @endforeach -->
 
