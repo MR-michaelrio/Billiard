@@ -15,6 +15,8 @@
                             <th>Rental ID</th>
                             <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Harga Table</th>
+                            <th>Harga Makanan</th>
                             <th>Total Harga</th>
                         </tr>
                     </thead>
@@ -25,6 +27,9 @@
                             <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
+                            <td>{{ $rekap['harga_table'] }}</td>
+                            <td>{{ $rekap['harga_makanan'] }}</td>
+                            <td>{{ $rekap['harga_makanan'] + $rekap['harga_table'] }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -34,6 +39,8 @@
                             <th>Rental ID</th>
                             <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Harga Table</th>
+                            <th>Harga Makanan</th>
                             <th>Total Harga</th>
                         </tr>
                     </tfoot>

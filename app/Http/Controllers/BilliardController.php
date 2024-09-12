@@ -104,7 +104,10 @@ class BilliardController extends Controller
             // Total biaya keseluruhan
             $total = $mejatotal + $total_makanan;
             $total = round($total);
-
+            $invoice->update([
+                "harga_meja"=>$mejatotal,
+                "harga_cafe"=>$total_makanan
+            ]);
             return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan',"tanggalmain"));
         } else {
             return redirect()->back()->with('error', 'No rental found for the specified table.');
