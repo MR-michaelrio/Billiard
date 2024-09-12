@@ -546,7 +546,40 @@ class BilliardController extends Controller
                                     ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
                                     ->get();
 
-        return view('invoice.rekap-table', compact('rentalinvoice'));
+        $hargarental = HargaRental::where('jenis', 'menit') -> first();
+        $lama_waktu = $rentalinvoice -> lama_waktu ?? '00:00:00'; // Safely access 'lama_waktu' with a default
+
+        if (!$lama_waktu || $lama_waktu == '00:00:00') {
+            $elapsedSeconds = request() -> query('elapsed');
+
+            if ($elapsedSeconds !== null) {
+                $hours = floor($elapsedSeconds / 3600);
+                $minutes = floor(($elapsedSeconds % 3600) / 60);
+                $seconds = $elapsedSeconds % 60;
+
+                $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+            }
+        }
+
+        list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+        $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+
+        // Initialize default per-minute pricing
+        $harga_per_menit = $hargarental ? $hargarental -> harga : 0;
+        $mejatotal = $total_minutes * $harga_per_menit;
+
+        // Iterate through the packages to find the best pricing
+        $paket = Paket::orderBy('jam', 'asc') -> get();
+        $best_price = null; // Default to calculated per-minute price
+        foreach($paket as $p) {
+            if ($lama_waktu == $p -> jam) {
+                $best_price = $p -> harga;
+                break;
+            }
+        }
+        $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+
+        return view('invoice.rekap-table', compact('rentalinvoice','mejatotal'));
     }
     
     

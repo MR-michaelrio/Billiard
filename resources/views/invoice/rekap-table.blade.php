@@ -29,7 +29,7 @@
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['harga_table'] }}</td>
                             <td>{{ $rekap['harga_makanan'] }}</td>
-                            <td>{{ $rekap['harga_makanan'] + $rekap['harga_table'] }}</td>
+                            <td>{{ $mejatotal }}</td>
                         </tr>
                     @endforeach
                     </tbody>
