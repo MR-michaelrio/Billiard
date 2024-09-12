@@ -36,6 +36,7 @@ class BilliardController extends Controller
         $meja_rental2 = RentalInvoice::where('id_rental', $id_rental)->get();
         $rental = RentalInvoice::where('id_rental', $id_rental)->count();
         $no_meja = $meja_rental->no_meja;
+        $tanggalmain = Carbon::parse($meja_rental->waktu_akhir)->format('d-m-Y');
 
         if ($meja_rental) {
             // Make sure to use the correct id reference for Orders
@@ -104,7 +105,7 @@ class BilliardController extends Controller
             $total = $mejatotal + $total_makanan;
             $total = round($total);
 
-            return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan'));
+            return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan',"tanggalmain"));
         } else {
             return redirect()->back()->with('error', 'No rental found for the specified table.');
         }

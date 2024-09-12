@@ -97,15 +97,15 @@
     <div class="receipt-content">
         <div class="header">
             Eighty Nine Pool
-            <div>Date: {{ now()->format('d-m-Y') }}</div>
+            <div>Date: {{ $tanggalmain }}</div>
         </div>
         <!-- Info Section -->
         @foreach($meja_rental2 as $r)
             <div class="details">
-                <span><b>Order ID:</b> {{$r->id}}</span>
+                <span><b>Order ID:</b> {{$r->invoice->id_rental}}</span>
                 <span><b>Table:</b> {{$r->no_meja}}</span>
                 <span><b>Payment Due:</b> {{ now()->format('d-m-Y') }}</span>
-                <span><b>Account:</b> {{$r->id_player}}</span>
+                <span><b>Account:</b> {{$r->invoice->id_player}}</span>
             </div>
         @endforeach
 
