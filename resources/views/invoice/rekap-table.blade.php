@@ -11,14 +11,17 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                            <th>Hari Tanggal</th>
                             <th>Rental ID</th>
                             <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Total Harga</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($rentalinvoice as $rekap)
                         <tr>
+                            <td>{{ $rekap['waktu_mulai'] }}</td>
                             <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
@@ -27,9 +30,11 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th>Hari Tanggal</th>
                             <th>Rental ID</th>
                             <th>Lama Waktu</th>
                             <th>No Meja</th>
+                            <th>Total Harga</th>
                         </tr>
                     </tfoot>
                 </table>
