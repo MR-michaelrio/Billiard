@@ -53,23 +53,7 @@ class ProdukController extends Controller
         return redirect()->route('pr.stok');
     }
 
-    public function search(Request $request)
-    {
-        $query = $request->get('search');
-        $products = Product::where('nama_produk', 'LIKE', "%{$query}%")->get();
-
-        $output = '';
-        foreach($products as $product) {
-            $output .= '
-            <tr>
-                <td>' . $product->nama_produk . '</td>
-                <td><button class="btn btn-success add-to-cart" data-name="' . $product->nama_produk . '" data-price="' . $product->harga . '">Add</button></td>
-            </tr>';
-        }
-
-        return response()->json($output);
-    }
-
+    
     /**
      * Display the specified resource.
      */

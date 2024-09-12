@@ -84,32 +84,33 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <input type="text" id="search" class="form-control" placeholder="Search products...">
-                        <table class="table">
-                            <thead>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <input type="text" id="search" class="form-control" placeholder="Search products...">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-list">
+                            @foreach($products as $product)
                                 <tr>
-                                    <th>Product Name</th>
-                                    <th>Action</th>
+                                    <td>{{ $product['nama_produk'] }}</td>
+                                    <td><button class="btn btn-success add-to-cart" data-name="{{ $product['nama_produk'] }}" data-price="{{ $product['harga'] }}">Add</button></td>
                                 </tr>
-                            </thead>
-                            <tbody id="product-list">
-                                @foreach($products as $product)
-                                    <tr>
-                                        <td>{{ $product['nama_produk'] }}</td>
-                                        <td><button class="btn btn-success add-to-cart" data-name="{{ $product['nama_produk'] }}" data-price="{{ $product['harga'] }}">Add</button></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 </div>
 
 <script>
@@ -202,26 +203,26 @@
     });
 
     document.getElementById('save-button').addEventListener('click', function() {
-        const idTable = document.getElementById('id_table').value;
-        fetch('{{ route("orders.store2") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ id_table: idTable, items: cartItems })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Order submitted successfully');
-                cartItems.length = 0;
-                updateCart();
-            } else {
-                alert('There was an error submitting the order');
-            }
+            const idTable = document.getElementById('id_table').value;
+            fetch('{{ route("orders.store2") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id_table: idTable, items: cartItems })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Order submitted successfully');
+                    cartItems.length = 0;
+                    updateCart();
+                } else {
+                    alert('There was an error submitting the order');
+                }
+            });
         });
-    });
 
     cartItemsContainer.addEventListener('click', function(event) {
         if (event.target.classList.contains('remove-from-cart')) {
@@ -242,22 +243,6 @@
             updateCart();
         }
     });
-
-    $(document).ready(function() {
-        $('#search').on('keyup', function() {
-            var query = $(this).val();
-
-            $.ajax({
-                url: "{{ route('search-products') }}", // Define your route here
-                type: "GET",
-                data: {'search': query},
-                success: function(data) {
-                    $('#product-list').html(data);
-                }
-            });
-        });
-    });
-
 });
 
 </script>
