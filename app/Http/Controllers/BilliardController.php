@@ -605,15 +605,27 @@ class BilliardController extends Controller
     
         // Fetch the available packages for pricing
         $paket = Paket::orderBy('jam', 'asc')->get();
-        $invoice = Invoice::where("id_rental", $rentalinvoice->id_rental)->first();
-
-        $makanan = Order::where('id_table', $invoice->id_belanja)
-            ->where('status', 'lunas')
-            ->with('items')->get();
-
-        // Return the view with both 'rentalinvoice' and 'paket' data
-        return view('invoice.rekap-table', compact('rentalinvoice', 'paket','makanan'));
+    
+        // Initialize an empty array for the 'makanan' data
+        $makanan = [];
+    
+        // For each rental invoice, get its corresponding invoice and order details
+        foreach ($rentalinvoice as $rental) {
+            $invoice = Invoice::where('id_rental', $rental->id_rental)->first();
+            if ($invoice) {
+                $makanan[$rental->id_rental] = Order::where('id_table', $invoice->id_belanja)
+                    ->where('status', 'lunas')
+                    ->with('items')
+                    ->get();
+            } else {
+                $makanan[$rental->id_rental] = collect(); // Empty collection if no invoice
+            }
+        }
+    
+        // Return the view with both 'rentalinvoice', 'paket', and 'makanan' data
+        return view('invoice.rekap-table', compact('rentalinvoice', 'paket', 'makanan'));
     }
+    
     
     
     
