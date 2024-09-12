@@ -88,7 +88,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table  id="example2" class="table">
+                        <table  id="example1" class="table">
                             <thead>
                                 <tr>
                                     <th>Produk</th>
