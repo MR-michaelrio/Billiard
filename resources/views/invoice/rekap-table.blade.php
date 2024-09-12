@@ -28,55 +28,60 @@
                     </thead>
                     <tbody>
                     @forelse($rentalinvoice as $rekap)
-                        @php
-                            // Check if the current record has a valid 'waktu_mulai' before processing
-                            $lama_waktu = $rekap->lama_waktu ?? '00:00:00';
+                    @php
+                        // Check if the current record has a valid 'waktu_mulai' before processing
+                        $lama_waktu = $rekap->lama_waktu ?? '00:00:00';
 
-                            // Parse 'lama_waktu' into hours, minutes, and seconds
-                            list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
-                            $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+                        // Parse 'lama_waktu' into hours, minutes, and seconds
+                        list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+                        $total_minutes = $hours * 60 + $minutes + $seconds / 60;
 
-                            // Use the per-minute pricing from the rental model
-                            $harga_per_menit = $rekap->harga_per_menit ?? 0;
-                            $mejatotal = $total_minutes * $harga_per_menit;
+                        // Use the per-minute pricing from the rental model
+                        $harga_per_menit = $rekap->harga_per_menit ?? 0;
+                        $mejatotal = $total_minutes * $harga_per_menit;
 
-                            // Check if a package matches the duration
-                            $best_price = null;
-                            foreach ($paket as $p) {
-                                if ($lama_waktu == $p->jam) {
-                                    $best_price = $p->harga;
-                                    break;
-                                }
+                        // Check if a package matches the duration
+                        $best_price = null;
+                        foreach ($paket as $p) {
+                            if ($lama_waktu == $p->jam) {
+                                $best_price = $p->harga;
+                                break;
                             }
-                            // Use package price if found, else the per-minute price
-                            $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+                        }
+                        // Use package price if found, else the per-minute price
+                        $mejatotal = $best_price !== null ? $best_price : $mejatotal;
 
-                            $total_makanan = $makanan->flatMap(function($order) {
-                                return $order->items;
-                            })->sum(function($item) {
-                                return $item->price * $item->quantity;
-                            });
+                        // Get the corresponding 'makanan' for this rental
+                        $orderMakanan = $makanan[$rekap->id_rental] ?? collect(); // Get the order data from 'makanan'
 
-                            // Total biaya keseluruhan
-                            $total = $mejatotal + $total_makanan;
-                            $total = round($total);
+                        // Calculate total 'makanan' price
+                        $total_makanan = $orderMakanan->flatMap(function($order) {
+                            return $order->items;
+                        })->sum(function($item) {
+                            return $item->price * $item->quantity;
+                        });
 
-                        @endphp
+                        // Total biaya keseluruhan
+                        $total = $mejatotal + $total_makanan;
+                        $total = round($total);
 
-                        <tr>
-                            <td>{{ $rekap->waktu_mulai }}</td>
-                            <td>{{ $rekap->id_rental }}</td>
-                            <td>{{ $lama_waktu }}</td>
-                            <td>{{ $rekap->no_meja }}</td>
-                            <td>{{ $mejatotal }}</td>
-                            <td>{{ $total_makanan }}</td>
-                            <td>{{ number_format($mejatotal, 2) }}</td> <!-- Format the total to 2 decimal places -->
-                        </tr>
+                    @endphp
+
+                    <tr>
+                        <td>{{ $rekap->waktu_mulai }}</td>
+                        <td>{{ $rekap->id_rental }}</td>
+                        <td>{{ $lama_waktu }}</td>
+                        <td>{{ $rekap->no_meja }}</td>
+                        <td>{{ $rekap->harga_table }}</td>
+                        <td>{{ number_format($total_makanan, 2) }}</td> <!-- Display total makanan price -->
+                        <td>{{ number_format($total, 2) }}</td> <!-- Format the total to 2 decimal places -->
+                    </tr>
                     @empty
                         <tr>
                             <td colspan="7">No rental invoices found for the selected time range.</td>
                         </tr>
                     @endforelse
+
                     </tbody>
                     <tfoot>
                         <tr>
