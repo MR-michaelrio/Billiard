@@ -533,20 +533,21 @@ class BilliardController extends Controller
     }
 
     public function rekaptable(){
-        // Start time: 3:00 AM today
-        $startTime = Carbon::today()->setTime(3, 0, 0);
+        // Start time: 11:00 AM yesterday
+        $startTime = Carbon::yesterday()->setTime(11, 0, 0);
     
-        // End time: 11:00 AM yesterday
-        $endTime = Carbon::yesterday()->setTime(11, 0, 0);
+        // End time: 3:00 AM today
+        $endTime = Carbon::today()->setTime(3, 0, 0);
     
         // Query RentalInvoice between 11:00 AM yesterday and 3:00 AM today
         $rentalinvoice = RentalInvoice::where(function ($query) use ($startTime, $endTime) {
-            $query->whereBetween('waktu_akhir', [$endTime, $startTime])
+            $query->whereBetween('waktu_akhir', [$startTime, $endTime])
                   ->orWhereNull('waktu_akhir'); // Include those without waktu_akhir
         })->get();
     
         return view('invoice.rekap-table', compact('rentalinvoice'));
     }
+    
     
 
     /**
