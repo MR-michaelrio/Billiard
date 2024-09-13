@@ -105,7 +105,7 @@ $('#reservationdate').datetimepicker({
     });
   });
 </script>
-<script>
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function () {
       const loadingSpinner = document.getElementById('loading');
 
@@ -133,8 +133,42 @@ $('#reservationdate').datetimepicker({
   }).ajaxStop(function() {
       $('#loading').hide();
   });
-</script>
+</script> -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+   const loadingSpinner = document.getElementById('loading');
 
+   // Show loading spinner on page load
+   window.addEventListener('beforeunload', function () {
+       console.log('beforeunload: showing spinner');
+       loadingSpinner.style.display = 'flex';
+   });
+
+   // Show loading spinner on form submission
+   document.querySelectorAll('form').forEach(form => {
+       form.addEventListener('submit', function () {
+           console.log('form submitted: showing spinner');
+           loadingSpinner.style.display = 'flex';
+       });
+   });
+
+   // Hide loading spinner after page has loaded completely
+   window.addEventListener('load', function () {
+       console.log('page load: hiding spinner');
+       loadingSpinner.style.display = 'none';
+   });
+});
+
+// For handling AJAX requests using jQuery
+$(document).ajaxStart(function() {
+    console.log('AJAX request started: showing spinner');
+    $('#loading').show();
+}).ajaxStop(function() {
+    console.log('AJAX request completed: hiding spinner');
+    $('#loading').hide();
+});
+
+</script>
 
 </body>
 </html>
