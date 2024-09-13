@@ -614,22 +614,23 @@ class BilliardController extends Controller
     
             // Loop through all the invoices
             foreach ($invoices as $invoice) {
-                             // Fetch orders (makanan) for this rental
+                // Fetch orders (makanan) for this rental
                 $makanan = Order::where('id_table', $invoice->id_belanja)
                                 ->where('status', 'lunas')
                                 ->with('items')
                                 ->get();
-                
-                                if ($makanan->isEmpty()) {
-                                    $total_makanan = 0; // No food orders, set total to 0
-                                } else {
-                                    // Calculate total food price
-                                    $total_makanan = $makanan->flatMap(function($order) {
-                                        return $order->items;
-                                    })->sum(function($item) {
-                                        return $item->price * $item->quantity;
-                                    });
-                                }
+    
+                // Check if there are no food orders
+                if ($makanan->isEmpty()) {
+                    $total_makanan = 0; // No food orders, set total to 0
+                } else {
+                    // Calculate total food price if food orders exist
+                    $total_makanan = $makanan->flatMap(function($order) {
+                        return $order->items;
+                    })->sum(function($item) {
+                        return $item->price * $item->quantity;
+                    });
+                }
     
                 // Calculate rental price for the table
                 $lama_waktu = $rental->lama_waktu ?? '00:00:00'; // Default if null
@@ -672,9 +673,9 @@ class BilliardController extends Controller
         }
     
         // Return the view with the summarized data
-        // return $data;
         return view('invoice.rekap-table', compact('data'));
     }
+    
     
     
     
