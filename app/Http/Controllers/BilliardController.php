@@ -609,7 +609,8 @@ class BilliardController extends Controller
         // Loop through each rental invoice
         foreach ($rentalinvoices as $rental) {
             $id_rental = $rental->id_rental;
-    
+
+            $tanggalmain = $rental->waktu_mulai;
             // Fetch orders (makanan) for this rental
             $makanan = Order::where('id_table', $rental->id_belanja)
                             ->where('status', 'lunas')
@@ -652,7 +653,7 @@ class BilliardController extends Controller
     
             // Add this data to the array
             $data[$id_rental] = [
-                'tanggal' => $rental->waktu_mulai,
+                'tanggal' => $tanggalmain,
                 'lama_waktu' => $lama_waktu,
                 'mejatotal' => $mejatotal,
                 'total_makanan' => $total_makanan,
