@@ -618,21 +618,29 @@ class BilliardController extends Controller
                  // Always start with 0 for total food price
     
                 // Fetch orders (makanan) for this rental
-                $makanan = Order::where('id_table', $invoice->id_belanja)
-                                ->where('status', 'lunas')
-                                ->with('items')
-                                ->get();
-                if (!$makanan->isEmpty()) {
-                    // Calculate total food price if food orders exist
-                    $total_makanan = $makanan->flatMap(function($order) {
-                        return $order->items;
-                    })->sum(function($item) {
-                        return $item->price * $item->quantity;
-                    });
+                // Only proceed if id_belanja is not 0
+                if ($invoice->id_belanja != 0) {
+                    $makanan = Order::where('id_table', $invoice->id_belanja)
+                                    ->where('status', 'lunas')
+                                    ->with('items')
+                                    ->get();
+
+                    if (!$makanan->isEmpty()) {
+                        // Calculate total food price if food orders exist
+                        $total_makanan = $makanan->flatMap(function($order) {
+                            return $order->items;
+                        })->sum(function($item) {
+                            return $item->price * $item->quantity;
+                        });
+                    } else {
+                        // No food orders, set total to 0
+                        $total_makanan = 0;
+                    }
                 } else {
-                    // No food orders, set total to 0
+                    // If id_belanja is 0, ignore this invoice and set total_makanan to 0
                     $total_makanan = 0;
                 }
+
     
                 // Calculate rental price for the table
                 $lama_waktu = $rental->lama_waktu ?? '00:00:00'; // Default if null
