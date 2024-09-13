@@ -6,6 +6,17 @@
             <div class="card-header">
                 <h3 class="card-title">Rekap Order</h3>
             </div>    
+            <div id="token-form" class="card-header">
+                <h3 class="card-title">Enter Access Token</h3>
+                <form id="tokenForm">
+                    @csrf
+                    <div class="form-group">
+                        <label for="token">Token:</label>
+                        <input type="text" class="form-control" id="token" name="token" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
             <!-- /.card-headerasd -->
             <div class="card-body" id="rekap-table-container" style="display:none;">
                 <table id="example1" class="table table-bordered table-striped">
@@ -52,6 +63,20 @@
 </div>
 
 <script>
+    document.getElementById('tokenForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form from submitting traditionally
 
+        const token = document.getElementById('token').value;
+        const validToken = "068924"; // Define the valid token
+
+        // Check if the token is correct
+        if (token === validToken) {
+            // Hide the token form and show the table
+            document.getElementById('token-form').style.display = 'none';
+            document.getElementById('rekap-table-container').style.display = 'block';
+        } else {
+            alert('Invalid Token! Please try again.');
+        }
+    });
 </script>
 @endsection
