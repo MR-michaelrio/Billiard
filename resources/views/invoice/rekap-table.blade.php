@@ -73,7 +73,7 @@
     });
 
     function fetchRekapData() {
-        fetch('{{ url("rekaptable-data") }}')
+        fetch('{{ url("rekap-table") }}')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('rekap-body');
