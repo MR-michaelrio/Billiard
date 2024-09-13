@@ -27,9 +27,9 @@
                             <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
-                            <td>{{ $rekap['mejatotal'] }}</td>
-                            <td>{{ $rekap['total_makanan'] }}</td>
-                            <td>{{ $rekap['total'] }}</td>
+                            <td>{{ number_format($rekap['mejatotal']) }}</td>
+                            <td>{{ number_format($rekap['total_makanan']) }}</td>
+                            <td>{{ number_format($rekap['total']) }}</td>
                         </tr>
                     @endforeach
                     </tbody>
