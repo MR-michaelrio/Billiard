@@ -585,18 +585,17 @@ class BilliardController extends Controller
     
     public function rekaptable() {
         $timezone = 'Asia/Jakarta'; // Set the timezone to Asia/Jakarta (UTC+7)
-
+    
         // Set the start and end time for the report in Asia/Jakarta timezone
-        $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0)->timezone($timezone)->toDateTimeString();
-        $endTime = Carbon::today($timezone)->setTime(3, 0, 0)->timezone($timezone)->toDateTimeString();
-
-        // Return the endTime in the local timezone
+        $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);  // Keep as Carbon object
+        $endTime = Carbon::today($timezone)->setTime(3, 0, 0);  // Keep as Carbon object
+    
         // Query RentalInvoice between the given time range using waktu_mulai
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
     
-        // Check if any records found
+        // Check if any records are found
         if ($rentalinvoices->isEmpty()) {
-            return view('invoice.rekap-order')->withErrors('No rental records found for the given time range.');
+            return view('invoice.rekap-table')->withErrors('No rental records found for the given time range.');
         }
     
         // Fetch packages for the best pricing
@@ -608,65 +607,70 @@ class BilliardController extends Controller
         // Loop through each rental invoice
         foreach ($rentalinvoices as $rental) {
             $id_rental = $rental->id_rental;
+    
+            // Fetch all invoices matching this rental
             $invoices = Invoice::where("id_rental", $rental->id_rental)->get();
+    
+            // Loop through all the invoices
             foreach ($invoices as $invoice) {
-                return $invoice;
-            }
-            $tanggalmain = $rental->waktu_mulai;
-            // Fetch orders (makanan) for this rental
-            $makanan = Order::where('id_table', $idbelanja->id_rental)
-                            ->where('status', 'lunas')
-                            ->with('items')
-                            ->get();
+                $tanggalmain = $rental->waktu_mulai;
     
-            // Calculate total food price
-            $total_makanan = $makanan->flatMap(function($order) {
-                return $order->items;
-            })->sum(function($item) {
-                return $item->price * $item->quantity;
-            });
+                // Fetch orders (makanan) for this rental
+                $makanan = Order::where('id_table', $invoice->id_belanja)
+                                ->where('status', 'lunas')
+                                ->with('items')
+                                ->get();
     
-            // Calculate rental price for the table
-            $lama_waktu = $rental->lama_waktu ?? '00:00:00'; // Default if null
+                // Calculate total food price
+                $total_makanan = $makanan->flatMap(function($order) {
+                    return $order->items;
+                })->sum(function($item) {
+                    return $item->price * $item->quantity;
+                });
     
-            // Convert the duration to total minutes
-            list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
-            $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+                // Calculate rental price for the table
+                $lama_waktu = $rental->lama_waktu ?? '00:00:00'; // Default if null
     
-            // Fetch per-minute rate
-            $hargarental = HargaRental::where('jenis', 'menit')->first();
-            $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+                // Convert the duration to total minutes
+                list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+                $total_minutes = $hours * 60 + $minutes + $seconds / 60;
     
-            // Calculate table rental price
-            $mejatotal = $total_minutes * $harga_per_menit;
+                // Fetch per-minute rate
+                $hargarental = HargaRental::where('jenis', 'menit')->first();
+                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
     
-            // Check if there is a package deal
-            $best_price = null;
-            foreach ($paket as $p) {
-                if ($lama_waktu == $p->jam) {
-                    $best_price = $p->harga;
-                    break;
+                // Calculate table rental price
+                $mejatotal = $total_minutes * $harga_per_menit;
+    
+                // Check if there is a package deal
+                $best_price = null;
+                foreach ($paket as $p) {
+                    if ($lama_waktu == $p->jam) {
+                        $best_price = $p->harga;
+                        break;
+                    }
                 }
+                $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+    
+                // Sum total price (food + table rental)
+                $total = $mejatotal + $total_makanan;
+    
+                // Add this data to the array (store for each rental)
+                $data[$id_rental][] = [
+                    'tanggal' => $tanggalmain,
+                    'lama_waktu' => $lama_waktu,
+                    'mejatotal' => $mejatotal,
+                    'total_makanan' => $total_makanan,
+                    'total' => $total,
+                    'no_meja' => $rental->no_meja,
+                ];
             }
-            $mejatotal = $best_price !== null ? $best_price : $mejatotal;
-    
-            // Sum total price (food + table rental)
-            $total = $mejatotal + $total_makanan;
-    
-            // Add this data to the array
-            $data[$id_rental] = [
-                'tanggal' => $tanggalmain,
-                'lama_waktu' => $lama_waktu,
-                'mejatotal' => $mejatotal,
-                'total_makanan' => $total_makanan,
-                'total' => $total,
-                'no_meja' => $rental->no_meja,
-            ];
         }
     
         // Return the view with the summarized data
         return view('invoice.rekap-table', compact('data'));
     }
+    
     
     
     
