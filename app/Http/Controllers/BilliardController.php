@@ -587,8 +587,8 @@ class BilliardController extends Controller
         $timezone = 'Asia/Jakarta'; // Set the timezone to Asia/Jakarta (UTC+7)
     
         // Set the start and end time for the report in Asia/Jakarta timezone
-        $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0)->timezone($timezone)->toDateTimeString();
-        $endTime = Carbon::today($timezone)->setTime(3, 0, 0)->timezone($timezone)->toDateTimeString();
+        $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
+        $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
     
         // Query RentalInvoice between the given time range using waktu_mulai
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
@@ -614,16 +614,20 @@ class BilliardController extends Controller
     
             // Loop through all the invoices
             foreach ($invoices as $invoice) {
+                // Strictly reset total_makanan to ensure no carryover values
+                $total_makanan = 0; // Always start with 0 for total food price
+    
                 // Fetch orders (makanan) for this rental
                 $makanan = Order::where('id_table', $invoice->id_belanja)
                                 ->where('status', 'lunas')
                                 ->with('items')
                                 ->get();
     
-                // Check if there are no food orders
-                if ($makanan->isEmpty()) {
-                    $total_makanan = 0; // No food orders, set total to 0
-                } else {
+                // Debugging: Check if the correct makanan orders are retrieved
+                // dd($makanan->isEmpty(), $invoice->id_belanja, $invoice->id_rental); // You can uncomment this to check
+    
+                // Only calculate food prices if there are food orders
+                if (!$makanan->isEmpty()) {
                     // Calculate total food price if food orders exist
                     $total_makanan = $makanan->flatMap(function($order) {
                         return $order->items;
@@ -675,6 +679,7 @@ class BilliardController extends Controller
         // Return the view with the summarized data
         return view('invoice.rekap-table', compact('data'));
     }
+    
     
     
     
