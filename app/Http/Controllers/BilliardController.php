@@ -592,9 +592,7 @@ class BilliardController extends Controller
 
         // Return the endTime in the local timezone
         // Query RentalInvoice between the given time range using waktu_mulai
-        $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])
-                                       ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
-                                       ->get();
+        $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
     
         // Check if any records found
         if ($rentalinvoices->isEmpty()) {
@@ -610,10 +608,10 @@ class BilliardController extends Controller
         // Loop through each rental invoice
         foreach ($rentalinvoices as $rental) {
             $id_rental = $rental->id_rental;
-
+            $idbelanja = Invoice::where("id_rental",$rental->id_rental)->get();
             $tanggalmain = $rental->waktu_mulai;
             // Fetch orders (makanan) for this rental
-            $makanan = Order::where('id_table', $rental->id_belanja)
+            $makanan = Order::where('id_table', $idbelanja->id_rental)
                             ->where('status', 'lunas')
                             ->with('items')
                             ->get();
