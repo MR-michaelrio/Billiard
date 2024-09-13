@@ -588,8 +588,8 @@ class BilliardController extends Controller
     
         // Set the start and end time for the report
         $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
-        $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
-    return $endTime;
+        $endTime = Carbon::today($timezone);
+        return $endTime;
         // Query RentalInvoice between the given time range using waktu_mulai
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])
                                        ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
