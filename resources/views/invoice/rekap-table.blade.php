@@ -31,8 +31,18 @@
                             <th>Total Harga</th>
                         </tr>
                     </thead>
-                    <tbody id="rekap-body">
-                        <!-- Data will be inserted here dynamically -->
+                    <tbody>
+                        @foreach($data as $rekap)
+                        <tr>
+                            <td>{{ $rekap['tanggal'] }}</td>
+                            <td>{{ $rekap['id_rental'] }}</td>
+                            <td>{{ $rekap['no_meja'] }}</td>
+                            <td>{{ $rekap['lama_waktu'] }}</td>
+                            <td>{{ number_format($rekap['mejatotal']) }}</td>
+                            <td>{{ number_format($rekap['total_makanan']) }}</td>
+                            <td>{{ number_format($rekap['total']) }}</td>
+                        </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -64,35 +74,9 @@
             // Hide the token form and show the table
             document.getElementById('token-form').style.display = 'none';
             document.getElementById('rekap-table-container').style.display = 'block';
-
-            // Make AJAX request to fetch the data
-            fetchRekapData();
         } else {
             alert('Invalid Token! Please try again.');
         }
     });
-
-    function fetchRekapData() {
-        fetch('{{ url("rekaptable-data") }}')
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('rekap-body');
-                tableBody.innerHTML = ''; // Clear any previous data
-
-                data.forEach(rekap => {
-                    const row = `<tr>
-                                    <td>${rekap.tanggal}</td>
-                                    <td>${rekap.id_rental}</td>
-                                    <td>${rekap.no_meja}</td>
-                                    <td>${rekap.lama_waktu}</td>
-                                    <td>${new Intl.NumberFormat().format(rekap.mejatotal)}</td>
-                                    <td>${new Intl.NumberFormat().format(rekap.total_makanan)}</td>
-                                    <td>${new Intl.NumberFormat().format(rekap.total)}</td>
-                                </tr>`;
-                    tableBody.insertAdjacentHTML('beforeend', row);
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }
 </script>
 @endsection
