@@ -619,7 +619,7 @@ class BilliardController extends Controller
                                 ->where('status', 'lunas')
                                 ->with('items')
                                 ->get();
-                return $makanan->id_table;
+                return $makanan;
     
                 // Calculate total food price
                 $total_makanan = $makanan->flatMap(function($order) {
