@@ -460,7 +460,7 @@ class BilliardController extends Controller
         $b = Rental::create([
             'id_player' => $id_non,
             'lama_waktu' => $request->lama_waktu,
-            'waktu_mulai' => now(),
+            'waktu_mulai' => Carbon::now('Asia/Jakarta'),
             'waktu_akhir' => $waktuAkhir,
             'no_meja' => $request->no_meja
         ]);
@@ -668,7 +668,7 @@ class BilliardController extends Controller
     
                 // Sum total price (food + table rental)
                 $total = $mejatotal + $total_makanan;
-    
+
                 // Add this data to the array (store for each invoice)
                 $data[] = [
                     'id_rental' => $rental->id_rental,
