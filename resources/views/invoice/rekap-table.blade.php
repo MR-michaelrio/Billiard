@@ -10,7 +10,6 @@
                 <form id="tokenForm">
                     @csrf
                     <div class="form-group">
-                        <label for="token">Token:</label>
                         <input type="text" class="form-control" id="token" name="token" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
