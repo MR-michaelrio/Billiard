@@ -622,21 +622,18 @@ class BilliardController extends Controller
                                 ->where('status', 'lunas')
                                 ->with('items')
                                 ->get();
-    
-                // Debugging: Check if the correct makanan orders are retrieved
-                // dd($makanan->isEmpty(), $invoice->id_belanja, $invoice->id_rental); // You can uncomment this to check
-                // Only calculate food prices if there are food orders
                 foreach($makanan as $makan){
-                    if ($makan->id_table == $invoice->id_belanja) {
-                        // Calculate total food price if food orders exist
-                        $total_makanan = $makanan->flatMap(function($order) {
-                            return $order->items;
-                        })->sum(function($item) {
-                            return $item->price * $item->quantity;
-                        });
-                    }else{
-                        $total_makanan = 0;
-                    }
+                    echo $makan;
+                    // if ($makan->id_table == $invoice->id_belanja) {
+                    //     // Calculate total food price if food orders exist
+                    //     $total_makanan = $makanan->flatMap(function($order) {
+                    //         return $order->items;
+                    //     })->sum(function($item) {
+                    //         return $item->price * $item->quantity;
+                    //     });
+                    // }else{
+                    //     $total_makanan = 0;
+                    // }
                 }
     
                 // Calculate rental price for the table
@@ -680,7 +677,7 @@ class BilliardController extends Controller
         }
     
         // Return the view with the summarized data
-        return view('invoice.rekap-table', compact('data'));
+        // return view('invoice.rekap-table', compact('data'));
     }
     
     
