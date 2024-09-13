@@ -656,7 +656,7 @@ class BilliardController extends Controller
     
                 // Add this data to the array (store for each invoice)
                 $data[] = [
-                    'id_rental' => $rental->id_rental,
+                    'id_rental' => $invoice->id_rental,
                     'tanggal' => $tanggalmain,
                     'lama_waktu' => $lama_waktu,
                     'mejatotal' => $mejatotal,
