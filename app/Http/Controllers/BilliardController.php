@@ -614,8 +614,9 @@ class BilliardController extends Controller
     
             // Loop through all the invoices
             foreach ($invoices as $invoice) {
-                return $invoice[$rental];
-                // Fetch orders (makanan) for this rental
+                echo "Rental ID: " . $rental->id_rental . "<br>";
+                echo "Invoice ID: " . $invoice->id . "<br>";
+                echo "Invoice Belanja: " . $invoice->id_belanja . "<br>";                // Fetch orders (makanan) for this rental
                 $makanan = Order::where('id_table', $invoice->id_belanja)
                                 ->where('status', 'lunas')
                                 ->with('items')
