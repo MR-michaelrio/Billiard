@@ -652,6 +652,7 @@ class BilliardController extends Controller
     
             // Add this data to the array
             $data[$id_rental] = [
+                'tanggal' => $rentalinvoices->waktu_mulai,
                 'lama_waktu' => $lama_waktu,
                 'mejatotal' => $mejatotal,
                 'total_makanan' => $total_makanan,

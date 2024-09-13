@@ -11,6 +11,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                            <th>Tanggal</th>
                             <th>Rental ID</th>
                             <th>No Meja</th>
                             <th>Lama Waktu</th>
@@ -23,6 +24,7 @@
                     @foreach($data as $id_rental => $rekap)
                         <tr>
                             <td>{{ $id_rental }}</td>
+                            <td>{{ $id_rental }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
                             <td>{{ number_format($rekap['mejatotal'], 2) }}</td>
@@ -33,6 +35,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th>Tanggal</th>
                             <th>Rental ID</th>
                             <th>No Meja</th>
                             <th>Lama Waktu</th>
