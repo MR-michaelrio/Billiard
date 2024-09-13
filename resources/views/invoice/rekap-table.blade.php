@@ -1,11 +1,10 @@
 @extends('layout.main')
 @section('content')
+
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Rekap Order</h3>
-            </div>    
+            <!-- Token Input Form -->
             <div id="token-form" class="card-header">
                 <h3 class="card-title">Enter Access Token</h3>
                 <form id="tokenForm">
@@ -17,7 +16,8 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-            <!-- /.card-headerasd -->
+
+            <!-- Rekap Table (Initially Hidden) -->
             <div class="card-body" id="rekap-table-container" style="display:none;">
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
@@ -57,7 +57,15 @@
                     </tfoot>
                 </table>
             </div>
-            <!-- /.card-body -->
+
+            <!-- Loading Spinner (Initially Hidden) -->
+            <div id="loading" style="display: none; text-align: center; padding: 20px;">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p>Loading...</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -69,14 +77,24 @@
         const token = document.getElementById('token').value;
         const validToken = "068924"; // Define the valid token
 
-        // Check if the token is correct
-        if (token === validToken) {
-            // Hide the token form and show the table
-            document.getElementById('token-form').style.display = 'none';
-            document.getElementById('rekap-table-container').style.display = 'block';
-        } else {
-            alert('Invalid Token! Please try again.');
-        }
+        // Show the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        // Simulate processing
+        setTimeout(function() {
+            // Check if the token is correct
+            if (token === validToken) {
+                // Hide the token form and loading spinner, show the table
+                document.getElementById('token-form').style.display = 'none';
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('rekap-table-container').style.display = 'block';
+            } else {
+                // Hide the loading spinner and show an alert for invalid token
+                document.getElementById('loading').style.display = 'none';
+                alert('Invalid Token! Please try again.');
+            }
+        }, 1000); // Simulating a 1-second delay for processing
     });
 </script>
+
 @endsection
