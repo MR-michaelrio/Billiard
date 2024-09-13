@@ -668,6 +668,7 @@ class BilliardController extends Controller
         }
     
         // Return the view with the summarized data
+        return $data;
         return view('invoice.rekap-table', compact('data'));
     }
     
