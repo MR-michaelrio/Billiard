@@ -7,7 +7,7 @@
                 <h3 class="card-title">Rekap Order</h3>
             </div>    
             <!-- /.card-headerasd -->
-            <div class="card-body">
+            <div class="card-body" id="rekap-table-container" style="display:none;">
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -50,4 +50,8 @@
         </div>
     </div>
 </div>
+
+<script>
+
+</script>
 @endsection
