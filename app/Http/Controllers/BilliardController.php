@@ -588,10 +588,10 @@ class BilliardController extends Controller
 
         // Set the start and end time for the report in Asia/Jakarta timezone
         $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
-        $endTime = Carbon::today($timezone)->setTime(3, 0, 0)->timezone($timezone);
+        $endTime = Carbon::today($timezone)->setTime(3, 0, 0)->timezone($timezone)->toDateTimeString();
 
         // Return the endTime in the local timezone
-        return $endTime->toDateTimeString();
+        return $endTime;
         // Query RentalInvoice between the given time range using waktu_mulai
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])
                                        ->orWhereNull('waktu_mulai') // Include those without waktu_mulai
