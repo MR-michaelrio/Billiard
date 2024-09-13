@@ -635,8 +635,101 @@ class BilliardController extends Controller
         return view('invoice.rekap-table', compact('data'));
     }
 
+    public function showRekapTablePage()
+    {
+        return view('invoice.rekap-table');
+    }
+
+    public function getRekapTableData()
+    {
+        $timezone = 'Asia/Jakarta';
+
+        // Set the start and end time for the report in Asia/Jakarta timezone
+        $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
+        $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
+
+        // Query RentalInvoice between the given time range using waktu_mulai
+        $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
+
+        $paket = Paket::orderBy('jam', 'asc')->get();
+        $data = [];
+
+        // Loop through each rental invoice
+        foreach ($rentalinvoices as $rental) {
+            $id_rental = $rental->id_rental;
+            $tanggalmain = $rental->waktu_mulai;
+
+            // Fetch all invoices matching this rental
+            $invoices = Invoice::where("id_rental", $rental->id_rental)->get();
+
+            foreach ($invoices as $invoice) {
+                $total_makanan = 0;
+
+                // Ignore invoices with id_belanja == 0
+                if ($invoice->id_belanja != 0) {
+                    $makanan = Order::where('id_table', $invoice->id_belanja)
+                                    ->where('status', 'lunas')
+                                    ->with('items')
+                                    ->get();
+
+                    if (!$makanan->isEmpty()) {
+                        $total_makanan = $makanan->flatMap(function ($order) {
+                            return $order->items;
+                        })->sum(function ($item) {
+                            return $item->price * $item->quantity;
+                        });
+                    }
+                }
+
+                $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+                list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+                $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+
+                $hargarental = HargaRental::where('jenis', 'menit')->first();
+                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+
+                $mejatotal = $total_minutes * $harga_per_menit;
+                $best_price = null;
+
+                foreach ($paket as $p) {
+                    if ($lama_waktu == $p->jam) {
+                        $best_price = $p->harga;
+                        break;
+                    }
+                }
+                $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+
+                $total = $mejatotal + $total_makanan;
+
+                $data[] = [
+                    'id_rental' => $rental->id_rental,
+                    'tanggal' => $tanggalmain,
+                    'lama_waktu' => $lama_waktu,
+                    'mejatotal' => $mejatotal,
+                    'total_makanan' => $total_makanan,
+                    'total' => $total,
+                    'no_meja' => $rental->no_meja,
+                ];
+            }
+        }
+
+        return response()->json($data);
+    }
+
     public function rekaptable() {
         $timezone = 'Asia/Jakarta'; // Set the timezone to Asia/Jakarta (UTC+7)
+    
+        // Get the current time
+        $currentTime = Carbon::now($timezone);
+    
+        // Set the allowed time range (1 AM to 3 AM)
+        $allowedStartTime = Carbon::today($timezone)->setTime(1, 0, 0);
+        $allowedEndTime = Carbon::today($timezone)->setTime(3, 0, 0);
+    
+        // Check if the current time is within the allowed time range
+        if ($currentTime->lt($allowedStartTime) || $currentTime->gt($allowedEndTime)) {
+            return redirect()->back()->withErrors('Access to the report is only allowed between 1 AM and 3 AM.');
+        }
     
         // Set the start and end time for the report in Asia/Jakarta timezone
         $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
@@ -645,6 +738,12 @@ class BilliardController extends Controller
         // Query RentalInvoice between the given time range using waktu_mulai
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
     
+        // Check if any records found
+        if ($rentalinvoices->isEmpty()) {
+            return view('invoice.rekap-table')->withErrors('No rental records found for the given time range.');
+        }
+    
+        // Fetch packages for the best pricing
         $paket = Paket::orderBy('jam', 'asc')->get();
     
         // Initialize the array to store data for each member
@@ -660,8 +759,10 @@ class BilliardController extends Controller
     
             // Loop through all the invoices
             foreach ($invoices as $invoice) {
-                $total_makanan = 0;
+                // Strictly reset total_makanan to ensure no carryover values
+                $total_makanan = 0; // Always start with 0 for total food price
     
+                // Fetch orders (makanan) for this rental
                 if ($invoice->id_belanja != 0) {
                     $makanan = Order::where('id_table', $invoice->id_belanja)
                                     ->where('status', 'lunas')
@@ -669,25 +770,31 @@ class BilliardController extends Controller
                                     ->get();
     
                     if (!$makanan->isEmpty()) {
-                        $total_makanan = $makanan->flatMap(function ($order) {
+                        // Calculate total food price if food orders exist
+                        $total_makanan = $makanan->flatMap(function($order) {
                             return $order->items;
-                        })->sum(function ($item) {
+                        })->sum(function($item) {
                             return $item->price * $item->quantity;
                         });
                     }
                 }
     
                 // Calculate rental price for the table
-                $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+                $lama_waktu = $rental->lama_waktu ?? '00:00:00'; // Default if null
+    
+                // Convert the duration to total minutes
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
     
+                // Fetch per-minute rate
                 $hargarental = HargaRental::where('jenis', 'menit')->first();
                 $harga_per_menit = $hargarental ? $hargarental->harga : 0;
     
+                // Calculate table rental price
                 $mejatotal = $total_minutes * $harga_per_menit;
-                $best_price = null;
     
+                // Check if there is a package deal
+                $best_price = null;
                 foreach ($paket as $p) {
                     if ($lama_waktu == $p->jam) {
                         $best_price = $p->harga;
@@ -699,6 +806,7 @@ class BilliardController extends Controller
                 // Sum total price (food + table rental)
                 $total = $mejatotal + $total_makanan;
     
+                // Add this data to the array (store for each invoice)
                 $data[] = [
                     'id_rental' => $rental->id_rental,
                     'tanggal' => $tanggalmain,
@@ -711,9 +819,9 @@ class BilliardController extends Controller
             }
         }
     
-        return response()->json($data);
+        // Return the view with the summarized data
+        return view('invoice.rekap-table', compact('data'));
     }
-    
     
 
     /**
