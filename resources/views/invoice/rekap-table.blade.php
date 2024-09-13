@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($data as $id_rental => $rekap)
+                    @foreach($data as $rekap)
                         <tr>
                             <td>{{ $rekap['tanggal'] }}</td>
                             <td>{{ $id_rental }}</td>
