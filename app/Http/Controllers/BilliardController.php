@@ -624,7 +624,7 @@ class BilliardController extends Controller
                                 ->get();
     
                 // Debugging: Check if the correct makanan orders are retrieved
-                // dd($makanan->isEmpty(), $invoice->id_belanja, $invoice->id_rental); // You can uncomment this to check
+                dd($makanan->isEmpty(), $invoice->id_belanja, $invoice->id_rental); // You can uncomment this to check
     
                 // Only calculate food prices if there are food orders
                 if (!$makanan->isEmpty()) {
