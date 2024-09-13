@@ -615,7 +615,7 @@ class BilliardController extends Controller
             // Loop through all the invoices
             foreach ($invoices as $invoice) {
                 // Strictly reset total_makanan to ensure no carryover values
-                $total_makanan = 0; // Always start with 0 for total food price
+                 // Always start with 0 for total food price
     
                 // Fetch orders (makanan) for this rental
                 $makanan = Order::where('id_table', $invoice->id_belanja)
@@ -628,13 +628,15 @@ class BilliardController extends Controller
 
                 return $makanan;
                 // Only calculate food prices if there are food orders
-                if (!$makanan->isEmpty()) {
+                if ($makanan->id_table == $invoice->id_belanja) {
                     // Calculate total food price if food orders exist
                     $total_makanan = $makanan->flatMap(function($order) {
                         return $order->items;
                     })->sum(function($item) {
                         return $item->price * $item->quantity;
                     });
+                }else{
+                    $total_makanan = 0;
                 }
     
                 // Calculate rental price for the table
