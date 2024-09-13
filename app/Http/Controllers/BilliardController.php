@@ -655,17 +655,16 @@ class BilliardController extends Controller
                 $total = $mejatotal + $total_makanan;
     
                 // Add this data to the array (store for each invoice)
-                
+                $data[] = [
+                    'id_rental' => $rental->id_rental,
+                    'tanggal' => $tanggalmain,
+                    'lama_waktu' => $lama_waktu,
+                    'mejatotal' => $mejatotal,
+                    'total_makanan' => $total_makanan,
+                    'total' => $total,
+                    'no_meja' => $rental->no_meja,
+                ];
             }
-            $data[] = [
-                'id_rental' => $rental->id_rental,
-                'tanggal' => $tanggalmain,
-                'lama_waktu' => $lama_waktu,
-                'mejatotal' => $mejatotal,
-                'total_makanan' => $total_makanan,
-                'total' => $total,
-                'no_meja' => $rental->no_meja,
-            ];
         }
     
         // Return the view with the summarized data
