@@ -24,7 +24,7 @@
                     @foreach($data as $rekap)
                         <tr>
                             <td>{{ $rekap['tanggal'] }}</td>
-                            <td>{{ $id_rental }}</td>
+                            <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
                             <td>{{ number_format($rekap['mejatotal'], 2) }}</td>
