@@ -23,7 +23,7 @@
                     <tbody>
                     @foreach($data as $id_rental => $rekap)
                         <tr>
-                            <td>{{ $id_rental }}</td>
+                            <td>{{ $tanggal }}</td>
                             <td>{{ $id_rental }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
