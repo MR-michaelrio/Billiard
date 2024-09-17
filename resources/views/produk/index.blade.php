@@ -189,13 +189,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Order submitted successfully');
-                cartItems.length = 0;
-                updateCart();
-                console.log("order_id",data.order_id)
-                // Redirect to print the receipt using id_rental
-                const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id']) }}`.replace(':order_id', data.order_id);
-                window.location.href = printUrl;
+                alert('Order submitted successfully')
+                .then((result) => {
+                    cartItems.length = 0;
+                    updateCart();
+                    console.log("order_id",data.order_id)
+                    // Redirect to print the receipt using id_rental
+                    const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id']) }}`.replace(':order_id', data.order_id);
+                    window.location.href = printUrl;
+                });
             } else {
                 alert('There was an error submitting the order');
             }
