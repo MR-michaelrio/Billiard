@@ -157,7 +157,10 @@
     <script>
         // Automatically trigger printing when the page loads
         window.addEventListener('load', function() {
-            window.print();
+            for (let i = 0; i < 2; i++) {
+                window.print(); // Print the receipt twice
+                await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds between prints
+            }
         });
 
         window.addEventListener('afterprint', function() {
