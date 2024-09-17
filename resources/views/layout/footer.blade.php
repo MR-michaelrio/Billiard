@@ -74,14 +74,14 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-
-
-$(document).ready(function() {
-    $('.select2').select2();
-});
-$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-$('#reservationdate').datetimepicker({
+  $(document).ready(function() {
+      $('.select2').select2();
+  });
+  $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+  $('#reservationdate').datetimepicker({
         format: 'L'
     });
 </script>
@@ -157,18 +157,27 @@ $('#reservationdate').datetimepicker({
        console.log('page load: hiding spinner');
        loadingSpinner.style.display = 'none';
    });
-});
+  });
 
-// For handling AJAX requests using jQuery
-$(document).ajaxStart(function() {
-    console.log('AJAX request started: showing spinner');
-    $('#loading').show();
-}).ajaxStop(function() {
-    console.log('AJAX request completed: hiding spinner');
-    $('#loading').hide();
-});
+  // For handling AJAX requests using jQuery
+  $(document).ajaxStart(function() {
+      console.log('AJAX request started: showing spinner');
+      $('#loading').show();
+  }).ajaxStop(function() {
+      console.log('AJAX request completed: hiding spinner');
+      $('#loading').hide();
+  });
 
 </script>
-
+<script>
+  window.alert = function(message) {
+    Swal.fire({
+      title: 'Alert',
+      text: message,
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
+  };
+</script>
 </body>
 </html>
