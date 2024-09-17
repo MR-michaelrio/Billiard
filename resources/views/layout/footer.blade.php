@@ -94,7 +94,7 @@ $('#reservationdate').datetimepicker({
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
-      "searching": false,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
@@ -135,21 +135,21 @@ $('#reservationdate').datetimepicker({
   });
 </script> -->
 <script>
-        // Override the default alert function
-        window.oldAlert = window.alert; // Backup the original alert
-
+        // Overriding the default alert function
         window.alert = function(message) {
-            // Customize alert behavior here, ensuring no URLs or sensitive info is shown
-            const sanitizedMessage = sanitizeMessage(message);
-            // Call the original alert with the sanitized message
-            window.oldAlert(sanitizedMessage);
+            const alertOverlayElement = document.getElementById('custom-alert');
+            const alertMessageElement = document.getElementById('custom-alert-message');
+
+            // Set the custom alert message
+            alertMessageElement.textContent = message;
+
+            // Display the custom alert
+            alertOverlayElement.style.display = 'flex';
         };
 
-        // Function to sanitize the message
-        function sanitizeMessage(message) {
-            // Remove URLs from the message (http/https links will be replaced)
-            const sanitized = message.replace(/https?:\/\/[^\s]+/g, '[link removed]');
-            return sanitized;
+        // Function to close the custom alert
+        function closeCustomAlert() {
+            document.getElementById('custom-alert').style.display = 'none';
         }
     </script>
 <script>
