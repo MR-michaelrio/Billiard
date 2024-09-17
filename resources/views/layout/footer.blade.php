@@ -135,6 +135,24 @@ $('#reservationdate').datetimepicker({
   });
 </script> -->
 <script>
+        // Override the default alert function
+        window.oldAlert = window.alert; // Backup the original alert
+
+        window.alert = function(message) {
+            // Customize alert behavior here, ensuring no URLs or sensitive info is shown
+            const sanitizedMessage = sanitizeMessage(message);
+            // Call the original alert with the sanitized message
+            window.oldAlert(sanitizedMessage);
+        };
+
+        // Function to sanitize the message
+        function sanitizeMessage(message) {
+            // Remove URLs from the message (http/https links will be replaced)
+            const sanitized = message.replace(/https?:\/\/[^\s]+/g, '[link removed]');
+            return sanitized;
+        }
+    </script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
    const loadingSpinner = document.getElementById('loading');
 
