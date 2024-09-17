@@ -33,56 +33,7 @@
       100% { transform: rotate(360deg); }
   }
 </style>
-<style>
-        /* General styles for the custom alert modal */
-        .custom-alert-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
 
-        .custom-alert-box {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .custom-alert-message {
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .custom-alert-button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* Keyframe animation for alert box */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-    </style>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

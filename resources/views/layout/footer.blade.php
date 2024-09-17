@@ -135,24 +135,6 @@ $('#reservationdate').datetimepicker({
   });
 </script> -->
 <script>
-        // Overriding the default alert function
-        window.alert = function(message) {
-            const alertOverlayElement = document.getElementById('custom-alert');
-            const alertMessageElement = document.getElementById('custom-alert-message');
-
-            // Set the custom alert message
-            alertMessageElement.textContent = message;
-
-            // Display the custom alert
-            alertOverlayElement.style.display = 'flex';
-        };
-
-        // Function to close the custom alert
-        function closeCustomAlert() {
-            document.getElementById('custom-alert').style.display = 'none';
-        }
-    </script>
-<script>
   document.addEventListener('DOMContentLoaded', function () {
    const loadingSpinner = document.getElementById('loading');
 
