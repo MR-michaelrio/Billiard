@@ -157,9 +157,7 @@
     <script>
         // Automatically trigger printing when the page loads
         window.addEventListener('load', function() {
-            for (let i = 0; i < 2; i++) {
-                window.print(); // Print the receipt twice
-            }
+            window.print(); // Print the receipt twice
         });
 
         window.addEventListener('afterprint', function() {
