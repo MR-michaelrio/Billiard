@@ -90,7 +90,7 @@
             } else {
                 // Hide the loading spinner and show an alert for invalid token
                 document.getElementById('loading').style.display = 'none';
-                alert('Invalid Token! Please try again.');
+                showAlert('Error','Invalid Token! Please try again.','error');
             }
         }, 1000); // Simulating a 1-second delay for processing
     });

@@ -180,12 +180,12 @@
                     const redirectUrl = '{{ route("bl.index") }}';
                     window.location.href = redirectUrl;
                 } else {
-                    alert('There was an error updating the status');
+                    showAlert('Error','There was an error updating the status','error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('There was an error during the status update. Please check the console for more details.');
+                showAlert('Error','There was an error during the status update. Please check the console for more details.','error');
             });
         });
 

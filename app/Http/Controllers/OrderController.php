@@ -40,6 +40,7 @@ class OrderController extends Controller
                 'product_name' => $item['name'],
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
+                'metode' => "langsung"
             ]);
 
             // Kurangi stok produk berdasarkan nama produk
@@ -94,6 +95,7 @@ class OrderController extends Controller
                 'product_name' => $item['name'],
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
+                'metode' => "simpan"
             ]);
         }
 

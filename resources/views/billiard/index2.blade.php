@@ -145,10 +145,10 @@
     function handleSuccessResponse(data) {
         if (data.success) {
             resetStopwatch(data.no_meja);
-            alert('Order submitted successfully');
+            showAlert('Success','Order submitted successfully','success');
             window.location.href = '{{ route("bl.index") }}';
         } else {
-            alert('There was an error submitting the order: ' + data.error);
+            showAlert('Error','There was an error submitting the order','error');
         }
     }
 </script>

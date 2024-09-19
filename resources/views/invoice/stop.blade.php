@@ -133,17 +133,17 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 console.log("reset stop watch: ",data.id_table)
 
                 resetStopwatch(data.id_table);
-                alert('Order submitted successfully');
+                showAlert('Success','Order submitted successfully','success');
                 // Redirect to print the receipt using id_rental
                 const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
                 window.location.href = printUrl;        
             } else {
-                alert('There was an error submitting the order: ' + (data.error || 'Unknown error'));
+                showAlert('Error','There was an error submitting the order','error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('There was an error submitting the order. Please check the console for more details.');
+            showAlert('Error','There was an error submitting the order. Please check the console for more details.','error');
         });
     });
 });
