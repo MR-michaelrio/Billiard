@@ -44,10 +44,11 @@
                         <div class="form-group">
                             <label for="id_table">Table ID</label>
                             <!-- <input type="text" id="id_table" class="form-control" value="0"> -->
-                            <select class="form-control select2" id='id_table' name='id_table' onchange="myFunction()" style="width: 100%;">
+                            <select class="form-control select2" id='id_table' name='id_table' onchange="myFunction()"
+                                style="width: 100%;">
                                 <option value='0'>0</option>
                                 @foreach($rental as $m)
-                                    <option value='{{$m->id}}'>{{ $m->no_meja }} | {{ $m->id }}</option>
+                                <option value='{{$m->id}}'>{{ $m->no_meja }} | {{ $m->id }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -70,7 +71,8 @@
                             </div>
                             <div class="col-6 text-right">
                                 <button class="btn btn-primary" id="submit-button">Bayar Langsung</button>
-                                <button class="btn btn-secondary" id="save-button" style="display: none;">Simpan</button>
+                                <button class="btn btn-secondary" id="save-button"
+                                    style="display: none;">Simpan</button>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -88,7 +90,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table  id="example3" class="table">
+                        <table id="example3" class="table">
                             <thead>
                                 <tr>
                                     <th>Produk</th>
@@ -97,10 +99,12 @@
                             </thead>
                             <tbody>
                                 @foreach($products as $product)
-                                    <tr>
-                                        <th>{{ $product['nama_produk'] }}</th>
-                                        <th><button class="btn btn-success add-to-cart" data-name="{{ $product['nama_produk'] }}" data-price="{{ $product['harga'] }}">Add</button></th>
-                                    </tr>
+                                <tr>
+                                    <th>{{ $product['nama_produk'] }}</th>
+                                    <th><button class="btn btn-success add-to-cart"
+                                            data-name="{{ $product['nama_produk'] }}"
+                                            data-price="{{ $product['harga'] }}">Add</button></th>
+                                </tr>
                                 @endforeach
                             </tbody>
                             <thead>
@@ -120,6 +124,7 @@
 <script>
     const idTable = document.getElementById('id_table').value;
     console.log(idTable);
+
     function myFunction() {
         const saveButton = document.getElementById('save-button');
 
@@ -130,18 +135,18 @@
             saveButton.style.display = 'none';
         }
     }
-    document.addEventListener('DOMContentLoaded', function() {
-    const cartItems = [];
-    const cartItemsContainer = document.getElementById('cart-items');
-    const totalPriceElement = document.getElementById('total-price');
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartItems = [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
 
-    function updateCart() {
-        cartItemsContainer.innerHTML = '';
-        let totalPrice = 0;
-        cartItems.forEach((item, index) => {
-            totalPrice += item.price * item.quantity;
-            const row = document.createElement('tr');
-            row.innerHTML = `
+        function updateCart() {
+            cartItemsContainer.innerHTML = '';
+            let totalPrice = 0;
+            cartItems.forEach((item, index) => {
+                totalPrice += item.price * item.quantity;
+                const row = document.createElement('tr');
+                row.innerHTML = `
                 <td>${item.name}</td>
                 <td>
                     <input type="number" class="form-control quantity-input" value="${item.quantity}" data-name="${item.name}">
@@ -151,62 +156,77 @@
                     <button class="btn btn-danger remove-from-cart" data-index="${index}">Remove</button>
                 </td>
             `;
-            cartItemsContainer.appendChild(row);
-        });
-        totalPriceElement.textContent = totalPrice;
-    }
+                cartItemsContainer.appendChild(row);
+            });
+            totalPriceElement.textContent = totalPrice;
+        }
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function() {
-            const name = this.getAttribute('data-name');
-            const price = parseFloat(this.getAttribute('data-price'));
-            const existingItem = cartItems.find(item => item.name === name);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cartItems.push({ name, price, quantity: 1 });
-            }
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function () {
+                const name = this.getAttribute('data-name');
+                const price = parseFloat(this.getAttribute('data-price'));
+                const existingItem = cartItems.find(item => item.name === name);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cartItems.push({
+                        name,
+                        price,
+                        quantity: 1
+                    });
+                }
+                updateCart();
+            });
+        });
+
+        document.getElementById('cancel-button').addEventListener('click', function () {
+            cartItems.length = 0;
             updateCart();
         });
-    });
 
-    document.getElementById('cancel-button').addEventListener('click', function() {
-        cartItems.length = 0;
-        updateCart();
-    });
+        // Event listener for the submit-button to handle order submission and redirect
+        document.getElementById('submit-button').addEventListener('click', function () {
+            document.getElementById('loading').style.display = 'flex';
 
-    // Event listener for the submit-button to handle order submission and redirect
-    document.getElementById('submit-button').addEventListener('click', function() {
-        const idTable = document.getElementById('id_table').value;
-        fetch('{{ route("orders.store") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ id_table: idTable, items: cartItems })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Order submitted successfully')
-                cartItems.length = 0;
-                updateCart();
-                console.log("order_id",data.order_id)
-                // Redirect to print the receipt using id_rental
-                const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id']) }}`.replace(':order_id', data.order_id);
-                window.location.href = printUrl;
-            } else {
-                alert('There was an error submitting the order');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error submitting the order. Please check the console for more details.');
+            const idTable = document.getElementById('id_table').value;
+            fetch('{{ route("orders.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        id_table: idTable,
+                        items: cartItems
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Order submitted successfully')
+                        cartItems.length = 0;
+                        updateCart();
+                        console.log("order_id", data.order_id)
+                        // Redirect to print the receipt using id_rental
+                        const printUrl =
+                            `{{ route('print.strukorder', ['order_id' => ':order_id']) }}`.replace(
+                                ':order_id', data.order_id);
+                        window.location.href = printUrl;
+                    } else {
+                        alert('There was an error submitting the order');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(
+                        'There was an error submitting the order. Please check the console for more details.');
+                });
         });
-    });
 
-    document.getElementById('save-button').addEventListener('click', function() {
+        document.getElementById('save-button').addEventListener('click', function() {
+    // Show the spinner
+            document.getElementById('loading').style.display = 'flex';
+
             const idTable = document.getElementById('id_table').value;
             fetch('{{ route("orders.store2") }}', {
                 method: 'POST',
@@ -218,37 +238,46 @@
             })
             .then(response => response.json())
             .then(data => {
+                // Hide the spinner
+                document.getElementById('loading').style.display = 'none';
+
                 if (data.success) {
-                    alert('Order submitted successfully');
+                    alert('Order saved successfully');
                     cartItems.length = 0;
                     updateCart();
                 } else {
-                    alert('There was an error submitting the order');
+                    alert('There was an error saving the order');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide the spinner in case of an error
+                document.getElementById('loading').style.display = 'none';
+                alert('There was an error saving the order. Please check the console for more details.');
             });
         });
 
-    cartItemsContainer.addEventListener('click', function(event) {
-        if (event.target.classList.contains('remove-from-cart')) {
-            const index = parseInt(event.target.getAttribute('data-index'));
-            cartItems.splice(index, 1);
-            updateCart();
-        }
-    });
 
-    cartItemsContainer.addEventListener('change', function(event) {
-        if (event.target.classList.contains('quantity-input')) {
-            const name = event.target.getAttribute('data-name');
-            const quantity = parseInt(event.target.value);
-            const item = cartItems.find(item => item.name === name);
-            if (item) {
-                item.quantity = quantity;
+        cartItemsContainer.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-from-cart')) {
+                const index = parseInt(event.target.getAttribute('data-index'));
+                cartItems.splice(index, 1);
+                updateCart();
             }
-            updateCart();
-        }
-    });
-});
+        });
 
+        cartItemsContainer.addEventListener('change', function (event) {
+            if (event.target.classList.contains('quantity-input')) {
+                const name = event.target.getAttribute('data-name');
+                const quantity = parseInt(event.target.value);
+                const item = cartItems.find(item => item.name === name);
+                if (item) {
+                    item.quantity = quantity;
+                }
+                updateCart();
+            }
+        });
+    });
 </script>
 
 @endsection
