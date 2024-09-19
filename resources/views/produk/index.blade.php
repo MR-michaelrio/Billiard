@@ -259,7 +259,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Hide the spinner in case of an error
+                // Hide the spinner in case of an easdrror
                 document.getElementById('loading').style.display = 'none';
                 alert('There was an error saving the order. Please check the console for more details.');
             });
