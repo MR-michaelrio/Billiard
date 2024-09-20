@@ -151,9 +151,9 @@ class OrderController extends Controller
                 } else {
                                    // If not, initialize the entry for this order_id
                     $accountid = Invoice::where("id_belanja",$item->order_id)->get();
-                    return $accountid;
+                    // return $accountid->id_player;
                     $summarizedOrders[$order->id] = [
-                        'accountid' => $accountid,
+                        'accountid' => $accountid->id_player,
                         'order_id' => $item->order_id,
                         'total_price' => $item->price * $item->quantity,
                         'status' => $order->status,
