@@ -139,8 +139,6 @@ class OrderController extends Controller
         ->whereIn("id", $orderIds)
         ->with('items') // Eager load the items relationship
         ->get();
-        return $orders;
-        $accountid = Invoice::where("id_belanja",$orders->id_table);
         $summarizedOrders = [];
 
                        // Loop through each order and sum the prices of items with the same order_id
@@ -152,6 +150,8 @@ class OrderController extends Controller
                     $summarizedOrders[$order->id]['total_price'] += $item->price * $item->quantity;
                 } else {
                                    // If not, initialize the entry for this order_id
+                    $accountid = Invoice::where("id_belanja",$order->id_table);
+
                     $summarizedOrders[$order->id] = [
                         'accountid' => $accountid,
                         'order_id' => $item->order_id,
