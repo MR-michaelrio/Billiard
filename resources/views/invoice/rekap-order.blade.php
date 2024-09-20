@@ -11,7 +11,6 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Account ID</th>
                             <th>Order ID</th>
                             <th>Total Harga</th>
                             <th>Status</th>
@@ -21,7 +20,6 @@
                     <tbody>
                     @foreach($summarizedOrders as $order)
                         <tr>
-                            <td>{{ $order['accountid'] }}</td>
                             <td>{{ $order['order_id'] }}</td>
                             <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
                             <td>{{ $order['status'] }}</td>
@@ -31,7 +29,6 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Account ID</th>
                             <th>Order ID</th>
                             <th>Total Harga</th>
                             <th>Status</th>
