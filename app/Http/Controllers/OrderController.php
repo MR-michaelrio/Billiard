@@ -140,6 +140,7 @@ class OrderController extends Controller
         ->with('items') // Eager load the items relationship
         ->get();
         $summarizedOrders = [];
+        $accountid = Invoice::where("id_belanja",$orderIds);
 
                        // Loop through each order and sum the prices of items with the same order_id
         foreach ($orders as $order) {
@@ -150,7 +151,6 @@ class OrderController extends Controller
                     $summarizedOrders[$order->id]['total_price'] += $item->price * $item->quantity;
                 } else {
                                    // If not, initialize the entry for this order_id
-                    $accountid = Invoice::where("id_belanja",$order->id);
 
                     $summarizedOrders[$order->id] = [
                         'accountid' => $accountid,
