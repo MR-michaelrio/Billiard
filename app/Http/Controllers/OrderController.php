@@ -139,7 +139,7 @@ class OrderController extends Controller
         ->whereIn("id", $orderIds)
         ->with('items') // Eager load the items relationship
         ->get();
-
+        return $orders;
         $accountid = Invoice::where("id_belanja",$orders->id_table);
         $summarizedOrders = [];
 
