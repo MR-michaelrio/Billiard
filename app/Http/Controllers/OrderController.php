@@ -159,6 +159,7 @@ class OrderController extends Controller
                         'order_id' => $item->order_id,
                         'total_price' => $item->price * $item->quantity,
                         'status' => $order->status,
+                        'created' => $order->created_at
                     ];
                 }
             }

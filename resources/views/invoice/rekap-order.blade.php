@@ -15,6 +15,7 @@
                             <th>Order ID</th>
                             <th>Total Harga</th>
                             <th>Status</th>
+                            <th>Tanggal</th>
                             <th>Detail</th>
                         </tr>
                     </thead>
@@ -25,6 +26,7 @@
                             <td>{{ $order['order_id'] }}</td>
                             <td>{{ number_format($order['total_price'], 0, ',', '.') }}</td>
                             <td>{{ $order['status'] }}</td>
+                            <td>{{ $order['created'] }}</td>
                             <td><a href="{{route('rekap.detailorder',$order['order_id'])}}" class="btn btn-warning">Detail</a></td>
                         </tr>
                     @endforeach
@@ -35,6 +37,7 @@
                             <th>Order ID</th>
                             <th>Total Harga</th>
                             <th>Status</th>
+                            <th>Tanggal</th>
                             <th>Detail</th>
                         </tr>
                     </tfoot>
