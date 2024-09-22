@@ -637,11 +637,11 @@ class BilliardController extends Controller
 
     public function showRekapTablePage() {
         $timezone = 'Asia/Jakarta';
-        $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
-        $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
+        $startTime = Carbon::yesterday()->setTime(11, 0, 0);
+        $endTime = Carbon::today()->setTime(3, 0, 0);
         $currentTime = Carbon::now(); 
 
-        return $currentTime->toDateTimeString(); // Or use `toDateTimeString()` to return a readable format
+        return $endTime; // Or use `toDateTimeString()` to return a readable format
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
         $paket = Paket::orderBy('jam', 'asc')->get();
         $data = [];
