@@ -639,7 +639,8 @@ class BilliardController extends Controller
         $timezone = 'Asia/Jakarta';
         $startTime = Carbon::yesterday($timezone)->setTime(11, 0, 0);
         $endTime = Carbon::today($timezone)->setTime(3, 0, 0);
-    
+        $currentTime = Carbon::now($timezone);
+        return $currentTime;
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
         $paket = Paket::orderBy('jam', 'asc')->get();
         $data = [];
@@ -784,7 +785,6 @@ class BilliardController extends Controller
     
         // Get the current time
         $currentTime = Carbon::now($timezone);
-        return $currentTime;
         // Set the allowed time range (1 AM to 3 AM)
         $allowedStartTime = Carbon::today($timezone)->setTime(1, 0, 0);
         $allowedEndTime = Carbon::today($timezone)->setTime(3, 0, 0);
