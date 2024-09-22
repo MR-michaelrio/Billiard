@@ -641,7 +641,7 @@ class BilliardController extends Controller
         $endTime = Carbon::today()->setTime(3, 0, 0);
         $currentTime = Carbon::now(); 
 
-        return $endTime; // Or use `toDateTimeString()` to return a readable format
+        return $endTime->toDateTimeString(); // Or use `toDateTimeString()` to return a readable format
         $rentalinvoices = RentalInvoice::whereBetween('waktu_mulai', [$startTime, $endTime])->get();
         $paket = Paket::orderBy('jam', 'asc')->get();
         $data = [];
