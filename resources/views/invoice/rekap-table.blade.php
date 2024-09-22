@@ -33,7 +33,7 @@
                     <tbody>
                     @foreach($data as $rekap)
                         <tr>
-                            <td>{{ $rekap['tanggal'] }}</td>
+                            <td>{{ \Carbon\Carbon::parse($rekap['tanggal'])->format('d-m-Y') }}</td>
                             <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
