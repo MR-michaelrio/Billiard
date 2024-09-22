@@ -784,7 +784,7 @@ class BilliardController extends Controller
     
         // Get the current time
         $currentTime = Carbon::now($timezone);
-    
+        return $currentTime;
         // Set the allowed time range (1 AM to 3 AM)
         $allowedStartTime = Carbon::today($timezone)->setTime(1, 0, 0);
         $allowedEndTime = Carbon::today($timezone)->setTime(3, 0, 0);
@@ -884,35 +884,5 @@ class BilliardController extends Controller
     
         // Return the view with the summarized data
         return view('invoice.rekap-table', compact('data'));
-    }
-    
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
