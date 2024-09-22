@@ -647,6 +647,7 @@ class BilliardController extends Controller
         foreach ($rentalinvoices as $rental) {
             $id_rental = $rental->id_rental;
             $tanggalmain = $rental->waktu_mulai;
+            
             $invoices = Invoice::where("id_rental", $rental->id_rental)->get();
     
             foreach ($invoices as $invoice) {
@@ -676,7 +677,7 @@ class BilliardController extends Controller
     
                 $mejatotal = $total_minutes * $harga_per_menit;
                 $best_price = null;
-    
+                $tanggalmainakhir = $tanggalmain->copy()->addHours($hours)->addMinutes($minutes)->addSeconds($seconds);
                 foreach ($paket as $p) {
                     if ($lama_waktu == $p->jam) {
                         $best_price = $p->harga;
@@ -690,6 +691,7 @@ class BilliardController extends Controller
                 $data[] = [
                     'id_rental' => $rental->id_rental,
                     'tanggal' => $tanggalmain,
+                    'tanggalakhir' => $tanggalmainakhir,
                     'lama_waktu' => $lama_waktu,
                     'mejatotal' => $mejatotal,
                     'total_makanan' => $total_makanan,

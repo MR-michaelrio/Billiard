@@ -21,7 +21,8 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Tanggal</th>
+                            <th>Waktu Mulai</th>
+                            <th>Waktu Akhir</th>
                             <th>Rental ID</th>
                             <th>No Meja</th>
                             <th>Lama Waktu</th>
@@ -34,6 +35,7 @@
                     @foreach($data as $rekap)
                         <tr>
                             <td>{{ \Carbon\Carbon::parse($rekap['tanggal'])->format('d-m-Y H:i:s') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($rekap['tanggalakhir'])->format('d-m-Y H:i:s') }}</td>
                             <td>{{ $rekap['id_rental'] }}</td>
                             <td>{{ $rekap['no_meja'] }}</td>
                             <td>{{ $rekap['lama_waktu'] }}</td>
@@ -45,7 +47,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Tanggal</th>
+                            <th>Waktu Mulai</th>
+                            <th>Waktu Akhir</th>
                             <th>Rental ID</th>
                             <th>No Meja</th>
                             <th>Lama Waktu</th>
