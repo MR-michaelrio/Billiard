@@ -156,9 +156,9 @@
 
     <script>
         // Automatically trigger printing when the page loads
-        window.addEventListener('load', function() {
-            window.print(); // Print the receipt twice
-        });
+        // window.addEventListener('load', function() {
+        //     window.print(); // Print the receipt twice
+        // });
 
         window.addEventListener('afterprint', function() {
             const idtable = document.getElementById('data-idtable').textContent;

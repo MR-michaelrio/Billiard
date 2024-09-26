@@ -29,6 +29,8 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" class="form-control" id="password" required>
+                            <input type="hidden" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
                         </div>
                         <div class="mb-3">
                             <div class="d-grid">
@@ -41,5 +43,22 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+    // Get the user's current position
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            // Capture the user's current latitude and longitude
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Add the coordinates to the form (hidden inputs)
+            document.getElementById('latitude').value = latitude;
+            document.getElementById('longitude').value = longitude;
+        });
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+</script>
+
   </body>
 </html>

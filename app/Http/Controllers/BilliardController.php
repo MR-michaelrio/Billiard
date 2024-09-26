@@ -21,9 +21,6 @@ use App\Models\Produk;
 use DateTime;
 use DateInterval;
 use Carbon\Carbon;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Mike42\Escpos\Printer;
 
 class BilliardController extends Controller
 {
@@ -114,7 +111,6 @@ class BilliardController extends Controller
         }
     }
 
-
     public function status(Request $request)
     {
         try {
@@ -140,8 +136,6 @@ class BilliardController extends Controller
             return response()->json(['success' => false, 'error' => 'Internal server error'], 500);
         }
     }
-
-
 
     public function index()
     {
@@ -248,7 +242,6 @@ class BilliardController extends Controller
         }
     }
 
-
     public function bayar(Request $request)
     {
         // Validasi request
@@ -344,7 +337,6 @@ class BilliardController extends Controller
             return response()->json(['success' => false, 'error' => 'There was an error processing your request.'], 500);
         }
     }
-
     
     public function storemember(Request $request)
     {
@@ -703,7 +695,6 @@ class BilliardController extends Controller
     
         return view('invoice.rekap-table', compact('data'));
     }
-    
 
     public function getRekapTableData()
     {
