@@ -54,6 +54,8 @@
             // Add the coordinates to the form (hidden inputs)
             document.getElementById('latitude').value = latitude;
             document.getElementById('longitude').value = longitude;
+            console.log("longitude: ",longitude);
+            console.log("latitude: ",latitude);
         });
     } else {
         alert("Geolocation is not supported by this browser.");
