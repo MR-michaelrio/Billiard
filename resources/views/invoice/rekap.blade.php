@@ -27,7 +27,7 @@
                             <!-- Use optional() on the whole rentalinvoice relatiossdasasdasdasdadsanship -->
                             <td>{{ optional($p->rentalinvoice)->no_meja ?? 'N/A' }}</td>
                             <td>{{ optional($p->rentalinvoice)->lama_waktu ?? 'N/A' }}</td>
-                            <td>{{ $p->rentalinvoice->waktu_mulai }}</td>
+                            <td>{{ $p->created_at }}</td>
                             <td>
                                 <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
                             </td>
