@@ -11,23 +11,14 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Id Member</th>
-                            <th>Id Belanja</th>
-                            <th>No Meja</th>
-                            <th>Lama Waktu</th>
-                            <th>Tanggal</th>
+                            <th>Bulan</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($invoices as $p)
                         <tr>
-                            <td>{{ $p->id_player }}</td>
-                            <td>{{ $p->id_belanja }}</td>
-                            <!-- Use optional() on the whole rentalinvoice relatiossdasasdasdasdadsanship -->
-                            <td>{{ optional($p->rentalinvoice)->no_meja ?? 'N/A' }}</td>
                             <td>{{ optional($p->rentalinvoice)->lama_waktu ?? 'N/A' }}</td>
-                            <td>{{ $p->rentalinvoice->waktu_mulai }}</td>
                             <td>
                                 <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
                             </td>
@@ -37,11 +28,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Id Member</th>
-                            <th>Id Belanja</th>
-                            <th>No Meja</th>
-                            <th>Lama Waktu</th>
-                            <th>Tanggal</th>
+                            <th>Bulan</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>
