@@ -12,4 +12,5 @@ class Member extends Model
     protected $primaryKey = 'id_member';
     protected $keyType = 'string'; 
     protected $fillable = ['id_member', 'nama', 'no_telp', 'alamat', 'tanggal_lahir', 'mulai_member', 'akhir_member'];
+    
 }

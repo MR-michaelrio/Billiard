@@ -109,7 +109,7 @@
                 <span><b>Account:</b> {{$meja_rental->invoices->id_player}}</span>
                 <span><b>Table:</b> {{$meja_rental->no_meja}}</span>
                 <span><b>Payment Due:</b> {{ $tanggalmain }}</span>
-                <span><b>Account:</b> {{$meja_rental->invoices->id_player}}</span>
+                <span><b>Player Name:</b> {{$meja_rental->invoices->nonmember->nama}}</span>
             </div>
         <!-- @endforeach -->
 

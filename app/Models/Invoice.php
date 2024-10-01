@@ -18,4 +18,8 @@ class Invoice extends Model
     {
         return $this->belongsTo(RentalInvoice::class,'id_rental','id_rental');
     }
+    public function nonmember()
+    {
+        return $this->belongsTo(NonMember::class,'id_player','id');
+    }
 }
