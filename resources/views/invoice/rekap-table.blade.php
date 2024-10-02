@@ -77,7 +77,7 @@
         e.preventDefault(); // Prevent form from submitting traditionally
 
         const token = document.getElementById('token').value;
-        const validToken = "068924"; // Define the valid token
+        const validToken = "892406"; // Define the valid token
 
         // Show the loading spinner
         document.getElementById('loading').style.display = 'block';

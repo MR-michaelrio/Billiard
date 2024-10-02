@@ -877,4 +877,20 @@ class BilliardController extends Controller
         // Return the view with the summarized data
         return view('invoice.rekap-table', compact('data'));
     }
+
+    // YourController.php
+public function searchNames(Request $request)
+{
+    $search = $request->get('term'); // Mengambil query dari parameter 'term'
+    
+    // Ambil nama dari tabel, sesuaikan dengan nama tabel dan kolom yang Anda miliki
+    $results = DB::table('non_member')
+                ->select('id', 'nama', 'no_telp')
+                ->where('nama', 'LIKE', '%' . $search . '%')
+                ->get();
+
+    // Mengembalikan hasil dalam format JSON yang dapat digunakan untuk autocomplete
+    return response()->json($results);
+}
+
 }

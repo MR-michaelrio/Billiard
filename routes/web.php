@@ -80,6 +80,8 @@ Route::get('/rekaptable-data', [BilliardController::class, 'getRekapTableData'])
 
     Route::get('/rekap-order', [OrderController::class, 'rekap'])->name('rekap.order');
     Route::get('/detail-order/{id}', [OrderController::class, 'detailorder'])->name('rekap.detailorder');
+// web.php (Route File)
+Route::get('/search-names', [BilliardController::class, 'searchNames'])->name('search.names');
 
 });
 
