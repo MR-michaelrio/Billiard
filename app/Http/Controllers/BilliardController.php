@@ -912,8 +912,8 @@ class BilliardController extends Controller
         //     ->get();
 
         $rekaps = DB::table('invoice')
-            ->join('rentalinvoice', 'invoice.id', '=', 'rentalinvoice.invoice_id')
-            ->join('order', 'invoice.id', '=', 'order.invoice_id')
+            ->join('rentalinvoice', 'invoice.id_rental', '=', 'rentalinvoice.id_rental')
+            ->join('order', 'invoice.id_belanja', '=', 'order.id')
             ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
             ->select('invoice.*', 'rentalinvoice.*', 'order.*') // Select necessary fields
             ->get();
