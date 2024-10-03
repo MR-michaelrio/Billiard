@@ -907,7 +907,7 @@ class BilliardController extends Controller
     public function rekapdetailbulan($bulan)
     {
         $rekaps = Invoice::with('rentalinvoice')
-            ->with('orders')
+            ->with('order')
             ->whereMonth('created_at', $bulan)
             ->get();
         return $rekaps;

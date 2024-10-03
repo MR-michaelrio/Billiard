@@ -11,7 +11,6 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Tahun</th>
                             <th>Bulan</th>
                             <th>Jumlah Invoice</th>
                             <th>Total Jumlah</th>
@@ -20,8 +19,8 @@
                     <tbody>
                     @foreach ($rekaps as $invoice)
                         <tr>
-                            <td>{{ $invoice->year }}</td>
-                            <td>{{ \Carbon\Carbon::create()->month($invoice->month)->format('F') }}</td>
+                            <td>{{ $invoice->month }}</td>
+                            <td>{{ $invoice->rentalinvoice->no_meja }}</td>
                         </tr>
                     @endforeach
                     </tbody>
