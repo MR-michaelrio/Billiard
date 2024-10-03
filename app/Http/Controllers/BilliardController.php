@@ -910,6 +910,7 @@ class BilliardController extends Controller
         //     ->with('order')
         //     ->whereMonth('created_at', $bulan)
         //     ->get();
+        return $bulan;
         $rekaps = Invoice::with('rentalinvoice', 'order')
         ->whereMonth(DB::raw('DATE(CONVERT_TZ(created_at, "+00:00", "+07:00"))'), $bulan)
         ->get();
