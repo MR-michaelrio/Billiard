@@ -910,9 +910,8 @@ class BilliardController extends Controller
         //     ->with('order')
         //     ->whereMonth('created_at', $bulan)
         //     ->get();
-        $timezone = 'Asia/Jakarta';
         $rekaps = Invoice::with('rentalinvoice', 'order')
-        ->whereMonth(Carbon::parse('created_at')->setTimezone($timezone), $bulan)
+        ->whereMonth(DB::raw('DATE(CONVERT_TZ(created_at, "+00:00", "+07:00"))'), $bulan)
         ->get();
         return $rekaps;
         // return view('invoice.rekap-detailbulan', compact('rekaps'));
