@@ -895,8 +895,7 @@ class BilliardController extends Controller
 
     public function rekapbulan()
     {
-        $rekaps = Invoice::with('rentalinvoice')
-        ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month')
+        $rekaps = Invoice::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month')
         ->groupBy('year', 'month')
         ->orderBy('year', 'asc')
         ->orderBy('month', 'asc')
