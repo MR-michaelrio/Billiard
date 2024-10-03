@@ -906,34 +906,13 @@ class BilliardController extends Controller
 
     public function rekapdetailbulan($bulan)
     {
-        // $rekaps = Invoice::with('rentalinvoice')
-        //     ->with('order')
-        //     ->where(DB::raw('MONTH(created_at)'), $bulan)
-        //     ->get();
-
         $rekaps = DB::table('invoice')
             ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
             ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
+            ->join('orders', 'invoice.id_belanja', '=', 'orders.id')
             ->get();
-
-
-        // $rekaps = DB::table('invoice')
-        //     ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
-        //     ->join('orders', 'invoice.id_belanja', '=', 'orders.id')
-        //     ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
-        //     ->select('invoice.*', 'rental_invoice.*', 'orders.*') // Select necessary fields
-        //     ->get();
-        //     // Return the array of months
-        //     return $rekaps;
-
-            // $rekaps = DB::table('invoice')
-            //     ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
-            //     ->join('orders', 'invoice.id_belanja', '=', 'orders.id')
-            //     ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
-            //     ->select('invoice.*', 'rental_invoice.*', 'orders.*') // Select necessary fields
-            //     ->get();
-
-            return $rekaps;
+            
+        return $rekaps;
         // return $rekaps;
         // return view('invoice.rekap-detailbulan', compact('rekaps'));
     }
