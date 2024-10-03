@@ -905,25 +905,26 @@ class BilliardController extends Controller
     }
 
     public function rekapdetailbulan($bulan)
-    {
-        // $rekaps = Invoice::with('rentalinvoice')
-        //     ->with('order')
-        //     ->whereMonth('created_at', $bulan)
-        //     ->get();
-        $rekaps = Invoice::with('rentalinvoice', 'order')
+{
+    // Define your timezone offset (e.g., "+07:00" for Jakarta)
+    $timezone = '+07:00';
+
+    // Use `DB::raw` to adjust the timezone in your query
+    $rekaps = Invoice::with('rentalinvoice', 'order')
+        ->whereMonth(DB::raw("DATE(CONVERT_TZ(created_at, '+00:00', '$timezone'))"), $bulan)
         ->get();
 
-        // Step 2: Convert created_at to the correct timezone and filter by month
-        $timezone = 'Asia/Jakarta'; // Use your desired timezone
+    // Debug: Print the raw SQL query for verification
+    $query = Invoice::with('rentalinvoice', 'order')
+        ->whereMonth(DB::raw("DATE(CONVERT_TZ(created_at, '+00:00', '$timezone'))"), $bulan)
+        ->toSql();
 
-        $filteredRekaps = $rekaps->filter(function ($invoice) use ($bulan, $timezone) {
-            $invoiceMonth = Carbon::parse($invoice->created_at)->setTimezone($timezone)->month;
-            return $invoiceMonth == $bulan;
-        });
+    echo "Generated SQL Query: " . $query;
 
-        // Step 3: Return filtered results
-        return $filteredRekaps;
-        // return view('invoice.rekap-detailbulan', compact('rekaps'));
-    }
+    return $rekaps;
+    // Alternatively, if using the view, uncomment below:
+    // return view('invoice.rekap-detailbulan', compact('rekaps'));
+}
+
 
 }
