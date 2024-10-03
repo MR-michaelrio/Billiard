@@ -909,7 +909,6 @@ class BilliardController extends Controller
         $rekaps = DB::table('invoice')
             ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
             ->join('orders', 'invoice.id_belanja', '=', 'orders.id')
-            ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
             ->where(DB::raw('MONTH(orders.created_at)'), $bulan)
             ->get();
             
