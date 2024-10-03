@@ -910,11 +910,19 @@ class BilliardController extends Controller
         //     ->with('order')
         //     ->whereMonth('created_at', $bulan)
         //     ->get();
-        return $bulan;
         $rekaps = Invoice::with('rentalinvoice', 'order')
-        ->whereMonth(DB::raw('DATE(CONVERT_TZ(created_at, "+00:00", "+07:00"))'), $bulan)
         ->get();
-        return $rekaps;
+
+        // Step 2: Convert created_at to the correct timezone and filter by month
+        $timezone = 'Asia/Jakarta'; // Use your desired timezone
+
+        $filteredRekaps = $rekaps->filter(function ($invoice) use ($bulan, $timezone) {
+            $invoiceMonth = Carbon::parse($invoice->created_at)->setTimezone($timezone)->month;
+            return $invoiceMonth == $bulan;
+        });
+
+        // Step 3: Return filtered results
+        return $filteredRekaps;
         // return view('invoice.rekap-detailbulan', compact('rekaps'));
     }
 
