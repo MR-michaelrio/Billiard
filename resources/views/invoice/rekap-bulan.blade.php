@@ -20,7 +20,7 @@
                         <tr>
                             <td>{{ $p->month }}</td>
                             <td>
-                                <a href="{{ route('bl.rekap-detailbulan', $p->month) }}" class="btn btn-primary">Detail</a>
+                                <a href="{{ route('rekap.detailbulan', $p->month) }}" class="btn btn-primary">Detail</a>
                             </td>
                         </tr>
                     @endforeach
