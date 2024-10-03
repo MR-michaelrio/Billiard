@@ -906,17 +906,17 @@ class BilliardController extends Controller
 
     public function rekapdetailbulan($bulan)
     {
-        // $rekaps = Invoice::with('rentalinvoice')
-        //     ->with('order')
-        //     ->whereMonth('created_at', $bulan)
-        //     ->get();
+        $rekaps = Invoice::with('rentalinvoice')
+            ->with('order')
+            ->where(DB::raw('MONTH(created_at)'), $bulan)
+            ->get();
         //     $months = $rekaps->map(function($rekap) {
         //         return $rekap->created_at; // or 'm' for numeric month
         //     });
 
-        $rekaps = DB::table('invoice')
-            ->where(DB::raw('MONTH(created_at)'), $bulan)
-            ->get();
+        // $rekaps = DB::table('invoice')
+        //     ->where(DB::raw('MONTH(created_at)'), $bulan)
+        //     ->get();
             // Return the array of months
             return $rekaps;
         // return $rekaps;
