@@ -879,18 +879,29 @@ class BilliardController extends Controller
     }
 
     // YourController.php
-public function searchNames(Request $request)
-{
-    $search = $request->get('term'); // Mengambil query dari parameter 'term'
-    
-    // Ambil nama dari tabel, sesuaikan dengan nama tabel dan kolom yang Anda miliki
-    $results = DB::table('non_member')
-                ->select('id', 'nama', 'no_telp')
-                ->where('nama', 'LIKE', '%' . $search . '%')
-                ->get();
+    public function searchNames(Request $request)
+    {
+        $search = $request->get('term'); // Mengambil query dari parameter 'term'
+        
+        // Ambil nama dari tabel, sesuaikan dengan nama tabel dan kolom yang Anda miliki
+        $results = DB::table('non_member')
+                    ->select('id', 'nama', 'no_telp')
+                    ->where('nama', 'LIKE', '%' . $search . '%')
+                    ->get();
 
-    // Mengembalikan hasil dalam format JSON yang dapat digunakan untuk autocomplete
-    return response()->json($results);
-}
+        // Mengembalikan hasil dalam format JSON yang dapat digunakan untuk autocomplete
+        return response()->json($results);
+    }
+
+    public function rekapbulan()
+    {
+        $rekaps = Invoice::with('rentalinvoice')
+        ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as invoice_count, SUM(amount) as total_amount')
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'month')
+        ->get();
+        return $rekaps;
+        // return view('invoice.rekap',compact('rekaps'));
+    }
 
 }
