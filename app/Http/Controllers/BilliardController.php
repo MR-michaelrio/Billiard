@@ -905,28 +905,19 @@ class BilliardController extends Controller
     }
 
     public function rekapdetailbulan($bulan)
-{
-    // Define your timezone offset (e.g., "+07:00" for Jakarta)
-    $timezone = '+07:00';
-
-    // Calculate start and end dates for the given month
-    $startDate = now()->setTimezone($timezone)->startOfMonth()->setDate(now()->year, $bulan, 1);
-    $endDate = $startDate->copy()->endOfMonth();
-
-    // Use the whereBetween clause to get invoices within the start and end date range
-    $rekaps = Invoice::with('rentalinvoice', 'order')
-        ->whereBetween(DB::raw("DATE(CONVERT_TZ(created_at, '+00:00', '$timezone'))"), [$startDate, $endDate])
-        ->get();
-
-    // Debug: Print the raw SQL query for verification
-    $query = Invoice::with('rentalinvoice', 'order')
-        ->whereBetween(DB::raw("DATE(CONVERT_TZ(created_at, '+00:00', '$timezone'))"), [$startDate, $endDate])
-        ->toSql();
-
-    echo "Generated SQL Query: " . $query;
-
-    return $rekaps;
-}
-
+    {
+        $rekaps = Invoice::with('rentalinvoice')
+            ->with('order')
+            ->whereMonth('created_at', $bulan)
+            ->get();
+            $months = $rekaps->map(function($rekap) {
+                return $rekap->created_at; // or 'm' for numeric month
+            });
+            
+            // Return the array of months
+            return $months;
+        // return $rekaps;
+        // return view('invoice.rekap-detailbulan', compact('rekaps'));
+    }
 
 }
