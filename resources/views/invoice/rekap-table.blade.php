@@ -10,7 +10,7 @@
                 <form id="tokenForm">
                     @csrf
                     <div class="form-group">
-                        <input type="hidden" class="form-control" id="token" name="token" autocomplete="off" required>
+                        <input type="password" class="form-control" id="token" name="token" autocomplete="off" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
