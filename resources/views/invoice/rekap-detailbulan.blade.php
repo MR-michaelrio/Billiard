@@ -25,7 +25,9 @@
                         <tr>
                             <td>{{ $invoice->created_at }}</td>
                             <td>{{ $invoice->id_player }}</td>
+                            <td>{{ $invoice->harga_table }}</td>
                             <td>{{ $invoice->harga_cafe }}</td>
+                            <td>{{ $invoice->lama_waktu }}</td>
                             <td>{{ $invoice->no_meja }}</td>
                             <td>{{ $invoice->metode }}</td>
                         </tr>
