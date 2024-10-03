@@ -914,7 +914,7 @@ class BilliardController extends Controller
         //         return $rekap->created_at; // or 'm' for numeric month
         //     });
 
-        $rekaps = DB::table('invoice')->where(DB::raw(MONTH('created_at')), $month);
+        $rekaps = DB::table('invoice')->where(DB::raw(MONTH('created_at')), $bulan);
             // Return the array of months
             return $rekaps;
         // return $rekaps;
