@@ -62,7 +62,7 @@ class OrderController extends Controller
         }
 
         Invoice::create([
-            'id_belanja' => $request->id_table,
+            'id_belanja' => $order->id,
             'user_id' => Auth::user()->id
         ]);
 

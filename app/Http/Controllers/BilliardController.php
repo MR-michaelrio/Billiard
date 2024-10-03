@@ -906,10 +906,14 @@ class BilliardController extends Controller
 
     public function rekapdetailbulan($bulan)
     {
-        $rekaps = Invoice::with('rentalinvoice')
-            ->with('order')
-            ->whereMonth('created_at', $bulan)
-            ->get();
+        // $rekaps = Invoice::with('rentalinvoice')
+        //     ->with('order')
+        //     ->whereMonth('created_at', $bulan)
+        //     ->get();
+        $timezone = 'Asia/Jakarta';
+        $rekaps = Invoice::with('rentalinvoice', 'order')
+        ->whereMonth(Carbon::parse('created_at')->setTimezone($timezone), $bulan)
+        ->get();
         return $rekaps;
         // return view('invoice.rekap-detailbulan', compact('rekaps'));
     }
