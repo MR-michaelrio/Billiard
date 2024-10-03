@@ -898,7 +898,8 @@ class BilliardController extends Controller
         $rekaps = Invoice::with('rentalinvoice')
         ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as invoice_count, SUM(amount) as total_amount')
         ->groupBy('year', 'month')
-        ->orderBy('year', 'month')
+        ->orderBy('year', 'asc')
+        ->orderBy('month', 'asc')
         ->get();
         return $rekaps;
         // return view('invoice.rekap',compact('rekaps'));
