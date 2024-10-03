@@ -11,25 +11,35 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Bulan</th>
-                            <th>Jumlah Invoice</th>
-                            <th>Total Jumlah</th>
+                            <th>Tanggal</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Harga Table</th>
+                            <th>Harga Cafe</th>
+                            <th>Lama Main</th>
+                            <th>No Meja</th>
+                            <th>Metode</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($rekaps as $invoice)
                         <tr>
-                            <td>{{ $invoice->month }}</td>
-                            <td>{{ $invoice->rentalinvoice->no_meja }}</td>
+                            <td>{{ $invoice->created_at }}</td>
+                            <td>{{ $invoice->id_player }}</td>
+                            <td>{{ $invoice->harga_cafe }}</td>
+                            <td>{{ $invoice->no_meja }}</td>
+                            <td>{{ $invoice->metode }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Tahun</th>
-                            <th>Bulan</th>
-                            <th>Jumlah Invoice</th>
-                            <th>Total Jumlah</th>
+                            <th>Tanggal</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Harga Table</th>
+                            <th>Harga Cafe</th>
+                            <th>Lama Main</th>
+                            <th>No Meja</th>
+                            <th>Metode</th>
                         </tr>
                     </tfoot>
                 </table>
