@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($invoices as $invoice)
+                    @foreach ($rekaps as $invoice)
                         <tr>
                             <td>{{ $invoice->year }}</td>
                             <td>{{ \Carbon\Carbon::create()->month($invoice->month)->format('F') }}</td>
