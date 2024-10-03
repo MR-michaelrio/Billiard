@@ -909,8 +909,8 @@ class BilliardController extends Controller
         $rekaps = Invoice::with('rentalinvoice')
             ->whereMonth('created_at', $bulan)
             ->get();
-            
-        return view('invoice.rekap-detailbulan', compact('rekaps'));
+        return $rekaps;
+        // return view('invoice.rekap-detailbulan', compact('rekaps'));
     }
 
 }
