@@ -4,32 +4,33 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Rekap Bulanan</h3>
+                <h3 class="card-title">Rekap Detail Bulanan</h3>
             </div>               
             <!-- /.card-header -->
             <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                            <th>Tahun</th>
                             <th>Bulan</th>
-                            <th>Status</th>
+                            <th>Jumlah Invoice</th>
+                            <th>Total Jumlah</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($rekaps as $p)
+                    @foreach ($invoices as $invoice)
                         <tr>
-                            <td>{{ $p->month }}</td>
-                            <td>
-                                <a href="{{ route('bl.rekap-detailbulan', $p->month) }}" class="btn btn-primary">Detail</a>
-                            </td>
+                            <td>{{ $invoice->year }}</td>
+                            <td>{{ \Carbon\Carbon::create()->month($invoice->month)->format('F') }}</td>
                         </tr>
                     @endforeach
-
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th>Tahun</th>
                             <th>Bulan</th>
-                            <th>Status</th>
+                            <th>Jumlah Invoice</th>
+                            <th>Total Jumlah</th>
                         </tr>
                     </tfoot>
                 </table>

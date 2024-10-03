@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail-order/{id}', [OrderController::class, 'detailorder'])->name('rekap.detailorder');
     Route::get('/search-names', [BilliardController::class, 'searchNames'])->name('search.names');
     Route::get('/rekap-bulan', [BilliardController::class, "rekapbulan"])->name("rekap.bulan");
+    Route::get('/rekap-detailbulan/{bulan}', [BilliardController::class, "rekapdetailbulan"])->name("rekap.detailbulan");
 
 });
 

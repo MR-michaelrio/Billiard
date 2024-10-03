@@ -900,8 +900,21 @@ class BilliardController extends Controller
         ->orderBy('year', 'asc')
         ->orderBy('month', 'asc')
         ->get();
-        return $rekaps;
-        // return view('invoice.rekap',compact('rekaps'));
+        // return $rekaps;
+        return view('invoice.rekap-bulan',compact('rekaps'));
+    }
+
+    public function rekapdetailbulan($bulan)
+    {
+        $rekaps = Invoice::with('rentalinvoice')
+            ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month')
+            ->whereMonth('created_at', $bulan) // Filter by the provided month
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+            
+        return view('invoice.rekap-detailbulan', compact('rekaps'));
     }
 
 }
