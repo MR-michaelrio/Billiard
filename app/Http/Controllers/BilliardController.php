@@ -919,8 +919,7 @@ class BilliardController extends Controller
                 'invoice.created_at',
                 'rental_invoice.lama_waktu',
                 'rental_invoice.no_meja',
-                'rental_invoice.metode',               
-                'orders.*'
+                'rental_invoice.metode'
             )
             ->get();
 
