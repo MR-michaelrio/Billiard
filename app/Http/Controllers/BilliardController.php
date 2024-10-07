@@ -905,55 +905,59 @@ class BilliardController extends Controller
     }
 
     public function rekapdetailbulan($bulan)
-    {
-        $hargarental = HargaRental::where('jenis', 'menit')->first();
-        $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+{
+    $hargarental = HargaRental::where('jenis', 'menit')->first();
+    $harga_per_menit = $hargarental ? $hargarental->harga : 0;
 
-        $rekaps = DB::table('invoice')
-            ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
-            ->join('orders', 'invoice.id_belanja', '=', 'orders.id_table')
-            ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
-            ->where(DB::raw('MONTH(orders.created_at)'), $bulan)
-            ->select(
-                'invoice.*',
-                'rental_invoice.lama_waktu',
-                'rental_invoice.no_meja',
-                'rental_invoice.metode', // Include the rental duration
-                'orders.*'
-            )
-            ->get();
-            
-        // return $rekaps;
-        // return $rekaps;
-        foreach ($rekaps as $rekap) {
-            $lama_waktu = $rekap->lama_waktu ?? '00:00:00';
-    
-            // Convert the lama_waktu (HH:MM:SS) into total minutes
-            list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
-            $total_minutes = $hours * 60 + $minutes + $seconds / 60;
-    
-            // Calculate the rental price using per-minute pricing
-            $mejatotal = $total_minutes * $harga_per_menit;
-    
-            // Check for the best package price
-            $paket = Paket::orderBy('jam', 'asc')->get();
-            $best_price = null; // Initialize best price as null
-    
-            foreach ($paket as $p) {
-                // Convert package time ($p->jam) to minutes
-                $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
-                
-                // Check if total_minutes is equal to or exceeds package time
-                if ($total_minutes == $package_minutes) {
-                    $best_price = $p->harga; // Update to this package's price
-                }
+    // Use LEFT JOIN for 'orders' to include records even if 'id_belanja' is NULL
+    $rekaps = DB::table('invoice')
+        ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
+        ->leftJoin('orders', 'invoice.id_belanja', '=', 'orders.id_table') // Changed to leftJoin
+        ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
+        ->where(function ($query) use ($bulan) {
+            // Check for orders data or handle NULL cases
+            $query->where(DB::raw('MONTH(orders.created_at)'), $bulan)
+                  ->orWhereNull('invoice.id_belanja'); // Include NULL 'id_belanja' cases
+        })
+        ->select(
+            'invoice.*',
+            'rental_invoice.lama_waktu',
+            'rental_invoice.no_meja',
+            'rental_invoice.metode',
+            'orders.*' // Select all fields from orders (will be NULL if no matching record)
+        )
+        ->get();
+
+    foreach ($rekaps as $rekap) {
+        $lama_waktu = $rekap->lama_waktu ?? '00:00:00';
+
+        // Convert the lama_waktu (HH:MM:SS) into total minutes
+        list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+        $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+
+        // Calculate the rental price using per-minute pricing
+        $mejatotal = $total_minutes * $harga_per_menit;
+
+        // Check for the best package price
+        $paket = Paket::orderBy('jam', 'asc')->get();
+        $best_price = null;
+
+        foreach ($paket as $p) {
+            // Convert package time ($p->jam) to minutes
+            $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
+
+            // Check if total_minutes is equal to or exceeds package time
+            if ($total_minutes == $package_minutes) {
+                $best_price = $p->harga; // Update to this package's price
             }
-    
-            // If a package price is found, use it, otherwise stick with the per-minute price
-            $rekap->mejatotal = $best_price !== null ? $best_price : $mejatotal;
         }
-        // return $rekaps;
-        return view('invoice.rekap-detailbulan', compact('rekaps'));
+
+        // If a package price is found, use it; otherwise, stick with the per-minute price
+        $rekap->mejatotal = $best_price !== null ? $best_price : $mejatotal;
     }
+
+    return view('invoice.rekap-detailbulan', compact('rekaps'));
+}
+
 
 }
