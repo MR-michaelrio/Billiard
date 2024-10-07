@@ -916,7 +916,9 @@ class BilliardController extends Controller
             ->where(DB::raw('MONTH(orders.created_at)'), $bulan)
             ->select(
                 'invoice.*',
-                'rental_invoice.*', // Include the rental duration
+                'rental_invoice.lama_waktu',
+                'rental_invoice.no_meja',
+                'rental_invoice.metode', // Include the rental duration
                 'orders.*'
             )
             ->get();
