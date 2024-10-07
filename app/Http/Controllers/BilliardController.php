@@ -957,8 +957,8 @@ class BilliardController extends Controller
         // If a package price is found, use it; otherwise, stick with the per-minute price
         $rekap->mejatotal = $best_price !== null ? $best_price : $mejatotal;
     }
-    // return $rekaps;
-    return view('invoice.rekap-detailbulan', compact('rekaps'));
+    return $rekaps;
+    // return view('invoice.rekap-detailbulan', compact('rekaps'));
 }
 
 
