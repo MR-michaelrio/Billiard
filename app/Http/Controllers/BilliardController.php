@@ -921,6 +921,7 @@ class BilliardController extends Controller
         })
         ->select(
             'invoice.*',
+            'invoice.created_at',
             'rental_invoice.lama_waktu',
             'rental_invoice.no_meja',
             'rental_invoice.metode',
