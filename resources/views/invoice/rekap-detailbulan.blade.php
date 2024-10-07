@@ -23,7 +23,7 @@
                     <tbody>
                     @foreach ($rekaps as $invoice)
                         <tr>
-                            <td>{{ $invoice->created_at }}</td>
+                            <td>{{ $invoice->created_at }} || {{ $invoice->updated_at }}</td>
                             <td>{{ $invoice->id_player }}</td>
                             <td>{{ $invoice->mejatotal }}</td>
                             <td>{{ $invoice->harga_cafe }}</td>
