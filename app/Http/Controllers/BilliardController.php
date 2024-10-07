@@ -960,7 +960,7 @@ class BilliardController extends Controller
             $rekap->mejatotal = $best_price !== null ? $best_price : $mejatotal;
         }
     }
-
+    return $rekaps;
     // Mengirim data 'rekaps' yang telah diperbarui ke view 'rekap-detailbulan'
     return view('invoice.rekap-detailbulan', compact('rekaps'));
 }
