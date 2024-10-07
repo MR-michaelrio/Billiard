@@ -13,6 +13,7 @@
                         <tr>
                             <th>Tanggal</th>
                             <th>Nama Pelanggan</th>
+                            <th>ID Belanja</th>
                             <th>Harga Table</th>
                             <th>Harga Cafe</th>
                             <th>Lama Main</th>
@@ -25,6 +26,7 @@
                         <tr>
                             <td>{{ $invoice->created_at }}</td>
                             <td>{{ $invoice->id_player }}</td>
+                            <td>{{ $invoice->id_belanja }}</td>
                             <td>{{ $invoice->mejatotal }}</td>
                             <td>{{ $invoice->harga_cafe }}</td>
                             <td>{{ $invoice->lama_waktu }}</td>
