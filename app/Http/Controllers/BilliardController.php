@@ -914,11 +914,6 @@ class BilliardController extends Controller
             ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
             ->leftJoin('orders', 'invoice.id_belanja', '=', 'orders.id_table') // Changed to leftJoin
             ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
-            ->where(function ($query) use ($bulan) {
-                // Check for orders data or handle NULL cases
-                $query->where(DB::raw('MONTH(orders.created_at)'), $bulan)
-                    ->orWhereNull('invoice.id_belanja'); // Include NULL 'id_belanja' cases
-            })
             ->select(
                 'invoice.*',
                 'invoice.created_at',
