@@ -905,65 +905,56 @@ class BilliardController extends Controller
     }
 
     public function rekapdetailbulan($bulan)
-{
-    // Mengambil harga per menit dari tabel HargaRental
-    $hargarental = HargaRental::where('jenis', 'menit')->first();
-    $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-
-    // Mengambil data dari tabel 'invoice' berdasarkan bulan
-    $rekaps = DB::table('invoice')
-        ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
-        ->get();
-
-    // Mengambil data dari 'invoice' yang dihubungkan dengan 'rental_invoice' menggunakan join
-    $rekaps2 = DB::table('invoice')
-        ->join('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
-        ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
-        ->select(
-            'invoice.*',            // Semua kolom dari 'invoice'
-            'rental_invoice.lama_waktu',
-            'rental_invoice.no_meja',
-            'rental_invoice.metode'
-        )
-        ->get();
-
-    // Loop melalui $rekaps untuk memodifikasi data berdasarkan data dari $rekaps2
-    foreach ($rekaps as $rekap) {
-        // Cari data terkait di $rekaps2 berdasarkan ID 'invoice'
-        $relatedRekap = $rekaps2->firstWhere('id', $rekap->id);
-
-        if ($relatedRekap) {
-            $lama_waktu = $relatedRekap->lama_waktu ?? '00:00:00';
-
-            // Konversi 'lama_waktu' (HH:MM:SS) ke total menit
+    {
+        $hargarental = HargaRental::where('jenis', 'menit')->first();
+        $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+    
+        // Mengambil data invoice dengan join ke rental_invoice menggunakan LEFT JOIN
+        $rekaps = DB::table('invoice')
+            ->leftJoin('rental_invoice', 'invoice.id_rental', '=', 'rental_invoice.id_rental')
+            ->where(DB::raw('MONTH(invoice.created_at)'), $bulan)
+            ->select(
+                'invoice.*', // Data dari tabel invoice
+                'rental_invoice.lama_waktu', // Data dari rental_invoice
+                'rental_invoice.no_meja',    // Data dari rental_invoice
+                'rental_invoice.metode'      // Data dari rental_invoice
+            )
+            ->get();
+    
+        // Iterasi melalui hasil query dan hitung harga total meja
+        foreach ($rekaps as $rekap) {
+            $lama_waktu = $rekap->lama_waktu ?? '00:00:00';
+    
+            // Konversi lama_waktu (HH:MM:SS) ke total menit
             list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
             $total_minutes = $hours * 60 + $minutes + $seconds / 60;
-
-            // Hitung total harga sewa meja berdasarkan harga per menit
+    
+            // Hitung harga rental menggunakan harga per menit
             $mejatotal = $total_minutes * $harga_per_menit;
-
-            // Cari paket terbaik untuk waktu yang dihitung
+    
+            // Cek harga terbaik berdasarkan paket yang tersedia
             $paket = Paket::orderBy('jam', 'asc')->get();
             $best_price = null;
-
+    
             foreach ($paket as $p) {
-                // Konversi waktu paket ke menit
+                // Konversi waktu paket ($p->jam) ke menit
                 $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
-
-                // Cek apakah total_minutes sesuai dengan waktu paket
+    
+                // Jika total_minutes sama dengan atau melebihi waktu paket
                 if ($total_minutes == $package_minutes) {
-                    $best_price = $p->harga; // Gunakan harga paket ini
+                    $best_price = $p->harga; // Update ke harga paket ini
                 }
             }
-
-            // Gunakan harga paket jika ditemukan, jika tidak tetap gunakan harga per menit
+    
+            // Jika harga paket ditemukan, gunakan; jika tidak, tetap gunakan harga per menit
             $rekap->mejatotal = $best_price !== null ? $best_price : $mejatotal;
         }
+    
+        return $rekaps;
+        // Kirim data ke view
+        return view('invoice.rekap-detailbulan', compact('rekaps'));
     }
-    return $rekaps;
-    // Mengirim data 'rekaps' yang telah diperbarui ke view 'rekap-detailbulan'
-    return view('invoice.rekap-detailbulan', compact('rekaps'));
-}
+    
 
 
 
