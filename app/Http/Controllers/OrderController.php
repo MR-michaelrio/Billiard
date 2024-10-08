@@ -60,13 +60,14 @@ class OrderController extends Controller
                 Log::error('Product not found', ['product' => $item['name']]);
             }
         }
-
-        Invoice::create([
+        
+        $invoice = Invoice::create([
             'id_belanja' => $order->id,
             'user_id' => Auth::user()->id
         ]);
+        // Calculate the total for all food items
 
-        return response()->json(['success' => true, "order_id"=>$order->id]);
+        return response()->json(['success' => true, "order_id"=>$order->id, "invoice_id" => $invoice->id]);
     }
 
 
@@ -122,6 +123,12 @@ class OrderController extends Controller
         // Total biaya keseluruhan
         $total = $total_makanan;
         $total = round($total);
+
+        $invoice->update([
+            "harga_table"=>$mejatotal,
+            "harga_cafe"=>$total_makanan
+        ]);
+
         return view("invoice.struk-order", compact("order","orderid","makanan","total"));
     }
 

@@ -219,7 +219,9 @@
                         
                                              
                             // Redirect to print the receipt using id_rental
-                        const printUrl =`{{ route('print.strukorder', ['order_id' => ':order_id']) }}`.replace(':order_id', data.order_id);
+                        const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id','invoice_id' => ':invoice_id']) }}`
+                            .replace(':order_id', data.order_id)
+                            .replace(':invoice_id', data.invoice_id);                        
                         window.location.href = printUrl;
                     } else {
                         alert('There was an error submitting the order');
