@@ -103,7 +103,7 @@ class OrderController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function struk($order_id){
+    public function struk($order_id, $invoice_id){
         // return $order_id;
         $orderid = OrderItem::where('order_id', $order_id)->first();
 
@@ -113,6 +113,8 @@ class OrderController extends Controller
                             ->where('status', 'lunas')
                             ->with('items') // Eager load items
                             ->get();
+
+        $invoice = Invoice::where('id', $invoice_id)->first();
         // Calculate the total for all food items
         $total_makanan = $makanan->flatMap(function($order) {
             return $order->items;
@@ -125,7 +127,6 @@ class OrderController extends Controller
         $total = round($total);
 
         $invoice->update([
-            "harga_table"=>$mejatotal,
             "harga_cafe"=>$total_makanan
         ]);
 
