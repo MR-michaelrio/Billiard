@@ -313,7 +313,7 @@ class BilliardController extends Controller
                 }
                 $orderss = $orders->first()->id_table;
             } else {
-                $orderss = 0;
+                $orderss = NULL;
             }
 
             // Simpan data Invoice
@@ -920,7 +920,7 @@ class BilliardController extends Controller
                 'rental_invoice.metode'      // Data dari rental_invoice
             )
             ->get();
-    
+
         // Iterasi melalui hasil query dan hitung harga total meja
         foreach ($rekaps as $rekap) {
             $lama_waktu = $rekap->lama_waktu ?? '00:00:00';
