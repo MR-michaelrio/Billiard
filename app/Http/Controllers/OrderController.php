@@ -114,8 +114,8 @@ class OrderController extends Controller
                             ->with('items') // Eager load items
                             ->get();
 
-        $invoice = Invoice::where('id', $invoice_id)->first();
-        // Calculate the total for all food items
+        $invoice = Invoice::find($invoice_id);        // Calculate the total for all food items
+        
         $total_makanan = $makanan->flatMap(function($order) {
             return $order->items;
         })->sum(function($item) {

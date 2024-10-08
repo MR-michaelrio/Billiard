@@ -219,10 +219,16 @@
                         
                                              
                             // Redirect to print the receipt using id_rental
-                        const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id','invoice_id' => ':invoice_id']) }}`
-                            .replace(':order_id', data.order_id)
-                            .replace(':invoice_id', data.invoice_id);                        
-                        window.location.href = printUrl;
+                            const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id', 'invoice_id' => ':invoice_id']) }}`
+                                .replace(':order_id', data.order_id)
+                                .replace(':invoice_id', data.invoice_id);
+
+                            if (data.order_id && data.invoice_id) {
+                                window.location.href = printUrl; // Redirect to the constructed URL
+                            } else {
+                                alert('Order ID atau Invoice ID tidak valid.');
+                            }
+
                     } else {
                         alert('There was an error submitting the order');
                     }
