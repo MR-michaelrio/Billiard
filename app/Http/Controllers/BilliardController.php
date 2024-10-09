@@ -259,7 +259,22 @@ class BilliardController extends Controller
             // Cek dan siapkan variabel
             $lama_waktu = $validated['lama_waktu'];
             $waktu_mulai = $meja_rental->waktu_mulai;
-            $waktu_akhir = $meja_rental->waktu_akhir;
+
+            if(is_null($meja_rental->waktu_akhir)){
+                $waktuMulai = new \DateTime($meja_rental->waktu_mulai);
+                // Memisahkan lamaWaktu menjadi hours dan minutes
+                list($hours, $minutes, $seconds) = explode(':', $lama_waktu);
+                $intervalString = 'PT' . $hours . 'H' . $minutes . 'M' . $seconds . 'S';  // Membuat interval waktu dengan format 'PTxHxMxS'
+                $interval = new \DateInterval($intervalString);
+                
+                // Menambahkan interval ke tanggalMain
+                $waktuMulai->add($interval);
+                $waktu_akhir = $waktuMulai->format('Y-m-d H:i:s');
+            }else{
+                $waktu_akhir = $meja_rental->waktu_akhir;
+            }
+            
+            // $waktu_akhir = $meja_rental->waktu_akhir jika kosong maka waktu_mulai + dengan lama_waktu;
             $no_meja = $meja_rental->no_meja;
             $id_player = $meja_rental->id_player;
 
