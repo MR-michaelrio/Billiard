@@ -50,7 +50,11 @@
         padding: 20px;
         font-size: 24px;
         padding:100px 10px;
+        /* display: flex; */
+        /* align-items: center; */
         justify-content: center;
+        /* position: absolute; */
+        /* top: 50%; */
     }
 </style>
 
@@ -63,6 +67,8 @@
         </div>
         <div class="col">
             <div class="row">
+                <!-- First row of tables -->
+                <!-- <div class="col-2"></div> -->
                 @for ($i = 0; $i < 3; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
@@ -86,6 +92,7 @@
             </div>
 
             <div class="row">
+                <!-- <div class="col-2"></div> -->
                 @for ($i = 3; $i < 7; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
@@ -111,6 +118,7 @@
             <div class="divider"></div>
 
             <div class="row">
+                <!-- <div class="col-2"></div> -->
                 @for ($i = 7; $i < 15; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
@@ -189,21 +197,48 @@
         setInterval(updateStopwatch, 1000);
     }
 
+    function resetStopwatch(noMeja) {
+        const stopwatchKey = `stopwatch_${noMeja}`;
+        localStorage.removeItem(stopwatchKey);
+
+        const element = document.querySelector(`.meja[data-nomor-meja="${noMeja}"]`);
+        if (element) {
+            const stopwatchElement = element.closest('.card-body').querySelector('.stopwatch');
+            if (stopwatchElement) {
+                stopwatchElement.innerHTML = '00:00:00';
+            }
+            element.classList.remove('meja-yellow', 'meja-red');
+            element.classList.add('meja-green');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.card').forEach(function (card) {
-            const countdownElement = card.querySelector('.countdown');
-            const stopwatchElement = card.querySelector('.stopwatch');
-            const status = countdownElement ? countdownElement.getAttribute('data-status') : '';
+        const timerElements = document.querySelectorAll('.countdown, .stopwatch');
+        timerElements.forEach(element => {
+            const status = element.getAttribute('data-status');
+            const nomorMeja = element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja');
 
             if (status === 'lanjut') {
-                startStopwatch(card, localStorage.getItem(`stopwatch_${card.querySelector('.meja').getAttribute('data-nomor-meja')}`));
+                const stopwatchKey = `stopwatch_${nomorMeja}`;
+                const startTime = localStorage.getItem(stopwatchKey);
+                startStopwatch(element.closest('.card-body'), startTime);
             } else {
-                const endTime = card.querySelector('.meja').getAttribute('data-end-time');
-                if (endTime) {
-                    startCountdown(card, endTime);
+                const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
+                if (endTimeString) {
+                    startCountdown(element.closest('.card-body'), endTimeString);
                 }
             }
         });
     });
+
+    function handleSuccessResponse(data) {
+        if (data.success) {
+            resetStopwatch(data.no_meja);
+            showAlert('Success','Order submitted successfully','success');
+            window.location.href = '{{ route("bl.index") }}';
+        } else {
+            showAlert('Error','There was an error submitting the order','error');
+        }
+    }
 </script>
 @endsection
