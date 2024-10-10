@@ -66,7 +66,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{url('rekaptable')}}" class="nav-link">
-                  <i class="nav-icon fas fa-dollar-sign"></i>
+                  <i class="nav-icon fas fa-file""></i>
                   <p>
                     Rekap Table
                   </p>
@@ -75,7 +75,30 @@
             </ul>
           </li>
           @if(Auth::check() && Auth::user()->role == "admin")
-
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('rekap.bulan')}}" class="nav-link">
+                  <i class="nav-icon fas fa-file"></i>
+                  <p>
+                    Rekap Bulanan
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('bl.rekap')}}" class="nav-link">
+                  <i class="nav-icon fas fa-file"></i>
+                  <p>
+                    Rekap Seluruh
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -107,18 +130,6 @@
                   <i class="nav-icon fas fa-dollar-sign"></i>
                   <p>
                     Harga
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('bl.rekap')}}" class="nav-link">
-                  <i class="nav-icon fas fa-dollar-sign"></i>
-                  <p>
-                    Rekap Seluruh
                   </p>
                 </a>
               </li>
