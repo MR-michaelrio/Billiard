@@ -121,7 +121,7 @@
                 <!-- <div class="col-2"></div> -->
                 @for ($i = 7; $i < 15; $i++)
                     <div class="col-2 col-lg-3">
-                        @foreach($meja_rental as $index => $mi)
+                        <!-- @foreach($meja_rental as $index => $mi)
                             @if($index == $i)
                                 <div class="card">
                                     <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
@@ -136,7 +136,27 @@
                                     </a>
                                 </div>
                             @endif
-                        @endforeach
+                        @endforeach -->
+                        @foreach($meja_rental as $index => $mi)
+    @if($index == $i)
+        <div class="card">
+            <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
+                <div class="card-body">
+                    <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
+                         data-end-time="{{ $mi['waktu_akhir'] }}" 
+                         data-start-time="{{ $mi['waktu_mulai'] }}" 
+                         data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                        Meja {{ $mi['nomor_meja'] }}
+                    </div>
+                    <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                        {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                    </div>
+                </div>
+            </a>
+        </div>
+    @endif
+@endforeach
+
                     </div>
                 @endfor
             </div>
@@ -171,31 +191,31 @@
     }
 
     function startStopwatch(element, startTime) {
-        const stopwatchKey = `stopwatch_${element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja')}`;
-        const start = startTime || new Date().getTime();
+    const stopwatchKey = `stopwatch_${element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja')}`;
+    const start = startTime ? new Date(startTime).getTime() : new Date().getTime(); // Use database startTime if available
 
-        if (!startTime) {
-            localStorage.setItem(stopwatchKey, start);
-        }
-
-        element.querySelector('.meja').classList.remove('meja-green');
-        element.querySelector('.meja').classList.add('meja-yellow');
-
-        function updateStopwatch() {
-            const now = new Date().getTime();
-            const elapsed = now - start;
-
-            const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
-
-            element.querySelector('.stopwatch').innerHTML =
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        updateStopwatch();
-        setInterval(updateStopwatch, 1000);
+    if (!startTime) {
+        localStorage.setItem(stopwatchKey, start);
     }
+
+    element.querySelector('.meja').classList.remove('meja-green');
+    element.querySelector('.meja').classList.add('meja-yellow');
+
+    function updateStopwatch() {
+        const now = new Date().getTime();
+        const elapsed = now - start; // Calculate elapsed time from start time
+
+        const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+        element.querySelector('.stopwatch').innerHTML =
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    updateStopwatch();
+    setInterval(updateStopwatch, 1000);
+}
 
     function resetStopwatch(noMeja) {
         const stopwatchKey = `stopwatch_${noMeja}`;
@@ -213,23 +233,22 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        const timerElements = document.querySelectorAll('.countdown, .stopwatch');
-        timerElements.forEach(element => {
-            const status = element.getAttribute('data-status');
-            const nomorMeja = element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja');
+    const timerElements = document.querySelectorAll('.countdown, .stopwatch');
+    timerElements.forEach(element => {
+        const status = element.getAttribute('data-status');
+        const nomorMeja = element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja');
 
-            if (status === 'lanjut') {
-                const stopwatchKey = `stopwatch_${nomorMeja}`;
-                const startTime = localStorage.getItem(stopwatchKey);
-                startStopwatch(element.closest('.card-body'), startTime);
-            } else {
-                const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
-                if (endTimeString) {
-                    startCountdown(element.closest('.card-body'), endTimeString);
-                }
+        if (status === 'lanjut') {
+            const startTime = element.closest('.card-body').querySelector('.meja').getAttribute('data-start-time');
+            startStopwatch(element.closest('.card-body'), startTime); // Pass the database start time to the stopwatch
+        } else {
+            const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
+            if (endTimeString) {
+                startCountdown(element.closest('.card-body'), endTimeString);
             }
-        });
+        }
     });
+});
 
     function handleSuccessResponse(data) {
         if (data.success) {
