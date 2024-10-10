@@ -146,6 +146,7 @@ class BilliardController extends Controller
             $invoice = $rental->firstWhere('no_meja', $m->nomor);
             return [
                 'nomor_meja' => $m->nomor,
+                'waktu_mulai'=> $invoice && $invoice->waktu_mulai ? $invoice->waktu_mulai->format('Y-m-d H:i:s') : null,
                 'waktu_akhir' => $invoice && $invoice->waktu_akhir ? $invoice->waktu_akhir->format('Y-m-d H:i:s') : null,
                 'status' => $invoice ? $invoice->status : null // Tambahkan status
             ];
