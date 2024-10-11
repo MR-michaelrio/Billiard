@@ -17,6 +17,14 @@
             localStorage.setItem(stopwatchKey, currentTime); // Set start time
         }
 
+        // Function to format time in HH:MM:SS
+        function formatTime(seconds) {
+            const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            return `${hrs}:${mins}:${secs}`;
+        }
+
         // Event listener for Stop button
         document.querySelector('.btn-stop').addEventListener('click', function () {
             const startTime = localStorage.getItem(stopwatchKey);
@@ -28,8 +36,13 @@
                 // Convert elapsedTime to seconds
                 const elapsedSeconds = Math.floor(elapsedTime / 1000);
 
-                // Redirect to the stop page with nomor meja and elapsed time
-                console.log("waktu main:",startTime)
+                // Format elapsedSeconds to HH:MM:SS
+                const formattedTime = formatTime(elapsedSeconds);
+
+                // Output formatted time (replace console.log with appropriate DOM manipulation if needed)
+                console.log("Elapsed time:", formattedTime);
+                
+                // Uncomment the line below to redirect with elapsed time in seconds (if needed)
                 // window.location.href = `/stop/${nomorMeja}?elapsed=${elapsedSeconds}`;
             } else {
                 console.error("Start time not found in localStorage");
