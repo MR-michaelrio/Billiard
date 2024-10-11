@@ -2,26 +2,22 @@
 @section('content')
 <div class="row">
     <a href="{{ route('bl.menunonmember', $no_meja) }}" class="btn btn-block btn-primary btn-lg">Non Member</a>
-    <!-- <a href="{{ route('bl.menumember', $no_meja) }}" class="btn btn-block btn-primary btn-lg">Member</a> -->
     <button class="btn btn-block btn-primary btn-lg btn-stop" data-nomor-meja="{{ $no_meja }}">Stop</button>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Tambahkan event listener untuk tombol stop
+        // Extract `lama_main` from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const lamaMain = urlParams.get('lama_main');
+
+        // Add event listener for the stop button
         document.querySelectorAll('.btn-stop').forEach(button => {
             button.addEventListener('click', function () {
                 const nomorMeja = this.getAttribute('data-nomor-meja');
-                const stopwatchKey = `stopwatch_${nomorMeja}`;
-                const startTime = localStorage.getItem(stopwatchKey);
-                const currentTime = new Date().getTime();
-                const elapsedTime = currentTime - startTime;
 
-                // Konversi elapsedTime ke detik
-                const elapsedSeconds = Math.floor(elapsedTime / 1000);
-
-                // Redirect ke halaman stop dengan nomor meja dan waktu yang telah berlalu
-                window.location.href = `/stop/${nomorMeja}?elapsed=${elapsedSeconds}`;
+                // Redirect to the stop page with nomor meja and lama_main
+                window.location.href = `/stop/${nomorMeja}?lama_main=${lamaMain}`;
             });
         });
     });
