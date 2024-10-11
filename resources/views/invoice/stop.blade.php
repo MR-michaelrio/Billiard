@@ -104,46 +104,52 @@
 </div>
 
 <script>
-document.querySelectorAll('.submit-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const idRental = this.getAttribute('data-rental');
-        const nomeja = this.getAttribute('data-meja');
-        const metode = this.getAttribute('data-metode');
-        const lamaWaktu = document.getElementById('lama_waktu').textContent;
+document.addEventListener('DOMContentLoaded', function () {
+    // Extract `lama_main` from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const lamaMain = urlParams.get('lama_main');
 
-        console.log('Sending request with idRental:', nomeja, 'lamaWaktu:', lamaWaktu);
+    document.querySelectorAll('.submit-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const idRental = this.getAttribute('data-rental');
+            const nomeja = this.getAttribute('data-meja');
+            const metode = this.getAttribute('data-metode');
+            const lamaWaktu = document.getElementById('lama_waktu').textContent;
 
-        fetch('{{ route("bl.bayar") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu, metode:metode }) // Adjust this part based on how `idRental` relates to your logic
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            if (!response.ok) {
-                return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                console.log("reset stop watch: ",data.id_table)
+            console.log('Sending request with idRental:', nomeja, 'lamaWaktu:', lamaWaktu);
 
-                resetStopwatch(data.id_table);
-                showAlert('Success','Order submitted successfully','success');
-                // Redirect to print the receipt using id_rental
-                const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
-                window.location.href = printUrl;        
-            } else {
-                showAlert('Error','There was an error submitting the order','error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('Error','There was an error submitting the order. Please check the console for more details.','error');
+            fetch('{{ route("bl.bayar") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaMain, metode: metode }) // Use `lamaMain` from URL
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    return response.json().then(error => { throw new Error(error.message || 'Unknown error'); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log("reset stop watch: ", data.id_table);
+
+                    resetStopwatch(data.id_table);
+                    showAlert('Success','Order submitted successfully','success');
+                    // Redirect to print the receipt using id_rental
+                    const printUrl = `{{ route('print.receipt', ['id_rental' => ':id_rental']) }}`.replace(':id_rental', data.id_rental);
+                    window.location.href = printUrl;        
+                } else {
+                    showAlert('Error','There was an error submitting the order','error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('Error','There was an error submitting the order. Please check the console for more details.','error');
+            });
         });
     });
 });
