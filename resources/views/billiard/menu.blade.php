@@ -29,7 +29,7 @@
                 const elapsedSeconds = Math.floor(elapsedTime / 1000);
 
                 // Redirect to the stop page with nomor meja and elapsed time
-                console.log("waktu main:",elapsedSeconds)
+                console.log("waktu main:",startTime)
                 // window.location.href = `/stop/${nomorMeja}?elapsed=${elapsedSeconds}`;
             } else {
                 console.error("Start time not found in localStorage");
