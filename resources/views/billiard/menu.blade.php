@@ -20,7 +20,7 @@
 
                 // Konversi elapsedTime ke detik
                 const elapsedSeconds = Math.floor(elapsedTime / 1000);
-                console.log("lama main:", elapsedSeconds)
+                console.log("lama main:", elapsedTime)
                 // Redirect ke halaman stop dengan nomor meja dan waktu yang telah berlalu
                 // window.location.href = `/stop/${nomorMeja}?elapsed=${elapsedSeconds}`;
             });
