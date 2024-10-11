@@ -74,9 +74,12 @@
                         @foreach($meja_rental as $index => $mi)
                             @if($index == $i)
                                 <div class="card">
-                                    <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
+                                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
                                         <div class="card-body">
-                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
+                                                data-end-time="{{ $mi['waktu_akhir'] }}" 
+                                                data-start-time="{{ $mi['waktu_mulai'] }}" 
+                                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
                                                 Meja {{ $mi['nomor_meja'] }}
                                             </div>
                                             <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
@@ -98,9 +101,12 @@
                         @foreach($meja_rental as $index => $mi)
                             @if($index == $i)
                                 <div class="card">
-                                    <a href="{{ route('bl.menu', $mi['nomor_meja']) }}">
+                                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
                                         <div class="card-body">
-                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" data-end-time="{{ $mi['waktu_akhir'] }}" data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
+                                                data-end-time="{{ $mi['waktu_akhir'] }}" 
+                                                data-start-time="{{ $mi['waktu_mulai'] }}" 
+                                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
                                                 Meja {{ $mi['nomor_meja'] }}
                                             </div>
                                             <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
@@ -118,29 +124,32 @@
             <div class="divider"></div>
 
             <div class="row">
-    @for ($i = 7; $i < 15; $i++)
-        <div class="col-2 col-lg-3">
-        @foreach($meja_rental as $index => $mi)
-            @if($index == $i)
-                <div class="card">
-                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
-                        <div class="card-body">
-                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
-                                data-end-time="{{ $mi['waktu_akhir'] }}" 
-                                data-start-time="{{ $mi['waktu_mulai'] }}" 
-                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
-                                Meja {{ $mi['nomor_meja'] }}
+                @for ($i = 7; $i < 15; $i++)
+                    <div class="col-2 col-lg-3">
+                    @foreach($meja_rental as $index => $mi)
+                        @if($index == $i)
+                            <div class="card">
+                                <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
+                                    <div class="card-body">
+                                        <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
+                                            data-end-time="{{ $mi['waktu_akhir'] }}" 
+                                            data-start-time="{{ $mi['waktu_mulai'] }}" 
+                                            data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                            Meja {{ $mi['nomor_meja'] }}
+                                        </div>
+                                        <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                                            {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
-                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @endif
-        @endforeach
+                        @endif
+                    @endforeach
+                    </div>
+                @endfor
+            </div>
         </div>
-    @endfor
+    </div>
 </div>
 
 <script>
@@ -165,7 +174,7 @@
             });
         });
     });
-    
+
     function startCountdown(element, endTime) {
         function updateCountdown() {
             const now = new Date().getTime();
