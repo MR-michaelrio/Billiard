@@ -19,9 +19,9 @@
 
         // Function to format time in HH:MM:SS
         function formatTime(seconds) {
-            const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
-            const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-            const secs = (seconds % 60).toString().padStart(2, '0');
+            const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0'); // Calculate hours
+            const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0'); // Calculate minutes
+            const secs = (seconds % 60).toString().padStart(2, '0'); // Calculate seconds
             return `${hrs}:${mins}:${secs}`;
         }
 
@@ -33,7 +33,7 @@
                 const currentTime = new Date().getTime();
                 const elapsedTime = currentTime - startTime;
 
-                // Convert elapsedTime to seconds
+                // Convert elapsedTime from milliseconds to seconds
                 const elapsedSeconds = Math.floor(elapsedTime / 1000);
 
                 // Format elapsedSeconds to HH:MM:SS
