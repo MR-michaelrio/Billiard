@@ -2,7 +2,6 @@
 @section('content')
 <div class="row">
     <a href="{{ route('bl.menunonmember', $no_meja) }}" class="btn btn-block btn-primary btn-lg">Non Member</a>
-    <!-- <a href="{{ route('bl.menumember', $no_meja) }}" class="btn btn-block btn-primary btn-lg">Member</a> -->
     <button class="btn btn-block btn-primary btn-lg btn-stop" data-nomor-meja="{{ $no_meja }}">Stop</button>
 </div>
 
@@ -11,10 +10,15 @@
         const nomorMeja = "{{ $no_meja }}"; // Get nomor meja from Blade
         const stopwatchKey = `stopwatch_${nomorMeja}`;
 
+        // Reset localStorage (optional, only for testing, you can comment this after testing)
+        // localStorage.removeItem(stopwatchKey);
+
         // Check if start time exists in localStorage, if not set it
         if (!localStorage.getItem(stopwatchKey)) {
             const currentTime = new Date().getTime();
             localStorage.setItem(stopwatchKey, currentTime); // Set start time
+        } else {
+            console.log("Start time found in localStorage:", localStorage.getItem(stopwatchKey));
         }
 
         // Function to format time in HH:MM:SS
@@ -31,7 +35,7 @@
             
             if (startTime) {
                 const currentTime = new Date().getTime();
-                const elapsedTime = currentTime - startTime;
+                const elapsedTime = currentTime - parseInt(startTime); // Convert startTime from string to integer
 
                 // Convert elapsedTime from milliseconds to seconds
                 const elapsedSeconds = Math.floor(elapsedTime / 1000);
