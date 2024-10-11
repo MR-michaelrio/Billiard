@@ -7,23 +7,32 @@
 </div>
 
 <script>
-    
     document.addEventListener('DOMContentLoaded', function () {
-        // Tambahkan event listener untuk tombol stop
-        document.querySelectorAll('.btn-stop').forEach(button => {
-            button.addEventListener('click', function () {
-                const nomorMeja = this.getAttribute('data-nomor-meja');
-                const stopwatchKey = `stopwatch_${nomorMeja}`;
-                const startTime = localStorage.getItem(stopwatchKey);
+        const nomorMeja = "{{ $no_meja }}"; // Get nomor meja from Blade
+        const stopwatchKey = `stopwatch_${nomorMeja}`;
+
+        // Check if start time exists in localStorage, if not set it
+        if (!localStorage.getItem(stopwatchKey)) {
+            const currentTime = new Date().getTime();
+            localStorage.setItem(stopwatchKey, currentTime); // Set start time
+        }
+
+        // Event listener for Stop button
+        document.querySelector('.btn-stop').addEventListener('click', function () {
+            const startTime = localStorage.getItem(stopwatchKey);
+            
+            if (startTime) {
                 const currentTime = new Date().getTime();
                 const elapsedTime = currentTime - startTime;
 
-                // Konversi elapsedTime ke detik
+                // Convert elapsedTime to seconds
                 const elapsedSeconds = Math.floor(elapsedTime / 1000);
-                console.log("lama main:", elapsedTime)
-                // Redirect ke halaman stop dengan nomor meja dan waktu yang telah berlalu
-                // window.location.href = `/stop/${nomorMeja}?elapsed=${elapsedSeconds}`;
-            });
+
+                // Redirect to the stop page with nomor meja and elapsed time
+                window.location.href = `/stop/${nomorMeja}?elapsed=${elapsedSeconds}`;
+            } else {
+                console.error("Start time not found in localStorage");
+            }
         });
     });
 </script>
