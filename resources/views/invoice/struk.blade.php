@@ -123,7 +123,8 @@
                 @foreach($meja_rental2 as $r)
                     <tr>
                         <td style="text-align:left;padding:0px 5px 0px 5px;">1</td>
-                        <td style="text-align:left;">Meja Billiard ({{$lama_waktu}}) | {{$r->waktu_mulai}} - {{$r->waktu_akhir}}</td>
+                        <td>{{ \Carbon\Carbon::parse($rekap['tanggal'])->format('d-m-Y H:i:s') }}</td>
+                        <td style="text-align:left;">Meja Billiard ({{$lama_waktu}}) | {{\Carbon\Carbon::parse($r->waktu_mulai)->format('H:i:s')}} - {{\Carbon\Carbon::parse($r->waktu_akhir)->format('H:i:s')}}</td>
                         <td>{{ number_format($mejatotal) }}</td>
                     </tr>
                 @endforeach
