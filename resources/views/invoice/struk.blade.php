@@ -111,7 +111,7 @@
                 <span><b>Payment Due:</b> {{ $tanggalmain }}</span>
                 <span><b>Player Name:</b> {{$meja_rental->invoices->nonmember->nama}}</span>
                 @foreach($meja_rental2 as $r)
-                    <span>{{\Carbon\Carbon::parse($r->waktu_mulai)->format('H:i:s')}} - {{\Carbon\Carbon::parse($r->waktu_akhir)->format('H:i:s')}}</span>
+                    <span><b>Waktu Main:</b> {{\Carbon\Carbon::parse($r->waktu_mulai)->format('H:i:s')}} - {{\Carbon\Carbon::parse($r->waktu_akhir)->format('H:i:s')}}</span>
                 @endforeach
             </div>
         <!-- @endforeach -->
